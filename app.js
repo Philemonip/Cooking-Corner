@@ -32,18 +32,19 @@ const knex = require("knex")({
   },
 });
 
+// //Two Default methods that need to be called to implement passport
 app.use(passport.initialize());
 app.use(passport.session());
 // const passportFunctions = require("./passport");
 
-// //Two Default methods that need to be called to implement passport
-// app.use(passportFunctions.initialize());
-// app.use(passportFunctions.session());
 
 // app.get;
 app.get("/", (req, res) => {
   res.render("login");
 });
+app.get("/login", (req, res) => {
+    res.render("login");
+  });
 
 app.get("/signup", (req, res) => {
   res.render("signup");
