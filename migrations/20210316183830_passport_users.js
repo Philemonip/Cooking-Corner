@@ -49,7 +49,7 @@ exports.up = function (knex, Promise) {
       return knex.schema.createTable("reviews", (table) => {
         table.increments("id");
         table.integer("user_id").unsigned();
-        table.foreign("user_id").references("user.id");
+        table.foreign("user_id").references("users.id");
         table.integer("recipe_id").unsigned();
         table.foreign("recipe_id").references("recipes.id");
         table.integer("rating");
@@ -60,7 +60,7 @@ exports.up = function (knex, Promise) {
     .then(() => {
       return knex.schema.createTable("users_favourite_recipe", (table) => {
         table.integer("user_id").unsigned();
-        table.foreign("user_id").references("user.id");
+        table.foreign("user_id").references("users.id");
         table.integer("recipe_id").unsigned();
         table.foreign("recipe_id").references("recipes.id");
       });
@@ -68,7 +68,7 @@ exports.up = function (knex, Promise) {
     .then(() => {
       return knex.schema.createTable("users_uploaded_recipe", (table) => {
         table.integer("user_id").unsigned();
-        table.foreign("user_id").references("user.id");
+        table.foreign("user_id").references("users.id");
         table.integer("recipe_id").unsigned();
         table.foreign("recipe_id").references("recipes.id");
       });
