@@ -95,15 +95,18 @@ passport.use(
   })
 );
 
-// passport.use(
-//   new FacebookStrategy(
-//     {
-//       clientID: process.env.FB_APP_ID,
-//       clientSecret: process.env.FB_APP_SECRET,
-//       callbackURL: "http://localhost:4000/facebook/callback",
-//     },
-//     async (accessToken, refreshToken, profile, done) => {
-//       console.log("profile", profile);
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FB_APP_ID,
+      clientSecret: process.env.FB_APP_SECRET,
+      callbackURL: "https://localhost:4000/facebook/callback",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      console.log("profile", profile);
+    }
+  )
+);
 //       use the profile info (profile id) to check if the user is registered in your db
 //       let userResult = await knex(TABLE_NAME).where("google_id", profile.id);
 //       if (userResult == 0) {
@@ -134,7 +137,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:4000/google/callback",
+      callbackURL: "https://localhost:4000/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       console.log("profile", profile);

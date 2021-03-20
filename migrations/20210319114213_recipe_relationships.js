@@ -4,8 +4,7 @@ exports.up = function (knex) {
       table.increments("id");
       table.integer("recipe_id").unsigned();
       table.foreign("recipe_id").references("recipes.id");
-      table.integer("ingredient_id").unsigned();
-      table.foreign("ingredient_id").references("ingredients.id");
+      table.text("ingredient_names");
       table.integer("quantity");
     })
     .then(() => {
@@ -13,8 +12,7 @@ exports.up = function (knex) {
         table.increments("id");
         table.integer("recipe_id").unsigned();
         table.foreign("recipe_id").references("recipes.id");
-        table.integer("cuisine_id").unsigned();
-        table.foreign("cuisine_id").references("cuisines.id");
+        table.varchar("cuisine_types");
       });
     });
 };

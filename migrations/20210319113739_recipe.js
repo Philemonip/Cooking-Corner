@@ -10,8 +10,6 @@ exports.up = function (knex) {
     table.varchar("image_path");
     table.varchar("servings");
     table.varchar("difficulty");
-    table.integer("cuisine_id").unsigned();
-    table.foreign("cuisine_id").references("cuisines.id");
     table.timestamps(true, true);
   });
 };
