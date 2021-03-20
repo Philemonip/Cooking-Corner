@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 //express
 const express = require("express");
 const handlebars = require("express-handlebars");
@@ -5,6 +7,8 @@ const app = express();
 const passportFunctions = require("./passport/passport.js");
 const passport = require("passport");
 const expressSession = require("express-session");
+const fs = require("fs");
+const https = require("https");
 
 //body-parser
 const bodyParser = require("body-parser");
@@ -43,7 +47,6 @@ const isLoggedIn = (req, res, next) => {
 
 //knex
 // const knex = require('./knexfile')
-require("dotenv").config();
 const knex = require("knex")({
   client: "postgresql",
   connection: {
@@ -57,6 +60,10 @@ const knex = require("knex")({
 app.use(passport.initialize());
 app.use(passport.session());
 // const passportFunctions = require("./passport");
+
+//Review route
+const recipeRouter = require("./routers/recipeRouter")(express);
+app.use("/recipe", recipeRouter);
 
 // app.get;
 app.get("/", (req, res) => {
@@ -133,3 +140,10 @@ app.get("/logout", (req, res) => {
 app.listen(4000, () => {
   console.log("App running on 4000");
 });
+
+// const options = {
+//   cert: fs.readFileSync("./localhost.crt"),
+//   key: fs.readFileSync("./localhost.key"),
+// };
+
+// https.createServer(options, app).listen(4000);
