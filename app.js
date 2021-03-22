@@ -145,6 +145,12 @@ const RecipeServiceTmp = new recipeServiceTmp(knex);
 const RecipeRouterTmp = new recipeRouterTmp(RecipeServiceTmp);
 app.use("/recipes", RecipeRouterTmp.router());
 
+const ingredientServiceTmp = require("./services/ingredientServiceTmp");
+const ingredientRouterTmp = require("./routers/ingredientRouterTmp");
+const IngredientServiceTmp = new ingredientServiceTmp(knex);
+const IngredientRouterTmp = new ingredientRouterTmp(IngredientServiceTmp);
+app.use("/ingredients", IngredientRouterTmp.router());
+
 app.listen(4000, () => {
   console.log("App running on 4000");
 });

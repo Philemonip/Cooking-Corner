@@ -1,0 +1,20 @@
+<!-- <template> wraps the skeleton of content -->
+{{!-- <template id="recipe-info-template"> --}}
+    <div id="recipe-info-container">
+        <h1>Ingredients</h1>
+
+        {{#each ingredients}}
+        <div>
+            <label>recipe_id: </label>
+            <p>{{recipe_id}}</p>
+            <label>ingredient_id: </label>
+            <p>{{ingredient_id}}</p>
+            <label>quantity:</label>
+            <p>{{quantity}}</p>
+
+            <label>unit: </label>
+            <p>{{unit}}</p>
+        </div>
+        {{/each}}
+    </div>
+{{!-- </template> --}}
