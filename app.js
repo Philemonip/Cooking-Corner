@@ -1,9 +1,14 @@
+require("dotenv").config();
+
 //express
 const express = require("express");
 const handlebars = require("express-handlebars");
 const app = express();
 const passportFunctions = require("./passport/passport.js");
 const passport = require("passport");
+const expressSession = require("express-session");
+const fs = require("fs");
+const https = require("https");
 
 //body-parser
 const bodyParser = require("body-parser");
@@ -20,9 +25,28 @@ app.use(express.static("public"));
 //bcrypt
 const bcrypt = require("bcrypt");
 
+//Cookie-session
+app.use(
+  expressSession({
+    secret: "secret",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+const isLoggedIn = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    console.log(req.cookies);
+    console.log(req.session.passport.user, "passport USER");
+    console.log(req.user, "USER");
+    return next();
+  }
+
+  res.redirect("/login");
+};
+
 //knex
 // const knex = require('./knexfile')
-require("dotenv").config();
 const knex = require("knex")({
   client: "postgresql",
   connection: {
@@ -37,31 +61,97 @@ app.use(passport.initialize());
 app.use(passport.session());
 // const passportFunctions = require("./passport");
 
+//Review route
+const recipeRouter = require("./routers/recipeRouter")(express);
+app.use("/recipe", recipeRouter);
 
 // app.get;
 app.get("/", (req, res) => {
   res.render("login");
 });
 app.get("/login", (req, res) => {
-    res.render("login");
-  });
+  res.render("login");
+});
 
 app.get("/signup", (req, res) => {
   res.render("signup");
+});
+
+app.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+app.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/home",
+    // failureRedirect: "/error",
+  })
+);
+
+app.get(
+  "/facebook",
+  passport.authenticate("facebook", {
+    scope: ["profile", "email"],
+  })
+);
+
+app.get(
+  "/facebook/callback",
+  passport.authenticate("facebook", {
+    successRedirect: "/home",
+    // failureRedirect: "/error",
+  })
+);
+
+app.get("/home", isLoggedIn, (req, res) => {
+  res.render("home");
 });
 
 app.post(
   "/signup",
   passport.authenticate("local-signup", {
     successRedirect: "/login",
-    failureRedirect: "/error",
+    // failureRedirect: "/error",
+  })
+);
+
+app.post(
+  "/login",
+  passport.authenticate("local-login", {
+    successRedirect: "/home",
+    // failureRedirect: "/error",
   })
 );
 
 app.get("/error", (request, response) => {
-  response.render("error");
+  res.send("You have failed to login");
 });
+
+app.get("/logout", (req, res) => {
+  req.session = null;
+  req.logout();
+  res.redirect("/login");
+});
+
+// temporary, may change the actual routing
+// recipe page?
+const recipeServiceTmp = require("./services/recipeServiceTmp");
+const recipeRouterTmp = require("./routers/recipeRouterTmp");
+const RecipeServiceTmp = new recipeServiceTmp(knex);
+const RecipeRouterTmp = new recipeRouterTmp(RecipeServiceTmp);
+app.use("/recipes", RecipeRouterTmp.router());
 
 app.listen(4000, () => {
   console.log("App running on 4000");
 });
+
+// const options = {
+//   cert: fs.readFileSync("./localhost.crt"),
+//   key: fs.readFileSync("./localhost.key"),
+// };
+
+// https.createServer(options, app).listen(4000);

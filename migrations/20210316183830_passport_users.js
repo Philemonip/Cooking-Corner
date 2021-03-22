@@ -4,6 +4,9 @@ exports.up = function (knex, Promise) {
       table.increments("id");
       table.varchar("username").unique();
       table.varchar("password");
+      table.string("facebook_id");
+      table.string("google_id");
+      table.binary("profile_pic");
       table.timestamps(true, true);
       table.boolean("active");
     })
@@ -18,6 +21,7 @@ exports.up = function (knex, Promise) {
         table.increments("id");
         table.varchar("cuisine_name");
       });
+<<<<<<< HEAD
     })
     .then(() => {
       return knex.schema.createTable("recipes", (table) => {
@@ -72,17 +76,14 @@ exports.up = function (knex, Promise) {
         table.integer("recipe_id").unsigned();
         table.foreign("recipe_id").references("recipes.id");
       });
+=======
+>>>>>>> 9b6dd6e922c6ec65759f02b04228f0c87a14d663
     });
 };
 
 exports.down = function (knex, Promise) {
   return knex.schema
-    .dropTable("users")
+    .dropTable("cuisines")
     .then(() => knex.schema.dropTable("ingredients"))
-    .then(() => knex.schema.dropTable("cuisines"))
-    .then(() => knex.schema.dropTable("recipes"))
-    .then(() => knex.schema.dropTable("recipes_ingredients"))
-    .then(() => knex.schema.dropTable("reviews"))
-    .then(() => knex.schema.dropTable("users_favourite_recipe"))
-    .then(() => knex.schema.dropTable("users_uploaded_recipe"));
+    .then(() => knex.schema.dropTable("users"));
 };

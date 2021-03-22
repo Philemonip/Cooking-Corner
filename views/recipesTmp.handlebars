@@ -1,0 +1,41 @@
+<!-- <template> wraps the skeleton of content -->
+{{!-- <template id="recipe-info-template"> --}}
+    <div id="recipe-info-container">
+        <label>ID</label>
+        <p class="id">{{recipe.id}}</p>
+        <label>api_id:</label>
+        <p class="api_id">{{recipe.api_id}}</p>
+        {{!-- <label>instructions:</label>
+        <p class="api_id">{{recipe.instructions}}</p> --}}
+
+        {{#each recipe.instructions}}
+        <div>
+            <label>number: </label>
+            <p>{{number}}</p>
+            <label>number: </label>
+            <p>{{step}}</p>
+            <label>ingredients(ignore it, get it from ingredients table): </label>
+            <p>{{ingredients}}</p>
+
+            <label>equipment: </label>
+            {{#each equipment}}
+            <div>
+                <p>id:{{id}}</p>
+                <p>name:{{name}}</p>
+                <p>localizedName:{{localizedName}}</p>
+                <p>image:{{image}}</p>
+            </div>
+            {{/each}}
+
+            <label>length: </label>
+            {{#each length}}
+            <div>
+                <p>number:{{number}}</p>
+                <p>unit:{{unit}}</p>
+            </div>
+            {{/each}}
+        </div>
+        {{/each}}
+    </div>
+    {{!--
+</template> --}}

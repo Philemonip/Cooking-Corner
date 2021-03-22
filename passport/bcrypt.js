@@ -12,6 +12,7 @@ function hashPassword(plainTextPassword) {
           reject(err);
         }
         resolve(hash);
+        console.log("Bcrypt works", hash);
       });
     });
   });
