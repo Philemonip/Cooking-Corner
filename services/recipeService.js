@@ -25,7 +25,6 @@ module.exports = class RecipeService {
 
   //Insert data from recipe API to our own database
   insert(data) {
-    console.log("insert done");
     let stepArr = data.analyzedInstructions[0].steps.map((x) => (x = x.step));
     let recipeInstructions = stepArr.join("@@");
     return this.knex("recipes")
@@ -45,7 +44,7 @@ module.exports = class RecipeService {
         return this.knex("recipes_cuisines")
           .insert([
             {
-              cuisine_names: data.cuisines,
+              cuisine_name: data.cuisines,
             },
           ])
           .then(() => {
