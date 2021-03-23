@@ -19,6 +19,7 @@ module.exports = class RecipeService {
     return this.knex("recipes")
       .where({ api_id: recipeId })
       .then((data) => {
+        console.log(data.length);
         return data.length > 0 ? true : false;
       });
   }
@@ -41,19 +42,18 @@ module.exports = class RecipeService {
         },
       ])
       .then(() => {
-        return this.knex("recipes_cuisines")
-          .insert([
-            {
-              cuisine_name: data.cuisines,
-            },
-          ])
-          .then(() => {
-            return this.knex("recipes_ingredients").insert([
-              {
-                ingredient_names: data.extendedIngredients,
-              },
-            ]);
-          });
+        return this.knex("recipes_cuisines").insert([
+          {
+            cuisine_name: data.cuisines,
+          },
+        ]);
+        //   .then(() => {
+        //     return this.knex("recipes_ingredients").insert([
+        //       {
+        //         ingredient_names: data.extendedIngredients,
+        //       },
+        //     ]);
+        //   });
       });
   }
 
