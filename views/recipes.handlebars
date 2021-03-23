@@ -1,4 +1,4 @@
-<div class="container-fluid info-container justify-content-center">
+{{!-- <div class="container-fluid info-container justify-content-center">
     <div class="row">
         <div class="image-container col">
              <h3>Title</h3>
@@ -39,5 +39,60 @@
     </div>
 
    </section>
+</div> --}}
+
+<div class="container-fluid info-container justify-content-center">
+    <div class="row">
+        <div class="image-container col">
+             <h3>Title</h3>
+             <p>{{recipe.title}}</p>
+             <h4>By:</h4>
+             <p>{{recipe.sourceName}}</p>
+            <img class="img-fluid" src="{{recipe.image}}">
+        </div>
+        <div class="function container col">
+            <p>{{recipe.readyInMinutes}}</p>
+            <p>{{recipe.servings}}</p>
+              <br>
+            <button type="button" class="bookmarks-btn btn btn-primary">Bookmark</button>
+            <p>Ratings</p>
+        </div>
+    </div>
+<section class="text-center">
+  
+        <div class="description container">
+            <h3>Description</h3>
+            <p>{{recipe.summary}}</p>
+        </div>
+        <div class="ingredients container">
+            <h3>Ingredients(to be done)</h3>
+            {{#each recipe.extendedIngredients}}
+            <div>
+                <p>id:{{id}}</p>
+                <p>name:{{nameClean}}</p>
+                <p>amount:{{amount}}</p>
+                <p>unit:{{unit}}</p>
+            </div>
+            {{/each}}
+        </div>
+        <div class="instructions container">
+            <h3>Instructions</h3>
+            <p>{{recipe.instructions}}</p>
+        </div>
+        <div class="analyzed instructions container">
+            <h3>Analyzed Instructions</h3>
+            <p>{{recipe.analyzedInstructions}}</p>
+        </div>
+</section>
+   <section class="text-center">
+       <h3>Related</h3>
+    <div class="row">
+    <div class="col"></div>
+    <div class="col"></div>
+    <div class="col"></div>
+    </div>
+
+   </section>
 </div>
+
 

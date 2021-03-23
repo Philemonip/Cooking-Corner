@@ -61,9 +61,22 @@ app.use(passport.initialize());
 app.use(passport.session());
 // const passportFunctions = require("./passport");
 
-//Review route
-const recipeRouter = require("./routers/recipeRouter")(express);
-app.use("/recipe", recipeRouter);
+/////////////////////////////////////////////
+// //Review route
+// const recipeRouter = require("./routers/recipeRouter")(express);
+// app.use("/recipe", recipeRouter);
+/////////////////////////////////////////////////
+const ingredientService = require("./services/ingredientService");
+// const ingredientRouterTmp = require("./routers/ingredientRouterTmp");
+const recipeService = require("./services/recipeService");
+const recipeRouter = require("./routers/recipeRouter");
+
+const IngredientService = new ingredientService(knex);
+// const IngredientRouterTmp = new ingredientRouterTmp(IngredientServiceTmp);
+const RecipeService = new recipeService(knex);
+const RecipeRouter = new recipeRouter(RecipeService, IngredientService);
+app.use("/recipe", RecipeRouter.router());
+
 
 //Category route
 const categoryRouter = require("./routers/categoryRouter")(express);

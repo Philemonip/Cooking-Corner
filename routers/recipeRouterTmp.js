@@ -67,49 +67,6 @@ class recipeRouterTmp {
                 })
             })
     }
-
-
-
-    // getAllRecipe(request, response) {
-    //     this.userService.getRecipe().then((users) => {
-    //         response.send(users);
-    //     })
-    // }
-
-    // getRecipe(request, response) {
-    //     let id = request.params.id;
-    //     return this.recipeService.getRecipe(id).then((user) => {
-    //         response.send(user);
-    //     })
-    // }
-
-    // postUser(request, response) {
-    //     let body = request.body;
-    //     console.log(body);
-    //     return this.userService.postUser(body)
-    //         .then(() => {
-    //             response.send("added");
-    //         });
-    // }
-
-    // editUser(request, response) {
-    //     let id = request.params.id;
-    //     let user = request.body;
-    //     console.log("id", id);
-    //     console.log("user", user);
-    //     return this.userService.editUser(id, user)
-    //         .then(() => {
-    //             console.log("updated");
-    //         })
-    // }
-
-    // deleteUser(request, response) {
-    //     let id = request.params.id;
-    //     return this.userService.deleteUser(id)
-    //         .then(() => {
-    //             response.send("deleted");
-    //         })
-    // }
 }
 
 module.exports = recipeRouterTmp;
