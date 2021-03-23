@@ -30,6 +30,20 @@ class recipeServiceTmp {
             })
     }
 
+    addRecipe(recipe) {
+        return this.knex("recipes")
+            .returning("id")
+            .insert(recipe)
+            .then((id) => {
+                console.log("inserted");
+                console.log(id);
+                return id[0];
+            })
+            .catch((error) => {
+                console.log("error", error);
+            });
+    }
+
     // getUsers() {
     //     return this.knex("class_users")
     //         .select("id", "username", "password")

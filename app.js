@@ -139,17 +139,21 @@ app.get("/logout", (req, res) => {
 
 // temporary, may change the actual routing
 // recipe page?
-const recipeServiceTmp = require("./services/recipeServiceTmp");
-const recipeRouterTmp = require("./routers/recipeRouterTmp");
-const RecipeServiceTmp = new recipeServiceTmp(knex);
-const RecipeRouterTmp = new recipeRouterTmp(RecipeServiceTmp);
-app.use("/recipes", RecipeRouterTmp.router());
-
 const ingredientServiceTmp = require("./services/ingredientServiceTmp");
 const ingredientRouterTmp = require("./routers/ingredientRouterTmp");
+const recipeServiceTmp = require("./services/recipeServiceTmp");
+const recipeRouterTmp = require("./routers/recipeRouterTmp");
+
 const IngredientServiceTmp = new ingredientServiceTmp(knex);
 const IngredientRouterTmp = new ingredientRouterTmp(IngredientServiceTmp);
+const RecipeServiceTmp = new recipeServiceTmp(knex);
+const RecipeRouterTmp = new recipeRouterTmp(RecipeServiceTmp, IngredientServiceTmp);
+app.use("/recipes", RecipeRouterTmp.router());
+app.use("/testinginsert", (request, response) => { response.render("insertrecipesTmp"); });
 app.use("/ingredients", IngredientRouterTmp.router());
+
+
+
 
 app.listen(4000, () => {
   console.log("App running on 4000");

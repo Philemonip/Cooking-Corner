@@ -21,6 +21,17 @@ class ingredientServiceTmp {
     //             return row;
     //         })
     // }
+
+    addIngredient(ingredients) {
+        return this.knex("recipes_ingredients")
+            .insert(ingredients)
+            .then(() => {
+                console.log("ingredients inserted");
+            })
+            .catch((error) => {
+                console.log("error", error);
+            });
+    }
 }
 
 module.exports = ingredientServiceTmp;
