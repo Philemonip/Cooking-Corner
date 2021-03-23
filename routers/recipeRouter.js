@@ -21,13 +21,13 @@ module.exports = (express) => {
   router.route("/:recipeId").get(getRecipeData);
 
   function getRecipeData(req, res) {
-    console.log(req);
     let apiData;
     //Check if recipe already in database
     console.log("running");
-    console.log(req.params.id);
-    recipeService.checkData(req.params.id);
-    if (recipeService.checkData(req.params.id)) {
+    console.log(req.params.recipeId);
+    recipeService.checkData(req.params.recipeId);
+    if (recipeService.checkData(req.params.recipeId) == true) {
+      console.log("checking");
       apiData = knex
         .select(
           "recipes.api_id",
@@ -54,8 +54,9 @@ module.exports = (express) => {
           "recipes.api_id",
           "recipes_cuisines.api_id"
         )
-        .where("recipes.api_id", req.params.id);
+        .where("recipes.api_id", req.params.recipeId);
     } else {
+      console.log("FETCH API");
       return (
         axios
           .get(
@@ -94,6 +95,7 @@ module.exports = (express) => {
       servings: apiData.servings,
       ingredients: apiData.ingredients,
     });
+    console.log("succesful");
   }
 
   return router;
