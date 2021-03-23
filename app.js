@@ -65,6 +65,18 @@ app.use(passport.session());
 const recipeRouter = require("./routers/recipeRouter")(express);
 app.use("/recipe", recipeRouter);
 
+//Category route
+const categoryRouter = require("./routers/categoryRouter")(express);
+// app.use("/category", categoryRouter);
+
+// temporary, may change the actual routing
+// recipe page?
+// const recipeServiceTmp = require("./services/recipeServiceTmp");
+// const recipeRouterTmp = require("./routers/recipeRouterTmp");
+// const RecipeServiceTmp = new recipeServiceTmp(knex);
+// const RecipeRouterTmp = new recipeRouterTmp(RecipeServiceTmp);
+// app.use("/recipes", RecipeRouterTmp.router());
+
 // app.get;
 app.get("/", (req, res) => {
   res.render("login");

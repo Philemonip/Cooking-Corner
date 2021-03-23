@@ -1,19 +1,17 @@
 exports.up = function (knex) {
   return knex.schema
     .createTable("users_favourite_recipes", (table) => {
-      table.increments("id");
       table.integer("user_id").unsigned();
       table.foreign("user_id").references("users.id");
-      table.integer("recipe_id").unsigned();
-      table.foreign("recipe_id").references("recipes.id");
+      table.integer("recipe_api_id").unsigned();
+      table.foreign("recipe_api_id").references("recipe_api_id");
     })
     .then(() => {
       return knex.schema.createTable("users_uploaded_recipes", (table) => {
-        table.increments("id");
         table.integer("user_id").unsigned();
         table.foreign("user_id").references("users.id");
-        table.integer("recipe_id").unsigned();
-        table.foreign("recipe_id").references("recipes.id");
+        table.integer("recipe_api_id").unsigned();
+        table.foreign("recipe_api_id").references("recipe_api_id");
       });
     })
     .then(() => {
@@ -21,8 +19,8 @@ exports.up = function (knex) {
         table.increments("id");
         table.integer("user_id").unsigned();
         table.foreign("user_id").references("users.id");
-        table.integer("recipe_id").unsigned();
-        table.foreign("recipe_id").references("recipes.id");
+        table.integer("recipe_api_id").unsigned();
+        table.foreign("recipe_api_id").references("recipes.api_id");
         table.integer("rating");
         table.text("comment");
         table.timestamps(true, true);
