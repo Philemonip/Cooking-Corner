@@ -1,47 +1,43 @@
-<div class="container-fluid info-container d-flex justify-content-center">
-        <div class="row">
-
-
-            <!-- <template> wraps the skeleton of content -->
-{{!-- <template id="recipe-info-template"> --}}
-    <div id="recipe-info-container">
-        <label>ID</label>
-        <p class="id">{{recipe.id}}</p>
-        <label>api_id:</label>
-        <p class="api_id">{{recipe.api_id}}</p>
-        {{!-- <label>instructions:</label>
-        <p class="api_id">{{recipe.instructions}}</p> --}}
-
-        {{#each recipe.instructions}}
-        <div>
-            <label>number: </label>
-            <p>{{number}}</p>
-            <label>number: </label>
-            <p>{{step}}</p>
-            <label>ingredients(ignore it, get it from ingredients table): </label>
-            <p>{{ingredients}}</p>
-
-            <label>equipment: </label>
-            {{#each equipment}}
-            <div>
-                <p>id:{{id}}</p>
-                <p>name:{{name}}</p>
-                <p>localizedName:{{localizedName}}</p>
-                <p>image:{{image}}</p>
-            </div>
-            {{/each}}
-
-            <label>length: </label>
-            {{#each length}}
-            <div>
-                <p>number:{{number}}</p>
-                <p>unit:{{unit}}</p>
-            </div>
-            {{/each}}
+<div class="container-fluid info-container justify-content-center">
+    <div class="row">
+        <div class="image-container col">
+             <h3>Title</h3>
+             <p>{{title}}</p>
+             <h4>By:</h4>
+             <p>{{author}}</p>
+            <img class="img-fluid" src="{{image_path}}">
         </div>
-        {{/each}}
+        <div class="function container col">
+            <p>{{preparation_time}}</p>
+            <p>{{servings}}</p>
+              <br>
+            <button type="button" class="bookmarks-btn btn btn-primary">Bookmark</button>
+            <p>Ratings</p>
+        </div>
     </div>
-      </div>
+<section class="text-center">
+  
+        <div class="description container">
+            <h3>Description</h3>
+            <p>{{summary}}</p>
         </div>
-    {{!--
-</template> --}}
+        <div class="ingredients container">
+            <h3>Ingredients</h3>
+            <p>{{ingredients}}</p>
+        </div>
+        <div class="instructions container">
+            <h3>Instructions</h3>
+            <p>{{instructions}}</p>
+        </div>
+</section>
+   <section class="text-center">
+       <h3>Related</h3>
+    <div class="row">
+    <div class="col"></div>
+    <div class="col"></div>
+    <div class="col"></div>
+    </div>
+
+   </section>
+</div>
+
