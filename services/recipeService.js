@@ -15,17 +15,17 @@ module.exports = class RecipeService {
   }
 
   //Check if recipe data already in database
-  checkdata(recipeId) {
+  checkData(recipeId) {
     return this.knex("recipes")
       .where({ api_id: recipeId })
       .then((data) => {
+        console.log(data.length);
         return data.length > 0 ? true : false;
       });
   }
 
   //Insert data from recipe API to our own database
   insert(data) {
-    console.log("insert done");
     let stepArr = data.analyzedInstructions[0].steps.map((x) => (x = x.step));
     let recipeInstructions = stepArr.join("@@");
     return this.knex("recipes")
@@ -42,20 +42,28 @@ module.exports = class RecipeService {
         },
       ])
       .then(() => {
-        return this.knex("recipes_cuisines")
-          .insert([
-            {
-              cuisine_types: data.cuisines,
-            },
-          ])
-          .then(() => {
-            return this.knex("recipes_ingredients").insert([
-              {
-                ingredient_names: data.extendedIngredients,
-              },
-            ]);
-          });
+        return this.knex("recipes_cuisines").insert([
+          {
+            cuisine_name: data.cuisines,
+          },
+        ]);
+        //   .then(() => {
+        //     return this.knex("recipes_ingredients").insert([
+        //       {
+        //         ingredient_names: data.extendedIngredients,
+        //       },
+        //     ]);
+        //   });
+      });
+  }
+
+  getRecipeByApiId(api_id) {
+    return this.knex("recipes")
+      .select()
+      .where({ api_id: api_id })
+      .then((row) => {
+        console.log(row);
+        return row;
       });
   }
 };
-//
