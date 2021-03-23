@@ -15,7 +15,7 @@ module.exports = class RecipeService {
   }
 
   //Check if recipe data already in database
-  checkdata(recipeId) {
+  checkData(recipeId) {
     return this.knex("recipes")
       .where({ api_id: recipeId })
       .then((data) => {
@@ -45,7 +45,7 @@ module.exports = class RecipeService {
         return this.knex("recipes_cuisines")
           .insert([
             {
-              cuisine_types: data.cuisines,
+              cuisine_names: data.cuisines,
             },
           ])
           .then(() => {
@@ -57,5 +57,14 @@ module.exports = class RecipeService {
           });
       });
   }
+
+  getRecipeByApiId(api_id) {
+    return this.knex("recipes")
+      .select()
+      .where({ api_id: api_id })
+      .then((row) => {
+        console.log(row);
+        return row;
+      });
+  }
 };
-//

@@ -15,18 +15,11 @@ exports.up = function (knex, Promise) {
         table.increments("id");
         table.varchar("ingredient_name");
       });
-    })
-    .then(() => {
-      return knex.schema.createTable("cuisines", (table) => {
-        table.increments("id");
-        table.varchar("cuisine_name");
-      });
     });
 };
 
 exports.down = function (knex, Promise) {
   return knex.schema
-    .dropTable("cuisines")
-    .then(() => knex.schema.dropTable("ingredients"))
+    .dropTable("ingredients")
     .then(() => knex.schema.dropTable("users"));
 };
