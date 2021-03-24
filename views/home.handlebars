@@ -1,9 +1,32 @@
-<h1> Home Page</h1>
+<div class="container-fluid search">
+  <div class="search-bar">
+    <form class="d-flex justify-content-center">
+      <input class="typeahead form-control me-2" type="search" placeholder="Search recipes" aria-label="Search">
+    </form>
+  </div>
 
+  <section class="text-center">
+    <h3>Top Rated Recipes</h3>
+    <div class="row">
 
- <div class="search">
-      <form class="d-flex justify-content-center">
-        <input class="typeahead form-control me-2" type="search" placeholder="Search recipes" aria-label="Search">
-      </form>
+      {{#each info}}
+      <div class="card col-lg-4 col-md-6 col-sm-12">
+        <img class="img-fluid" src="{{this.image_path}}">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              {{this.title}}
+              <div class="col">
+                {{this.rating}}
+              </div>
+            </div>
+            <div class="col">
+              <button type="button" class="bookmark-btn btn btn-primary" name="add-bookmark">Bookmark</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/each}}
     </div>
-
+  </section>
+</div>

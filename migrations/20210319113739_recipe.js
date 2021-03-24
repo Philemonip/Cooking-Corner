@@ -7,6 +7,7 @@ exports.up = function (knex) {
     table.text("summary");
     table.text("instructions");
     table.integer("preparation_time");
+    table.integer("rating");
     table.varchar("image_path");
     table.varchar("servings");
     table.varchar("difficulty");

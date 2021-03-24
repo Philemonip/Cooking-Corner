@@ -1,22 +1,25 @@
 <div class="container-fluid info-container justify-content-center">
     <div class="row">
         <div class="image-container col">
-             <h3>Title</h3>
-             <p>{{recipe.title}}</p>
-             <h4>By:</h4>
-             <p>{{recipe.sourceName}}</p>
+            <h3>Title</h3>
+            <p>{{recipe.title}}</p>
+            <h4>By:</h4>
+            <p>{{recipe.sourceName}}</p>
             <img class="img-fluid" src="{{recipe.image}}">
         </div>
         <div class="function container col">
+            <h4>Preparation Time:</h4>
             <p>{{recipe.readyInMinutes}}</p>
+            <h4>Servings:</h4>
             <p>{{recipe.servings}}</p>
-              <br>
-            <button type="button" class="bookmarks-btn btn btn-primary">Bookmark</button>
-            <p>Ratings</p>
+            <br>
+            <button type="button" class="bookmark-btn btn btn-primary" name="add-bookmark">Bookmark</button>
+            <h4>Score:</h4>
+            <p>{{recipe.spoonacularScore}}</p>
         </div>
     </div>
     <section class="text-center">
-  
+
         <div class="description container">
             <h3>Description</h3>
             <p>{{recipe.summary}}</p>
@@ -40,9 +43,9 @@
             <h3>Analyzed Instructions</h3>
             <p>{{recipe.analyzedInstructions}}</p>
         </div>
-{{!-- </section>
-<section class="text-center">
-  
+    </section>
+    {{!-- <section class="text-center">
+
         <div class="description container">
             <h3>Description</h3>
             <p>{{summary}}</p>
@@ -54,32 +57,50 @@
         <h3>Instructions</h3>
         {{#each instructions}}
         <div class="instructions container">
-        <p>{{math @index "+" 1}} {{this}}</p>
+            <p>{{math @index "+" 1}} {{this}}</p>
         </div>
         {{/each}}
-</section> --}}
-   <section class="text-center">
-       <h3>Related</h3>
-    <div class="row">
-    <div class="col"></div>
-    <div class="col"></div>
-    <div class="col"></div>
-    </div>
-   </section>
+    </section> --}}
 
-    <div class="row">
+
+    <div class="myReview">
+        <h3>my Review</h3>
+        {{#each recipe.myReview}}
+        <div>
+            <p>user_id:{{user_id}}</p>
+            <p>recipe_id:{{recipe_id}}</p>
+            <p>rating:{{rating}}</p>
+            <p>comment:{{comment}}</p>
+            <p>username:{{username}}</p>
+        </div>
+        {{/each}}
+    </div>
+    <div class="recipe Review">
+        <h3>recipe Review</h3>
+        {{#each recipe.recipeReview}}
+        <div>
+            <p>user_id:{{user_id}}</p>
+            <p>recipe_id:{{recipe_id}}</p>
+            <p>rating:{{rating}}</p>
+            <p>comment:{{comment}}</p>
+            <p>username:{{username}}</p>
+        </div>
+        {{/each}}
+    </div>
+
+    {{!-- <div class="row">
         <div class="comment-container col-12">
             <h3>Comments</h3>
             <div class="text-box hidden">
                 <form ref="note" id="note">
-{{!-- 
+                    {{!--
                     <fieldset class="star-rating" id="rate-item-12343">
-  <input class="star" name="rating" type="radio" checked="checked"/>
-  <input class="star" name="rating" type="radio" />
-  <input class="star" name="rating" type="radio" />
-  <input class="star" name="rating" type="radio" />
-  <input class="star" name="rating" type="radio" />
-</fieldset> --}}
+                        <input class="star" name="rating" type="radio" checked="checked" />
+                        <input class="star" name="rating" type="radio" />
+                        <input class="star" name="rating" type="radio" />
+                        <input class="star" name="rating" type="radio" />
+                        <input class="star" name="rating" type="radio" />
+                    </fieldset> --}}
                     <textarea class="note-rating" name="rating"
                         placeholder="Rating(Please enter 1-10)">{{this.rating}}</textarea>
                     <br>
@@ -98,32 +119,42 @@
                     <textarea class="edit-area" cols="60" rows="10" name="edit">{{this.comment}}</textarea>
                     <br>
 
-            <button type="button" class="save-btn btn btn-primary">SAVE CHANGES</button>
-            <button type="button" class="cancel-btn btn btn-primary">CANCEL</button>
-            </form>
+                    <button type="button" class="save-btn btn btn-primary">SAVE CHANGES</button>
+                    <button type="button" class="cancel-btn btn btn-primary">CANCEL</button>
+                </form>
             </div>
             {{/each}}
 
             {{#each myReviewArr}}
             <div class="my-review">
-            <p>Rating: {{this.rating}}/10</p><br>
-            <p>by {{this.username}}</p>
-            <p class="display-area">{{this.comment}}</p>
+                <p>Rating: {{this.rating}}/10</p><br>
+                <p>by {{this.username}}</p>
+                <p class="display-area">{{this.comment}}</p>
 
-            <button class="edit-btn">EDIT</button>
-            <button class="del-btn">DELETE</button>
+                <button class="edit-btn">EDIT</button>
+                <button class="del-btn">DELETE</button>
             </div>
             {{/each}}
 
             {{#each reviewArr}}
             <div class="review-box">
-            <p>Rating: {{this.rating}}/10</p><br>
-            <p>by {{this.username}}</p>
-            <p class="display-area">{{this.comment}}</p>
+                <p>Rating: {{this.rating}}/10</p><br>
+                <p>by {{this.username}}</p>
+                <p class="display-area">{{this.comment}}</p>
             </div>
             {{/each}}
         </div>
 
-    </div>
+    </div> --}}
+
+    <section class="text-center">
+        <h3>Related</h3>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+        </div>
+    </section>
+
 
 </div>

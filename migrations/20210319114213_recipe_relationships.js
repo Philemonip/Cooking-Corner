@@ -3,6 +3,8 @@ exports.up = function (knex) {
     .createTable("recipes_ingredients", (table) => {
       table.integer("recipe_id").unsigned();
       table.foreign("recipe_id").references("recipes.id");
+      table.integer("ingredient_id").unsigned();
+      table.foreign("ingredient_id").references("ingredients.id");
       table.float("quantity");
       table.varchar("unit");
     })
