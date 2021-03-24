@@ -14,8 +14,8 @@ class ingredientService {
             })
     }
 
-    addIngredient(ingredients) {
-        return this.knex("recipes_ingredients")
+    async addIngredient(ingredients) {
+        return await this.knex("recipes_ingredients")
             .insert(ingredients)
             .then(() => {
                 console.log("(addIngredient)ingredients inserted");
@@ -25,8 +25,8 @@ class ingredientService {
             });
     }
 
-    checkIngredientExist(ingredient_id){
-        return this.knex("ingredients")
+    async checkIngredientExist(ingredient_id){
+        return await this.knex("ingredients")
             .select()
             .where({id: ingredient_id})
             .then((rows) => {
@@ -38,8 +38,8 @@ class ingredientService {
             });
     }
 
-    addIngredientIfNotExist(ingredient) {
-        return this.checkIngredientExist(ingredient["id"])
+    async addIngredientIfNotExist(ingredient) {
+        return await this.checkIngredientExist(ingredient["id"])
         .then((isExist) => {
             if(!isExist){
                 this.knex("ingredients")

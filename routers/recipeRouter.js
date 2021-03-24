@@ -1,107 +1,10 @@
-// "use strict";
-// module.exports = (express) => {
-//   console.log("router running");
-//   const router = express.Router();
-//   const axios = require("axios");
-
-//   // Knex Setup
-//   require("dotenv").config();
-//   const knex = require("knex")({
-//     client: "postgresql",
-//     connection: {
-//       database: process.env.DATABASE,
-//       user: process.env.USERNAME,
-//       password: process.env.PASSWORD,
-//     },
-//   });
-
-//   const RecipeService = require("../services/recipeService");
-//   const recipeService = new RecipeService(knex);
-
-//   router.route("/:recipeId").get(getRecipeData);
-
-//   function getRecipeData(req, res) {
-//     let apiData;
-//     return axios
-//       .get(
-//         `https://api.spoonacular.com/recipes/${req.params.recipeId}/information?&apiKey=ba5aba2ccf0049008995c74dfc10d62a`
-//       )
-//       .then((info) => {
-//         apiData = info.data;
-//         console.log(apiData);
-//         return recipeService.checkData(apiData.id);
-//       })
-//       .then((boolean) => {
-//         console.log("yes");
-//         if (!boolean) {
-//           return recipeService.insert(apiData);
-//         } else {
-//           return;
-//         }
-//       })
-//       .then(() => {
-//         //Send data to res.render
-//         res.render("recipes", {
-//           api_id: apiData.id,
-//           title: apiData.title,
-//           summary: apiData.summary,
-//           author: apiData.sourceName,
-//           preparation_time: apiData.readyInMinutes,
-//           image_path: apiData.image,
-//           //   instructions: apiData.analyzedInstructions[0].steps.map((x) => (x = x.step)).split("@@"),
-//           servings: apiData.servings,
-//           ingredients: apiData.ingredients,
-//         });
-//       })
-//       .catch((err) => {
-//         console.log("axios get err", err);
-//       });
-//     //Check if recipe already in database
-
-//     //   apiData = knex
-//     //     .select(
-//     //       "recipes.api_id",
-//     //       "recipes.title",
-//     //       "recipes.author",
-//     //       "recipes.summary",
-//     //       "recipes.instructions",
-//     //       "recipes.preparation_time",
-//     //       "recipes.image_path",
-//     //       "recipes.servings",
-//     //       "recipes.difficulty",
-//     //       "recipes_ingredients.ingredient_id",
-//     //       "recipes_ingredients.quantity",
-//     //       "recipes_ingredients.unit"
-//     //     )
-//     //     .from("recipes")
-//     //     .innerJoin(
-//     //       "recipes_ingredients",
-//     //       "recipes.api_id",
-//     //       "recipes_ingredients.api_id"
-//     //     )
-//     //     .innerJoin(
-//     //       "recipes_cuisines",
-//     //       "recipes.api_id",
-//     //       "recipes_cuisines.api_id"
-//     //     )
-//     //     .where("recipes.api_id", req.params.recipeId);
-//   }
-
-//   return router;
-// };
-
-
 const express = require("express");
-// const axios = require("axios");
 
 class recipeRouter {
-  // constructor(recipeServiceTmp, ingredientServiceTmp) {
-  //   this.recipeServiceTmp = recipeServiceTmp;
-  //   this.ingredientServiceTmp = ingredientServiceTmp;
-  // }
-  constructor(recipeService, ingredientService) {
+  constructor(recipeService, ingredientService, reviewService) {
     this.recipeService = recipeService;
     this.ingredientService = ingredientService;
+    this.reviewService = reviewService;
   }
 
   router() {
@@ -115,21 +18,21 @@ class recipeRouter {
     return router;
   }
 
-  fetchRecipe(request, response) {
+  async fetchRecipe(request, response) {
     let id = request.params.id;
     console.log("fetchRecipe " + id);
     return this.recipeService.fetchRecipeByAPI(id).then((apiData) => {
-        response.render("recipes", { recipe: apiData });
-        return apiData;
-      })
-      .then((apiData) => {
+      response.render("recipes", { recipe: apiData });
+      return apiData;
+    })
+      .then(async (apiData) => {
         this.recipeService.getRecipeByApiId(id).then((rows) => {
           // console.log("apiData");
           // console.log(apiData);  // can print
 
           // console.log("row");
           // console.log(rows);
-          if(rows.length === 0){
+          if (rows.length === 0) {
             // console.log("insert");
 
             // build recipe object for inserting into "recipes" table
@@ -155,41 +58,81 @@ class recipeRouter {
 
             // insert recipe into "recipes" table
             this.recipeService.addRecipe(recipe)
-            .then((recipe_id) => {
-              console.log(`recipe_id: ${recipe_id}`);
-              return recipe_id;
-            })
-            .then((recipe_id) => {
-              // insert recipe into "recipes_ingredients" table
-              for(let j = 0;j < ingredients_array.length;j++){
-                let ingredient = {};
-                ingredient["recipe_id"] = recipe_id;
-                ingredient["ingredient_id"] = ingredients_array[j]["id"];
-                ingredient["quantity"] = ingredients_array[j]["amount"];
-                ingredient["unit"] = ingredients_array[j]["unit"];
+              .then(async (recipe_id) => {
+                console.log(`recipe_id: ${recipe_id}`);
+                return recipe_id;
+              })
+              .then(async (recipe_id) => {
+                // update the recipe id
+                apiData["recipe_id"] = recipe_id;
 
-                console.log(`(recipeRoute)ingredient_id: ${ingredient["ingredient_id"]}`);
+                // insert recipe into "recipes_ingredients" table
+                for (let j = 0; j < ingredients_array.length; j++) {
 
-                // check ingredient id exist in "ingredient"table
-                this.ingredientService.addIngredientIfNotExist({id: ingredients_array[j]["id"], ingredient_name: ingredients_array[j]["nameClean"]})
-                .then(() => {
-                  // insert
-                  this.ingredientService.addIngredient(ingredient)
-                  .then(() => {
-                    console.log("(recipeRoute)successfully inserted recipe ingredients");
-                  })
-                  .catch((error) => {
-                    console.log("(recipeRoute)error", error);
-                    console.log("(recipeRoute)error ID" + ingredients_array[j]["id"]);
-                  });
-                })
-              }
-            })
+                  let ingredient = {};
+                  ingredient["recipe_id"] = recipe_id;
+                  ingredient["ingredient_id"] = ingredients_array[j]["id"];
+                  ingredient["quantity"] = ingredients_array[j]["amount"];
+                  ingredient["unit"] = ingredients_array[j]["unit"];
+
+                  console.log(`(recipeRoute)ingredient_id: ${ingredient["ingredient_id"]}`);
+
+                  let check = await this.ingredientService.addIngredientIfNotExist({ id: ingredients_array[j]["id"], ingredient_name: ingredients_array[j]["nameClean"] });
+                  let addIngredient = await this.ingredientService.addIngredient(ingredient);
+
+                }
+              })
           }
         })
+        //   .then(() => {
+        //     // console.log(apiData);  //ok
+        //     // return apiData; //cannot return out
+        //   })
+        return apiData;
       })
-  }
+      .then(async (data) => {
+        // console.log("data");
+        // console.log(data);
+        // console.log(data["recipe_id"]);
+        // console.log(data["recipe_id"]===undefined)
 
+        let result = {};
+
+        data["recipe_id"] = await this.recipeService.getRecipeByApiId(data["id"]).then((rows) => {return rows[0]["id"]});
+        
+        result["api_id"] = data.id;
+        result["title"] = data.title;
+        result["summary"] = data.summary;
+        result["author"] = data.sourceName;
+        result["preparation_time"] = data.readyInMinutes;
+        result["image_path"] = data.image;
+        result["instructions"] = data.analyzedInstructions.split("@@");
+        result["servings"] = data.servings;
+        result["ingredients"] = data.extendedIngredients;
+        // console.log("result1")
+        // console.log(result)
+        
+        const myReview = await this.reviewService.list(data["recipe_id"], 1);
+        const recipeReview = await this.reviewService.listall(data["recipe_id"], 1);
+        // console.log(myReview);
+        // console.log(recipeReview);
+        // result["myReviewArr"] = myReview;
+        // result["reviewArr"] = recipeReview;
+
+        // console.log("result2")
+        // console.log(result)
+
+        // let splitInstructions = data.analyzedInstructions[0].steps
+        //   .map((x) => (x = x.step))
+        //   .join("@@");
+        // console.log("First split", splitInstructions);
+
+        // let finalInstructions = splitInstructions.split("@@");
+        // console.log("Final split", finalInstructions);
+
+        console.log(result);
+      })
+    }
   // postRecipe(request, response) {
   //   let body = request.body;
   //   // console.log(body);
