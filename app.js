@@ -27,6 +27,7 @@ app.set("view engine", "handlebars");
 
 //static files
 app.use(express.static("public"));
+app.use(express.static("uploads"));
 
 //bcrypt
 const bcrypt = require("bcrypt");
@@ -76,13 +77,18 @@ const ingredientService = require("./services/ingredientService");
 // const ingredientRouterTmp = require("./routers/ingredientRouterTmp");
 const recipeService = require("./services/recipeService");
 const recipeRouter = require("./routers/recipeRouter");
+const homeRouter = require("./routers/homeRouter")(express);
+const profileRouter = require("./routers/profileRouter")(express);
 
 const IngredientService = new ingredientService(knex);
 // const IngredientRouterTmp = new ingredientRouterTmp(IngredientServiceTmp);
 const RecipeService = new recipeService(knex);
 const RecipeRouter = new recipeRouter(RecipeService, IngredientService);
-app.use("/recipe", RecipeRouter.router());
 
+//Routers for app.use
+app.use("/recipe", RecipeRouter.router());
+app.use("/profile", profileRouter);
+app.use("/home", homeRouter);
 
 //Category route
 const categoryRouter = require("./routers/categoryRouter")(express);
@@ -96,77 +102,9 @@ const categoryRouter = require("./routers/categoryRouter")(express);
 // const RecipeRouterTmp = new recipeRouterTmp(RecipeServiceTmp);
 // app.use("/recipes", RecipeRouterTmp.router());
 
-// app.get;
-app.get("/", (req, res) => {
-  res.render("login");
-});
-app.get("/login", (req, res) => {
-  res.render("login");
-});
-
-app.get("/signup", (req, res) => {
-  res.render("signup");
-});
-
-app.get(
-  "/google",
-  passport.authenticate("google", {
-    scope: ["profile", "email"],
-  })
-);
-
-app.get(
-  "/google/callback",
-  passport.authenticate("google", {
-    successRedirect: "/home",
-    // failureRedirect: "/error",
-  })
-);
-
-app.get(
-  "/facebook",
-  passport.authenticate("facebook", {
-    scope: ["profile", "email"],
-  })
-);
-
-app.get(
-  "/facebook/callback",
-  passport.authenticate("facebook", {
-    successRedirect: "/home",
-    // failureRedirect: "/error",
-  })
-);
-
-app.get("/home", isLoggedIn, (req, res) => {
-  res.render("home");
-});
-
-app.post(
-  "/signup",
-  passport.authenticate("local-signup", {
-    successRedirect: "/login",
-    // failureRedirect: "/error",
-  })
-);
-
-app.post(
-  "/login",
-  passport.authenticate("local-login", {
-    successRedirect: "/home",
-    // failureRedirect: "/error",
-  })
-);
-
-app.get("/error", (request, response) => {
-  res.send("You have failed to login");
-});
-
-app.get("/logout", (req, res) => {
-  req.session = null;
-  req.logout();
-  res.redirect("/login");
-});
+// app.get("/home", isLoggedIn, (req, res) => {
+//   res.render("home");
+// });
 
 // temporary, may change the actual routing
 // recipe page?
@@ -178,18 +116,21 @@ const recipeRouterTmp = require("./routers/recipeRouterTmp");
 const IngredientServiceTmp = new ingredientServiceTmp(knex);
 const IngredientRouterTmp = new ingredientRouterTmp(IngredientServiceTmp);
 const RecipeServiceTmp = new recipeServiceTmp(knex);
-const RecipeRouterTmp = new recipeRouterTmp(RecipeServiceTmp, IngredientServiceTmp);
+const RecipeRouterTmp = new recipeRouterTmp(
+  RecipeServiceTmp,
+  IngredientServiceTmp
+);
 app.use("/recipes", RecipeRouterTmp.router());
-app.use("/testinginsert", (request, response) => { response.render("insertrecipesTmp"); });
+app.use("/testinginsert", (request, response) => {
+  response.render("insertrecipesTmp");
+});
 app.use("/ingredients", IngredientRouterTmp.router());
-
-
-
 
 app.listen(4000, () => {
   console.log("App running on 4000");
 });
 
+//FACEBOOK LOGIN HTTPS
 // const options = {
 //   cert: fs.readFileSync("./localhost.crt"),
 //   key: fs.readFileSync("./localhost.key"),
