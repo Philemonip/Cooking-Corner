@@ -16,7 +16,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //handlebars
-app.engine("handlebars", handlebars({ defaultLayout: "main" }));
+app.engine(
+  "handlebars",
+  handlebars({
+    defaultLayout: "main",
+    helpers: require("./config/handlebars-helper"),
+  })
+);
 app.set("view engine", "handlebars");
 
 //static files
