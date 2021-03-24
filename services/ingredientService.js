@@ -18,10 +18,10 @@ class ingredientService {
         return this.knex("recipes_ingredients")
             .insert(ingredients)
             .then(() => {
-                console.log("ingredients inserted");
+                console.log("(addIngredient)ingredients inserted");
             })
             .catch((error) => {
-                console.log("error", error);
+                console.log("(addIngredient)error ", ingredients, error);
             });
     }
 
@@ -30,11 +30,11 @@ class ingredientService {
             .select()
             .where({id: ingredient_id})
             .then((rows) => {
-                console.log(rows);
+                console.log("(checkIngredientExist)checkIngredientExist: ", rows);
                 return !!(rows.length);
             })
             .catch((error) => {
-                console.log("error", error);
+                console.log("(checkIngredientExist)error", error);
             });
     }
 
@@ -45,14 +45,14 @@ class ingredientService {
                 this.knex("ingredients")
                 .insert(ingredient)
                 .then(() => {
-                    console.log("New ingredients inserted, ID: " + ingredient["id"]);
+                    console.log("(addIngredientIfNotExist)New ingredients inserted, ID: " + ingredient["id"]);
                 })
                 .catch((error) => {
-                    console.log("error", error);
+                    console.log("(addIngredientIfNotExist)error", error);
                 });
             }
             else{
-                console.log("Ingredient exists")
+                console.log("(addIngredientIfNotExist)Ingredient exists")
             }
         })
         
