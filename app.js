@@ -61,9 +61,22 @@ app.use(passport.initialize());
 app.use(passport.session());
 // const passportFunctions = require("./passport");
 
-//Review route
-const recipeRouter = require("./routers/recipeRouter")(express);
-app.use("/recipe", recipeRouter);
+/////////////////////////////////////////////
+// //Review route
+// const recipeRouter = require("./routers/recipeRouter")(express);
+// app.use("/recipe", recipeRouter);
+/////////////////////////////////////////////////
+const ingredientService = require("./services/ingredientService");
+// const ingredientRouterTmp = require("./routers/ingredientRouterTmp");
+const recipeService = require("./services/recipeService");
+const recipeRouter = require("./routers/recipeRouter");
+
+const IngredientService = new ingredientService(knex);
+// const IngredientRouterTmp = new ingredientRouterTmp(IngredientServiceTmp);
+const RecipeService = new recipeService(knex);
+const RecipeRouter = new recipeRouter(RecipeService, IngredientService);
+app.use("/recipe", RecipeRouter.router());
+
 
 //Category route
 const categoryRouter = require("./routers/categoryRouter")(express);
@@ -148,6 +161,24 @@ app.get("/logout", (req, res) => {
   req.logout();
   res.redirect("/login");
 });
+
+// temporary, may change the actual routing
+// recipe page?
+const ingredientServiceTmp = require("./services/ingredientServiceTmp");
+const ingredientRouterTmp = require("./routers/ingredientRouterTmp");
+const recipeServiceTmp = require("./services/recipeServiceTmp");
+const recipeRouterTmp = require("./routers/recipeRouterTmp");
+
+const IngredientServiceTmp = new ingredientServiceTmp(knex);
+const IngredientRouterTmp = new ingredientRouterTmp(IngredientServiceTmp);
+const RecipeServiceTmp = new recipeServiceTmp(knex);
+const RecipeRouterTmp = new recipeRouterTmp(RecipeServiceTmp, IngredientServiceTmp);
+app.use("/recipes", RecipeRouterTmp.router());
+app.use("/testinginsert", (request, response) => { response.render("insertrecipesTmp"); });
+app.use("/ingredients", IngredientRouterTmp.router());
+
+
+
 
 app.listen(4000, () => {
   console.log("App running on 4000");

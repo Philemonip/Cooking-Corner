@@ -10,71 +10,83 @@ const knex = require("knex")(knexConfig);
 // }
 
 class recipeServiceTmp {
-  constructor(knex) {
-    this.knex = knex;
-  }
+    constructor(knex) {
+        this.knex = knex;
+    }
 
-  getRecipeById(id) {
-    return this.knex("recipes")
-      .select()
-      .where({ id: id })
-      .then((row) => {
-        return row;
-      });
-  }
+    getRecipeById(id) {
+        return this.knex("recipes")
+            .select()
+            .where({ id: id }).then((row) => {
+                return row
+            })
+    }
 
-  getRecipeByApiId(api_id) {
-    return this.knex("recipes")
-      .select()
-      .where({ api_id: api_id })
-      .then((row) => {
-        return row;
-      });
-  }
+    getRecipeByApiId(api_id) {
+        return this.knex("recipes")
+            .select()
+            .where({ api_id: api_id }).then((row) => {
+                return row
+            })
+    }
 
-  // getUsers() {
-  //     return this.knex("class_users")
-  //         .select("id", "username", "password")
-  //         .then((object) => {
-  //             console.log(object);
-  //             return makeUser(object);
-  //         })
-  // }
+    addRecipe(recipe) {
+        return this.knex("recipes")
+            .returning("id")
+            .insert(recipe)
+            .then((id) => {
+                console.log("inserted");
+                console.log(id);
+                return id[0];
+            })
+            .catch((error) => {
+                console.log("error", error);
+            });
+    }
 
-  // getUser(id) {
-  //     return this.knex("class_users")
-  //         .select("id", "username", "password")
-  //         .where({ id: id }).then((object) => {
-  //             console.log(object);
-  //             return object
-  //         })
-  // }
+    // getUsers() {
+    //     return this.knex("class_users")
+    //         .select("id", "username", "password")
+    //         .then((object) => {
+    //             console.log(object);
+    //             return makeUser(object);
+    //         })
+    // }
 
-  // postUser(user) {
-  //     return this.knex("class_users")
-  //         .insert(user)
-  //         .then(() => {
-  //             console.log("inserted");
-  //         })
-  // }
+    // getUser(id) {
+    //     return this.knex("class_users")
+    //         .select("id", "username", "password")
+    //         .where({ id: id }).then((object) => {
+    //             console.log(object);
+    //             return object
+    //         })
+    // }
 
-  // editUser(id, user) {
-  //     return this.knex("class_users")
-  //         .where({ id: id })
-  //         .update(user)
-  //         .then(() => {
-  //             console.log("updated");
-  //         })
-  // }
+    // postUser(user) {
+    //     return this.knex("class_users")
+    //         .insert(user)
+    //         .then(() => {
+    //             console.log("inserted");
+    //         })
+    // }
 
-  // deleteUser(id) {
-  //     return this.knex("class_users")
-  //         .where({ id: id })
-  //         .del()
-  //         .then(() => {
-  //             console.log("deleted");
-  //         })
-  // }
+    // editUser(id, user) {
+    //     return this.knex("class_users")
+    //         .where({ id: id })
+    //         .update(user)
+    //         .then(() => {
+    //             console.log("updated");
+    //         })
+    // }
+
+    // deleteUser(id) {
+    //     return this.knex("class_users")
+    //         .where({ id: id })
+    //         .del()
+    //         .then(() => {
+    //             console.log("deleted");
+    //         })
+    // }
 }
 
 // let service = new UserService(knex);
