@@ -25,10 +25,12 @@
             <h3>Ingredients</h3>
             <p>{{ingredients}}</p>
         </div>
+        <h3>Instructions</h3>
+        {{#each instructions}}
         <div class="instructions container">
-            <h3>Instructions</h3>
-            <p>{{instructions}}</p>
+        <p>{{math @index "+" 1}} {{this}}</p>
         </div>
+        {{/each}}
 </section>
    <section class="text-center">
        <h3>Related</h3>
@@ -37,7 +39,66 @@
     <div class="col"></div>
     <div class="col"></div>
     </div>
-
    </section>
+
+    <div class="row">
+        <div class="comment-container col-12">
+            <h3>Comments</h3>
+            <div class="text-box hidden">
+                <form ref="note" id="note">
+{{!-- 
+                    <fieldset class="star-rating" id="rate-item-12343">
+  <input class="star" name="rating" type="radio" checked="checked"/>
+  <input class="star" name="rating" type="radio" />
+  <input class="star" name="rating" type="radio" />
+  <input class="star" name="rating" type="radio" />
+  <input class="star" name="rating" type="radio" />
+</fieldset> --}}
+                    <textarea class="note-rating" name="rating"
+                        placeholder="Rating(Please enter 1-10)">{{this.rating}}</textarea>
+                    <br>
+                    <textarea class="note-area" cols="60" rows="10" name="note" placeholder="Comment"></textarea>
+                    <br>
+                    <button id="post" type="button" class="btn btn-primary">SUBMIT</button>
+                </form>
+            </div>
+        </div>
+        <div class="review-container">
+            {{#each myReviewArr}}
+            <div class="edit-myreview hidden">
+                <form ref="edit" id="edit">
+                    <textarea class="edit-rating" name="rating">{{this.rating}}</textarea>
+                    <br>
+                    <textarea class="edit-area" cols="60" rows="10" name="edit">{{this.comment}}</textarea>
+                    <br>
+
+            <button type="button" class="save-btn btn btn-primary">SAVE CHANGES</button>
+            <button type="button" class="cancel-btn btn btn-primary">CANCEL</button>
+            </form>
+            </div>
+            {{/each}}
+
+            {{#each myReviewArr}}
+            <div class="my-review">
+            <p>Rating: {{this.rating}}/10</p><br>
+            <p>by {{this.username}}</p>
+            <p class="display-area">{{this.comment}}</p>
+
+            <button class="edit-btn">EDIT</button>
+            <button class="del-btn">DELETE</button>
+            </div>
+            {{/each}}
+
+            {{#each reviewArr}}
+            <div class="review-box">
+            <p>Rating: {{this.rating}}/10</p><br>
+            <p>by {{this.username}}</p>
+            <p class="display-area">{{this.comment}}</p>
+            </div>
+            {{/each}}
+        </div>
+
+    </div>
+    
 </div>
 
