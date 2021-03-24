@@ -8,7 +8,9 @@
             <img class="img-fluid" src="{{recipe.image}}">
         </div>
         <div class="function container col">
+            <h4>Preparation Time:</h4>
             <p>{{recipe.readyInMinutes}}</p>
+            <h4>Servings:</h4>
             <p>{{recipe.servings}}</p>
               <br>
             <button type="button" class="bookmarks-btn btn btn-primary">Bookmark</button>
@@ -40,8 +42,8 @@
             <h3>Analyzed Instructions</h3>
             <p>{{recipe.analyzedInstructions}}</p>
         </div>
-{{!-- </section>
-<section class="text-center">
+        </section>
+{{!-- <section class="text-center">
   
         <div class="description container">
             <h3>Description</h3>
@@ -57,7 +59,7 @@
         <p>{{math @index "+" 1}} {{this}}</p>
         </div>
         {{/each}}
-</section> --}}
+</section> --}} 
    <section class="text-center">
        <h3>Related</h3>
     <div class="row">
