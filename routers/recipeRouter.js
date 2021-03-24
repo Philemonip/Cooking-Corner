@@ -203,10 +203,11 @@ class recipeRouter {
         this.recipeService.getRecipeByApiId(id).then((rows) => {
           // console.log("apiData");
           // console.log(apiData);  // can print
-          console.log("row");
-          console.log(rows);
+
+          // console.log("row");
+          // console.log(rows);
           if(rows.length === 0){
-            console.log("insert");
+            // console.log("insert");
 
             // build recipe object for inserting into "recipes" table
             let recipe = {};
@@ -220,20 +221,19 @@ class recipeRouter {
             recipe["servings"] = apiData["servings"];
             recipe["difficulty"] = 5;  //hardcoded
 
-            console.log("recipe");
-            console.log(recipe);
+            // console.log("recipe");
+            // console.log(recipe);
 
             // build ingredients object for inserting into "recipes_ingredients" table
             let ingredients_array = apiData.extendedIngredients;  //array of object (from recipeService.fetchRecipeByAPI.ingredients_array)
 
-            console.log("ingredients");
-            console.log(ingredients_array);
+            // console.log("ingredients");
+            // console.log(ingredients_array); // [{ id: 11959, nameClean: 'arugula', amount: 1, unit: 'handful' }, ]
 
             // insert recipe into "recipes" table
             this.recipeService.addRecipe(recipe)
             .then((recipe_id) => {
-              console.log("recipe_id");
-              console.log(recipe_id);
+              console.log(`recipe_id: ${recipe_id}`);
               return recipe_id;
             })
             .then((recipe_id) => {
@@ -245,14 +245,20 @@ class recipeRouter {
                 ingredient["quantity"] = ingredients_array[j]["amount"];
                 ingredient["unit"] = ingredients_array[j]["unit"];
 
-                console.log("ingredient_id");
-                console.log(ingredient["ingredient_id"]);
+                console.log(`(recipeRoute)ingredient_id: ${ingredient["ingredient_id"]}`);
 
                 // check ingredient id exist in "ingredient"table
                 this.ingredientService.addIngredientIfNotExist({id: ingredients_array[j]["id"], ingredient_name: ingredients_array[j]["nameClean"]})
                 .then(() => {
                   // insert
-                  this.ingredientService.addIngredient(ingredient);
+                  this.ingredientService.addIngredient(ingredient)
+                  .then(() => {
+                    console.log("(recipeRoute)successfully inserted recipe ingredients");
+                  })
+                  .catch((error) => {
+                    console.log("(recipeRoute)error", error);
+                    console.log("(recipeRoute)error ID" + ingredients_array[j]["id"]);
+                  });
                 })
               }
             })
