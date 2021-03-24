@@ -97,7 +97,15 @@
         </div>
         <div class="recipe Review">
             <h3>recipe Review</h3>
-            <p>{{recipe.recipeReview}}</p>
+            {{#each recipe.recipeReview}}
+            <div>
+                <p>user_id:{{user_id}}</p>
+                <p>recipe_id:{{recipe_id}}</p>
+                <p>rating:{{rating}}</p>
+                <p>comment:{{comment}}</p>
+                <p>username:{{username}}</p>
+            </div>
+            {{/each}}
         </div>
 </section>
    <section class="text-center">
