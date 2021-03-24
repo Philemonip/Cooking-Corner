@@ -22,7 +22,7 @@ class recipeRouter {
     let id = request.params.id;
     console.log("fetchRecipe " + id);
     return this.recipeService.fetchRecipeByAPI(id).then((apiData) => {
-      response.render("recipes", { recipe: apiData });
+      // response.render("recipes", { recipe: apiData });
       return apiData;
     })
       .then(async (apiData) => {
@@ -90,7 +90,7 @@ class recipeRouter {
         //   })
         return apiData;
       })
-      .then(async (data) => {
+      .then(async (apiData) => {
         // console.log("data");
         // console.log(data);
         // console.log(data["recipe_id"]);
@@ -98,22 +98,28 @@ class recipeRouter {
 
         let result = {};
 
-        data["recipe_id"] = await this.recipeService.getRecipeByApiId(data["id"]).then((rows) => {return rows[0]["id"]});
+        apiData["recipe_id"] = await this.recipeService.getRecipeByApiId(apiData["id"]).then((rows) => {return rows[0]["id"]});
         
-        result["api_id"] = data.id;
-        result["title"] = data.title;
-        result["summary"] = data.summary;
-        result["author"] = data.sourceName;
-        result["preparation_time"] = data.readyInMinutes;
-        result["image_path"] = data.image;
-        result["instructions"] = data.analyzedInstructions.split("@@");
-        result["servings"] = data.servings;
-        result["ingredients"] = data.extendedIngredients;
+        // result["api_id"] = apiData.id;
+        // result["title"] = apiData.title;
+        // result["summary"] = apiData.summary;
+        // result["author"] = apiData.sourceName;
+        // result["preparation_time"] = apiData.readyInMinutes;
+        // result["image_path"] = apiData.image;
+        // result["instructions"] = apiData.analyzedInstructions.split("@@");
+        // result["servings"] = apiData.servings;
+        // result["ingredients"] = apiData.extendedIngredients;
         // console.log("result1")
         // console.log(result)
         
-        const myReview = await this.reviewService.list(data["recipe_id"], 1);
-        const recipeReview = await this.reviewService.listall(data["recipe_id"], 1);
+        const myReview = await this.reviewService.list(apiData["recipe_id"], 1);
+        const recipeReview = await this.reviewService.listall(apiData["recipe_id"], 1);
+
+        apiData["myReview"] = myReview;
+        apiData["recipeReview"] = recipeReview;
+        
+        console.log(myReview);
+        console.log(recipeReview);
         // console.log(myReview);
         // console.log(recipeReview);
         // result["myReviewArr"] = myReview;
@@ -122,15 +128,9 @@ class recipeRouter {
         // console.log("result2")
         // console.log(result)
 
-        // let splitInstructions = data.analyzedInstructions[0].steps
-        //   .map((x) => (x = x.step))
-        //   .join("@@");
-        // console.log("First split", splitInstructions);
-
-        // let finalInstructions = splitInstructions.split("@@");
-        // console.log("Final split", finalInstructions);
-
-        console.log(result);
+        // console.log(result);
+        response.render("recipes", { recipe: apiData });
+        return apiData;
       })
     }
   // postRecipe(request, response) {

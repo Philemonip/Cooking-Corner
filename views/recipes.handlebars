@@ -83,6 +83,22 @@
             <h3>Analyzed Instructions</h3>
             <p>{{recipe.analyzedInstructions}}</p>
         </div>
+        <div class="myReview">
+            <h3>my Review</h3>
+            {{#each recipe.myReview}}
+            <div>
+                <p>user_id:{{user_id}}</p>
+                <p>recipe_id:{{recipe_id}}</p>
+                <p>rating:{{rating}}</p>
+                <p>comment:{{comment}}</p>
+                <p>username:{{username}}</p>
+            </div>
+            {{/each}}
+        </div>
+        <div class="recipe Review">
+            <h3>recipe Review</h3>
+            <p>{{recipe.recipeReview}}</p>
+        </div>
 </section>
    <section class="text-center">
        <h3>Related</h3>
