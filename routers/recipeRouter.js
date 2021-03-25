@@ -86,10 +86,6 @@ class recipeRouter {
     let renderInstructions = apiData.analyzedInstructions.split("@@");
     console.log(renderInstructions);
 
-    let renderSummary = apiData.summary.split("");
-    console.log(renderSummary);
-    console.log("type", typeof renderSummary);
-
     response.render("recipes", {
       title: apiData.title,
       author: apiData.sourceName,

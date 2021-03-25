@@ -1,3 +1,7 @@
+.hidden {
+  display: none;
+}
+
 .info-container {
   max-width: 70%;
 }
@@ -5,3 +9,70 @@
 .info-container {
   flex-direction: column;
 }
+
+.review {
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 600px;
+  text-align: center;
+}
+
+.review {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 3px;
+  padding-top: 3px;
+  float: left;
+}
+
+.review_star {
+  padding-bottom: 2rem;
+  clear: both;
+  text-align: center;
+}
+
+/* star rating */
+fieldset,
+label {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 1.5em;
+  margin: 10px;
+}
+
+/****** Style Star Rating Widget *****/
+h1[alt="Simple"] {
+  color: white;
+}
+
+/* body {
+  background: #4a4a4c !important;
+} */
+
+.starrating > input {
+  display: none;
+} /* Remove radio buttons */
+
+.starrating > label:before {
+  content: "\f005"; /* Star */
+  margin: 2px;
+  font-size: 1.5em;
+  font-family: FontAwesome;
+  display: inline-block;
+}
+
+.starrating > label {
+  color: #575757; /* Start color when not clicked */
+}
+
+.starrating > input:checked ~ label {
+  color: #ffca08;
+} /* Set yellow color when star checked */
+
+.starrating > input:hover ~ label {
+  color: #ffca08;
+} /* Set yellow color when star hover */
