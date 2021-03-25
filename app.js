@@ -83,7 +83,7 @@ app.use("/recipe", RecipeRouter.router());
 
 
 //Category route
-const categoryRouter = require("./routers/categoryRouter")(express);
+const categoryRouter = require("./routers/categoryRouter");
 // app.use("/category", categoryRouter);
 
 // temporary, may change the actual routing

@@ -1,10 +1,11 @@
 const express = require("express");
 
 class recipeRouter {
-  constructor(recipeService, ingredientService, reviewService) {
+  constructor(recipeService, ingredientService, reviewService, categoryService) {
     this.recipeService = recipeService;
     this.ingredientService = ingredientService;
     this.reviewService = reviewService;
+    this.categoryService = categoryService;
   }
 
   router() {
@@ -21,139 +22,228 @@ class recipeRouter {
   async fetchRecipe(request, response) {
     let id = request.params.id;
     console.log("fetchRecipe " + id);
-    return this.recipeService.fetchRecipeByAPI(id).then((apiData) => {
-      // response.render("recipes", { recipe: apiData });
-      return apiData;
-    })
-      .then(async (apiData) => {
-        this.recipeService.getRecipeByApiId(id).then((rows) => {
-          // console.log("apiData");
-          // console.log(apiData);  // can print
 
-          // console.log("fetch getRecipeByApiId row");
-          // console.log(rows);
-          if (rows.length === 0) {
-            // console.log("insert");
+    let apiData = await this.recipeService.fetchRecipeByAPI(id);
+    console.log(apiData);
 
-            // build recipe object for inserting into "recipes" table
-            let recipe = {};
-            recipe["api_id"] = id;
-            recipe["title"] = apiData["title"];
-            recipe["author"] = apiData["sourceName"];
-            recipe["summary"] = apiData["summary"];
-            recipe["instructions"] = apiData["analyzedInstructions"];
-            recipe["preparation_time"] = apiData["readyInMinutes"];
-            recipe["image_path"] = apiData["image"];
-            recipe["servings"] = apiData["servings"];
-            recipe["difficulty"] = 5;  //hardcoded
+    let recipeFromDB = await this.recipeService.getRecipeByApiId(id);
 
-            // console.log("recipe");
-            // console.log(recipe);
+    let recipe_id = undefined;
 
-            // build ingredients object for inserting into "recipes_ingredients" table
-            let ingredients_array = apiData.extendedIngredients;  //array of object (from recipeService.fetchRecipeByAPI.ingredients_array)
+    if (recipeFromDB.length === 0) {
+      // if recipe not exist in DB, insert it and get recipe_id
+      let recipe = {};
+      recipe["api_id"] = id;
+      recipe["title"] = apiData["title"];
+      recipe["author"] = apiData["sourceName"];
+      recipe["summary"] = apiData["summary"];
+      recipe["instructions"] = apiData["analyzedInstructions"];
+      recipe["preparation_time"] = apiData["readyInMinutes"];
+      recipe["image_path"] = apiData["image"];
+      recipe["servings"] = apiData["servings"];
+      recipe["rating"] = apiData["spoonacularScore"];
+      recipe["difficulty"] = 5;  //hardcoded
 
-            // console.log("ingredients");
-            // console.log(ingredients_array); // [{ id: 11959, nameClean: 'arugula', amount: 1, unit: 'handful' }, ]
+      // get recipe_id after inserting recipe
+      recipe_id = await this.recipeService.addRecipe(recipe).then((value) => {return value;});
 
-            // insert recipe into "recipes" table
-            this.recipeService.addRecipe(recipe)
-              .then(async (recipe_id) => {
-                console.log(`recipe_id: ${recipe_id}`);
-                return recipe_id;
-              })
-              .then(async (recipe_id) => {
-                // update the recipe id
-                apiData["recipe_id"] = recipe_id;
-                console.log("inside this.recipeService.addRecipe: ", apiData["recipe_id"]);
+      let ingredients_array = apiData.extendedIngredients;
 
-                // insert recipe into "recipes_ingredients" table
-                for (let j = 0; j < ingredients_array.length; j++) {
 
-                  let ingredient = {};
-                  ingredient["recipe_id"] = recipe_id;
-                  ingredient["ingredient_id"] = ingredients_array[j]["id"];
-                  ingredient["quantity"] = ingredients_array[j]["amount"];
-                  ingredient["unit"] = ingredients_array[j]["unit"];
+      for (let j = 0; j < ingredients_array.length; j++) {
+        if(ingredients_array[j]["id"] !== null){
+          let check = await this.ingredientService.addIngredientIfNotExist({ id: ingredients_array[j]["id"], ingredient_name: ingredients_array[j]["nameClean"] });
+        }
+      }
 
-                  console.log(`(recipeRoute)ingredient_id: ${ingredient["ingredient_id"]}`);
+      for (let j = 0; j < ingredients_array.length; j++) {
+        if(ingredients_array[j]["id"] !== null){
+          let ingredient = {};
+          ingredient["recipe_id"] = recipe_id;
+          ingredient["ingredient_id"] = ingredients_array[j]["id"];
+          ingredient["quantity"] = ingredients_array[j]["amount"];
+          ingredient["unit"] = ingredients_array[j]["unit"];
 
-                  let check = await this.ingredientService.addIngredientIfNotExist({ id: ingredients_array[j]["id"], ingredient_name: ingredients_array[j]["nameClean"] });
-                  // let addIngredient = await this.ingredientService.addIngredient(ingredient);
+          let addIngredient = await this.ingredientService.addIngredient(ingredient);
+        }
+      }
 
-                }
-
-                for(let j = 0; j < ingredients_array.length; j++) {
-                  let ingredient = {};
-                  ingredient["recipe_id"] = recipe_id;
-                  ingredient["ingredient_id"] = ingredients_array[j]["id"];
-                  ingredient["quantity"] = ingredients_array[j]["amount"];
-                  ingredient["unit"] = ingredients_array[j]["unit"];
-                  console.log(`(recipeRoute 2nd loop)ingredient_id: ${ingredient["ingredient_id"]}`);
-                  let addIngredient = await this.ingredientService.addIngredient(ingredient);
-                }
-              })
-          }
-        })
-        //   .then(() => {
-        //     // console.log(apiData);  //ok
-        //     // return apiData; //cannot return out
-        //   })
-        return apiData;
-      })
-      .then(async (apiData) => {
-        console.log("apiData");
-        console.log(apiData);
-        // console.log(apiData["recipe_id"]);
-        // console.log(apiData["recipe_id"]===undefined)
-
-        let result = {};
-
-        console.log("inside review: ", apiData["recipe_id"]);
-        if(apiData["recipe_id"] === undefined){
-          console.log("get id in review by api id: ", apiData["id"]);
-          apiData["recipe_id"] = await this.recipeService.getRecipeByApiId(apiData["id"])
-            .then((rows) => {
-              console.log("inside review row: ", rows);
-              return rows[0]["id"];
-            });
+      // insert cuisine name
+      let cuisine_array = apiData.cuisine;
+      console.log("cuisine_array");
+      console.log(cuisine_array);
+      if(cuisine_array !== undefined && cuisine_array.length !== 0){
+        for (let j = 0; j < cuisine_array.length; j++) {
+          let check = await this.categoryService.checkRecipeCuisineExist(recipe_id, cuisine_array[j]);
         }
 
-        
+        for(let j = 0; j < cuisine_array.length; j++){
+          let addRecipeCuisine = await this.categoryService.addRecipeCuisineIfNotExist(recipe_id, cuisine_array[j]);
+        }
+      }
+    } else {
+      // if recipe exist in DB, get recipe_id
+      recipe_id = (await this.recipeService.getRecipeByApiId(id))[0]["id"];
+    }
 
-        // result["api_id"] = apiData.id;
-        // result["title"] = apiData.title;
-        // result["summary"] = apiData.summary;
-        // result["author"] = apiData.sourceName;
-        // result["preparation_time"] = apiData.readyInMinutes;
-        // result["image_path"] = apiData.image;
-        // result["instructions"] = apiData.analyzedInstructions.split("@@");
-        // result["servings"] = apiData.servings;
-        // result["ingredients"] = apiData.extendedIngredients;
-        // console.log("result1")
-        // console.log(result)
+    // user id is hardcored
+    let myReview = await this.reviewService.list(recipe_id, 1);
+    let recipeReview = await this.reviewService.listall(recipe_id, 1);
 
-        const myReview = await this.reviewService.list(apiData["recipe_id"], 1);
-        const recipeReview = await this.reviewService.listall(apiData["recipe_id"], 1);
+    apiData["myReview"] = myReview;
+    apiData["recipeReview"] = recipeReview;
 
-        apiData["myReview"] = myReview;
-        apiData["recipeReview"] = recipeReview;
-
-        console.log(myReview);
-        console.log(recipeReview);
-        // console.log(myReview);
-        // console.log(recipeReview);
-        // result["myReviewArr"] = myReview;
-        // result["reviewArr"] = recipeReview;
-
-        // console.log("result2")
-        // console.log(result)
-
-        // console.log(result);
-        response.render("recipes", { recipe: apiData });
-        // return apiData;
-      })
+    response.render("recipes", { recipe: apiData });
   }
+
+
+  // async fetchRecipe(request, response) {
+  //   let id = request.params.id;
+  //   console.log("fetchRecipe " + id);
+
+  //   return this.recipeService.fetchRecipeByAPI(id).then((apiData) => {
+  //     // response.render("recipes", { recipe: apiData });
+  //     return apiData;
+  //   })
+  //     .then(async (apiData) => {
+  //       this.recipeService.getRecipeByApiId(id).then((rows) => {
+  //         // console.log("apiData");
+  //         // console.log(apiData);  // can print
+
+  //         // console.log("fetch getRecipeByApiId row");
+  //         // console.log(rows);
+  //         if (rows.length === 0) {
+  //           // console.log("insert");
+
+  //           // build recipe object for inserting into "recipes" table
+  //           let recipe = {};
+  //           recipe["api_id"] = id;
+  //           recipe["title"] = apiData["title"];
+  //           recipe["author"] = apiData["sourceName"];
+  //           recipe["summary"] = apiData["summary"];
+  //           recipe["instructions"] = apiData["analyzedInstructions"];
+  //           recipe["preparation_time"] = apiData["readyInMinutes"];
+  //           recipe["image_path"] = apiData["image"];
+  //           recipe["servings"] = apiData["servings"];
+  //           recipe["difficulty"] = 5;  //hardcoded
+
+  //           // console.log("recipe");
+  //           // console.log(recipe);
+
+  //           // build ingredients object for inserting into "recipes_ingredients" table
+  //           let ingredients_array = apiData.extendedIngredients;  //array of object (from recipeService.fetchRecipeByAPI.ingredients_array)
+
+  //           // console.log("ingredients");
+  //           // console.log(ingredients_array); // [{ id: 11959, nameClean: 'arugula', amount: 1, unit: 'handful' }, ]
+
+  //           // insert recipe into "recipes" table
+  //           this.recipeService.addRecipe(recipe)
+  //             .then(async (recipe_id) => {
+  //               console.log(`recipe_id: ${recipe_id}`);
+  //               return recipe_id;
+  //             })
+  //             .then(async (recipe_id) => {
+  //               // update the recipe id
+  //               apiData["recipe_id"] = recipe_id;
+  //               console.log("inside this.recipeService.addRecipe: ", apiData["recipe_id"]);
+
+  //               // insert recipe into "recipes_ingredients" table
+  //               for (let j = 0; j < ingredients_array.length; j++) {
+
+  //                 let ingredient = {};
+  //                 ingredient["recipe_id"] = recipe_id;
+  //                 ingredient["ingredient_id"] = ingredients_array[j]["id"];
+  //                 ingredient["quantity"] = ingredients_array[j]["amount"];
+  //                 ingredient["unit"] = ingredients_array[j]["unit"];
+
+  //                 console.log(`(recipeRoute)ingredient_id: ${ingredient["ingredient_id"]}`);
+
+  //                 let check = await this.ingredientService.addIngredientIfNotExist({ id: ingredients_array[j]["id"], ingredient_name: ingredients_array[j]["nameClean"] });
+  //                 // let addIngredient = await this.ingredientService.addIngredient(ingredient);
+
+  //               }
+
+  //               for (let j = 0; j < ingredients_array.length; j++) {
+  //                 let ingredient = {};
+  //                 ingredient["recipe_id"] = recipe_id;
+  //                 ingredient["ingredient_id"] = ingredients_array[j]["id"];
+  //                 ingredient["quantity"] = ingredients_array[j]["amount"];
+  //                 ingredient["unit"] = ingredients_array[j]["unit"];
+  //                 console.log(`(recipeRoute 2nd loop)ingredient_id: ${ingredient["ingredient_id"]}`);
+  //                 let addIngredient = await this.ingredientService.addIngredient(ingredient);
+  //               }
+  //             })
+  //         }
+  //       })
+  //       //   .then(() => {
+  //       //     // console.log(apiData);  //ok
+  //       //     // return apiData; //cannot return out
+  //       //   })
+  //       return apiData;
+  //     })
+  //     .then(async (apiData) => {
+  //       console.log("apiData");
+  //       console.log(apiData);
+  //       // console.log(apiData["recipe_id"]);
+  //       // console.log(apiData["recipe_id"]===undefined)
+
+  //       let result = {};
+
+  //       console.log("testing: ");
+  //       if (apiData["recipe_id"] === undefined) {
+  //         console.log("get id in review by api id: ", apiData["id"]);
+  //         apiData["recipe_id"] = await this.recipeService.getRecipeByApiId(200005)
+  //           .then((rows) => {
+  //             console.log("testing row: ", rows);
+  //             return rows[0]["id"];
+  //           });
+  //       }
+
+  //       console.log("inside review: ", apiData["recipe_id"]);
+  //       if (apiData["recipe_id"] === undefined) {
+  //         console.log("get id in review by api id: ", apiData["id"]);
+  //         apiData["recipe_id"] = await this.recipeService.getRecipeByApiId(apiData["id"])
+  //           .then((rows) => {
+  //             console.log("inside review row: ", rows);
+  //             return rows[0]["id"];
+  //           });
+  //       }
+
+
+
+  //       // result["api_id"] = apiData.id;
+  //       // result["title"] = apiData.title;
+  //       // result["summary"] = apiData.summary;
+  //       // result["author"] = apiData.sourceName;
+  //       // result["preparation_time"] = apiData.readyInMinutes;
+  //       // result["image_path"] = apiData.image;
+  //       // result["instructions"] = apiData.analyzedInstructions.split("@@");
+  //       // result["servings"] = apiData.servings;
+  //       // result["ingredients"] = apiData.extendedIngredients;
+  //       // console.log("result1")
+  //       // console.log(result)
+
+  //       const myReview = await this.reviewService.list(apiData["recipe_id"], 1);
+  //       const recipeReview = await this.reviewService.listall(apiData["recipe_id"], 1);
+
+  //       apiData["myReview"] = myReview;
+  //       apiData["recipeReview"] = recipeReview;
+
+  //       console.log(myReview);
+  //       console.log(recipeReview);
+  //       // console.log(myReview);
+  //       // console.log(recipeReview);
+  //       // result["myReviewArr"] = myReview;
+  //       // result["reviewArr"] = recipeReview;
+
+  //       // console.log("result2")
+  //       // console.log(result)
+
+  //       // console.log(result);
+  //       response.render("recipes", { recipe: apiData });
+  //       // return apiData;
+  //     })
+  // }
   // postRecipe(request, response) {
   //   let body = request.body;
   //   // console.log(body);
