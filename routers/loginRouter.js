@@ -63,6 +63,14 @@ module.exports = (express) => {
     res.render("login");
   });
 
+  router.get("/bookmark", (req, res) => {
+    res.render("bookmark");
+  });
+
+  router.get("/myrecipes", (req, res) => {
+    res.render("myrecipes");
+  });
+
   router.get(
     "/google",
     passport.authenticate("google", {

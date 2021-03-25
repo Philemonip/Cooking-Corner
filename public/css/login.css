@@ -1,0 +1,126 @@
+* {
+  margin: 0;
+  padding: 0;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+body {
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-family: sans-serif;
+  justify-content: center;
+  background-color: #ebebeb;
+}
+
+.border {
+  border: black;
+  padding-bottom: 50vh;
+  margin-top: 40vh;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 1px 3px 3px;
+}
+
+#head {
+  margin-bottom: 30px;
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.loginpage {
+  position: relative;
+  width: 400px;
+  background: white;
+  padding: 60px 40px;
+}
+
+form {
+  margin-bottom: 10px;
+}
+
+.login {
+  margin-bottom: 20px;
+}
+
+.login,
+form .button {
+  position: relative;
+  height: 50px;
+  width: 100%;
+}
+
+.login input {
+  height: 100%;
+  width: 100%;
+  border: 1px solid silver;
+  padding-left: 15px;
+  outline: none;
+  font-size: 19px;
+  transition: 0.4s;
+}
+
+input {
+  padding: 10px;
+  border-radius: 20px;
+  font-size: 10px;
+}
+
+::placeholder {
+  font-size: 15px;
+}
+
+.login label {
+  pointer-events: none;
+  color: grey;
+  font-size: 16px;
+  float: left;
+}
+
+#button {
+  margin-top: 15px;
+  border-radius: 20px;
+  width: 10vw;
+  background-color: #913b45;
+  border: none;
+}
+
+#faceb,
+#goog {
+  border-radius: 20px;
+  border: none;
+}
+
+#goog:hover {
+  background-color: #de5246;
+}
+
+#faceb:hover {
+  background-color: #4267b2;
+  color: white;
+}
+
+#button {
+  margin-bottom: 20px;
+}
+
+#signup {
+  border: none;
+  text-decoration: underline;
+  color: #0000ee;
+  outline: none;
+}
+
+#signup:hover {
+  background-color: white;
+  color: #0000ee;
+}
+
+a {
+  text-decoration: none;
+}
+
+#sign {
+  margin-top: 180px;
+}
