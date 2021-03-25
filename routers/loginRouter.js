@@ -4,6 +4,15 @@ const passport = require("passport");
 const knexConfig = require("../knexfile").development;
 const knex = require("knex")(knexConfig);
 
+// const MovieService = require ("../services/movieService");
+// const movieService = new MovieService(knex);
+module.exports.isLoggedIn = function (req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/login");
+};
+
 module.exports = (express) => {
   const router = express.Router();
 
