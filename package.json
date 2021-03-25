@@ -1,5 +1,5 @@
 {
-  "name": "Group_Project_2_Recipe",
+  "name": "group_project_2_recipe",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -32,6 +32,6 @@
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
-    "pg": "^8.3.2"
+    "pg": "^8.5.1"
   }
 }

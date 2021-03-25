@@ -1,9 +1,197 @@
+
 <h1> Home Page</h1>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Food</title>
 
 
- <div class="search">
+
+ <body>
+<!--             ------------------------Search Bar ------------------------------------------------------->
+
+
+<div class="search">
       <form class="d-flex justify-content-center">
         <input class="typeahead form-control me-2" type="search" placeholder="Search recipes" aria-label="Search">
       </form>
     </div>
 
+
+ <!-- --------------------------------------Regular Nav----------------------------------------------------------->
+
+        <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Cooking Corner</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ml-auto ">
+                    
+                    <li class="nav-item dropdown">
+                        
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Categories
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                          <li><a class="dropdown-item" href="#">Japanese</a></li>
+                          <li><a class="dropdown-item" href="#">Italian</a></li>
+                          <li><a class="dropdown-item" href="#">Chinese</a></li>
+                          <li><a class="dropdown-item" href="#">Mediterranean</a></li>
+                          <li><a class="dropdown-item" href="#">Vietnamese</a></li>
+                          <li><a class="dropdown-item" href="#">Thai</a></li>
+                          <li><a class="dropdown-item" href="#">Chicken</a></li>
+                          <li><a class="dropdown-item" href="#">Rice</a></li>
+                          <li><a class="dropdown-item" href="#">Pasta</a></li>
+                          <li><a class="dropdown-item" href="#">Beef</a></li>
+                          <li><a class="dropdown-item" href="#">Pork</a></li>
+                          <li><a class="dropdown-item" href="#">Egg</a></li>
+                        </ul>
+                      </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="#">Bookmarks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="#">Login</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav> 
+
+
+<!-- -----------------------------------------Jumbotron  ---------------------------------------------------- -->
+    
+    <main class="container-fluid cover  ">
+
+        <div class="row align-items-center justify-content-center justify-content-xl-start vh-80">
+            <div class="col col-sm-7 text-center text-xl-right col-xl-4 offset-xl-2">
+                <h1 class="mb-5">We Have the Best Receipes From All Over the World!</h1>
+                <p id="drinks" class="mb-5 subtitle-mb">Endless Joy and Cooking</p>
+                <div class="input-group mb-3 shadow">
+
+                    <input type="text" class="form-control" placeholder="What do you want to cook?" aria-label="Search" aria-describedby="basic-addon1">
+                    <div class="input-group-prepend">
+                        <button class="btn bg-orange text-light text-uppercase p-3" type="button">Find food</button>
+                    </div>
+                </div>
+               
+
+            </div>
+        </div>
+    </main>
+
+
+<!--------------------------------------Trending Dishes ------------------------------------------------------------->
+<section class="container py-5" id="portfolio">
+    <div class="section-title text-center pt-2">
+     
+      <h4 class="h1 pb-2">{{Trending Dishes}}</h4>
+
+
+<div class="imagecr">
+    <div class="row">
+
+     {{#each receipe.name}}
+
+        <div class="card col-3 m-auto" style="width: 18rem;">
+          <img src="{{ photo of dish }}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{title of dish}}</h5>
+            <p class="card-text">User rating: {{ dish rating }}</p>
+            <a href="#" class="btn btn-primary">{{bookmark}}</a>
+          </div>
+        </div>
+    {{/each}}
+    </div>
+</div>
+
+    </div>
+  </section>
+
+
+
+  <!-- -----------------------------------------New Dishes---------------------------------------------------------->
+  
+  <section class="container py-5" id="portfolio">
+    <div class="section-title text-center pt-2">
+      <h4 class="h1 pb-2">{{ New Dishes }}</h4>
+
+
+<div class="imagecr">
+    <div class="row">
+
+     {{#each receipe.name}}
+    
+        <div class="card col-3 m-auto" style="width: 18rem;">
+          <img src="{{photo of dish}}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{title of dish}}</h5>
+            <p class="card-text">User Rating: {{ dish rating}}</p>
+            <a href="#" class="btn btn-primary">{{bookmark}}</a>
+          </div>
+        </div>
+    
+    {{/each}}
+        
+    
+        
+    </div>
+
+
+</div>
+    </div>
+
+
+ 
+  </section>
+  <!----------------------------------------Footer  ------------------------------------------------------------------------->
+    
+  
+  <footer class="page-footer font-small bg-light">
+
+        <div>
+            <div class="container-fluid">
+
+                <!-- Grid row-->
+                <div class="row py-4 d-flex align-items-center">
+
+                    <!-- Grid column -->
+                    <div class="col-md-7 col-lg-5 col-xl-4 text-center text-md-left  mb-md-0 small">
+                        <nav class="nav justify-content-center justify-content-md-start">
+                            <a class="nav-link text-muted" href="#">Terms of Privacy</a>
+                            <a class="nav-link text-muted" href="#">Cookies</a>
+                            <a class="nav-link text-muted" href="#">About</a>
+                            <a class="nav-link text-muted" href="#">Contact</a>
+                        </nav>
+                    </div>
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-4 col-xl-6 text-center text-md-left  mb-md-0 small">
+                        <div class="footer-copyright text-center text-black-50 pt-3 pb-2">© 2020
+                        </div>
+                    </div>
+
+
+                    <!-- Grid column -->
+                    <div class="col-md-2 col-lg-3 col-xl-2 text-center text-md-right">
+                        <a href="www.facebook.com" class="text-dark">
+                            <i class="fab fa-facebook-f white-text mx-2"> </i></a>
+                        <a href="www.twitter.com" class="text-dark">
+                            <i class="fab fa-twitter white-text mx-2"> </i></a>
+                        <a href="www.instagram.com" class="text-dark">
+                            <i class="fab fa-instagram white-text mx-2"> </i></a>
+
+
+
+                    </div>
+                    <!-- Grid column -->
+
+                </div>
+                <!-- Grid row-->
+
+            </div>
+        </div>
+    </footer>
+ </body>

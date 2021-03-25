@@ -19,6 +19,8 @@ class recipeRouterTmp {
     let id = request.params.id;
     return this.recipeServiceTmp.getRecipeById(id).then((recipe) => {
       recipe[0]["instructions"] = JSON.parse(recipe[0]["instructions"]);
+      // temporaryRecipe < array of numerous items
+      // let temporaryRecipe2 < another array with only 4 items, extracted from temporaryRecipe
       response.render("recipesTmp", { recipe: recipe[0] });
       // response.send(recipe);
     });
