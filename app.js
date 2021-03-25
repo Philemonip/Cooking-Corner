@@ -76,16 +76,24 @@ app.use(passport.session());
 const ingredientService = require("./services/ingredientService");
 // const ingredientRouterTmp = require("./routers/ingredientRouterTmp");
 const recipeService = require("./services/recipeService");
+const reviewService = require("./services/reviewService");
 const recipeRouter = require("./routers/recipeRouter");
 const homeRouter = require("./routers/homeRouter")(express);
+const loginRouter = require("./routers/loginRouter")(express);
 const profileRouter = require("./routers/profileRouter")(express);
 
 const IngredientService = new ingredientService(knex);
 // const IngredientRouterTmp = new ingredientRouterTmp(IngredientServiceTmp);
 const RecipeService = new recipeService(knex);
-const RecipeRouter = new recipeRouter(RecipeService, IngredientService);
+const ReviewService = new reviewService(knex);
+const RecipeRouter = new recipeRouter(
+  RecipeService,
+  IngredientService,
+  ReviewService
+);
 
 //Routers for app.use
+app.use("/", loginRouter);
 app.use("/recipe", RecipeRouter.router());
 app.use("/profile", profileRouter);
 app.use("/home", homeRouter);

@@ -17,8 +17,9 @@ class HomeService {
 
   getTopRecipes() {
     return this.knex("recipes")
+      .whereNotNull("rating")
       .orderBy("rating", "desc")
-      .limit(6)
+      .limit(8)
       .then((row) => {
         console.log(row);
         return row;
