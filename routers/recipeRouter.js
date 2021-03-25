@@ -30,7 +30,7 @@ class recipeRouter {
           // console.log("apiData");
           // console.log(apiData);  // can print
 
-          // console.log("row");
+          // console.log("fetch getRecipeByApiId row");
           // console.log(rows);
           if (rows.length === 0) {
             // console.log("insert");
@@ -65,6 +65,7 @@ class recipeRouter {
               .then(async (recipe_id) => {
                 // update the recipe id
                 apiData["recipe_id"] = recipe_id;
+                console.log("inside this.recipeService.addRecipe: ", apiData["recipe_id"]);
 
                 // insert recipe into "recipes_ingredients" table
                 for (let j = 0; j < ingredients_array.length; j++) {
@@ -78,8 +79,18 @@ class recipeRouter {
                   console.log(`(recipeRoute)ingredient_id: ${ingredient["ingredient_id"]}`);
 
                   let check = await this.ingredientService.addIngredientIfNotExist({ id: ingredients_array[j]["id"], ingredient_name: ingredients_array[j]["nameClean"] });
-                  let addIngredient = await this.ingredientService.addIngredient(ingredient);
+                  // let addIngredient = await this.ingredientService.addIngredient(ingredient);
 
+                }
+
+                for(let j = 0; j < ingredients_array.length; j++) {
+                  let ingredient = {};
+                  ingredient["recipe_id"] = recipe_id;
+                  ingredient["ingredient_id"] = ingredients_array[j]["id"];
+                  ingredient["quantity"] = ingredients_array[j]["amount"];
+                  ingredient["unit"] = ingredients_array[j]["unit"];
+                  console.log(`(recipeRoute 2nd loop)ingredient_id: ${ingredient["ingredient_id"]}`);
+                  let addIngredient = await this.ingredientService.addIngredient(ingredient);
                 }
               })
           }
@@ -91,15 +102,25 @@ class recipeRouter {
         return apiData;
       })
       .then(async (apiData) => {
-        // console.log("data");
-        // console.log(data);
-        // console.log(data["recipe_id"]);
-        // console.log(data["recipe_id"]===undefined)
+        console.log("apiData");
+        console.log(apiData);
+        // console.log(apiData["recipe_id"]);
+        // console.log(apiData["recipe_id"]===undefined)
 
         let result = {};
 
-        apiData["recipe_id"] = await this.recipeService.getRecipeByApiId(apiData["id"]).then((rows) => {return rows[0]["id"]});
+        console.log("inside review: ", apiData["recipe_id"]);
+        if(apiData["recipe_id"] === undefined){
+          console.log("get id in review by api id: ", apiData["id"]);
+          apiData["recipe_id"] = await this.recipeService.getRecipeByApiId(apiData["id"])
+            .then((rows) => {
+              console.log("inside review row: ", rows);
+              return rows[0]["id"];
+            });
+        }
+
         
+
         // result["api_id"] = apiData.id;
         // result["title"] = apiData.title;
         // result["summary"] = apiData.summary;
@@ -111,13 +132,13 @@ class recipeRouter {
         // result["ingredients"] = apiData.extendedIngredients;
         // console.log("result1")
         // console.log(result)
-        
+
         const myReview = await this.reviewService.list(apiData["recipe_id"], 1);
         const recipeReview = await this.reviewService.listall(apiData["recipe_id"], 1);
 
         apiData["myReview"] = myReview;
         apiData["recipeReview"] = recipeReview;
-        
+
         console.log(myReview);
         console.log(recipeReview);
         // console.log(myReview);
@@ -130,9 +151,9 @@ class recipeRouter {
 
         // console.log(result);
         response.render("recipes", { recipe: apiData });
-        return apiData;
+        // return apiData;
       })
-    }
+  }
   // postRecipe(request, response) {
   //   let body = request.body;
   //   // console.log(body);
