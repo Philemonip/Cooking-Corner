@@ -1,34 +1,91 @@
+{{!--
+<link rel="stylesheet" href="./css/login.css">
+<div class="border">
+    <div class="loginpage">
+        <div class="login text-center">
+            <h1 class="text-white display-3">Login</h1>
+            <form action="/login" method="post" style="display:block">
+                <input class='login' type="text" name="username" placeholder="Username" required="required"
+                    id='username' />
+                <input class='login' type="password" name="password" placeholder="Password" required="required"
+                    id='password' />
+                <button type="submit" class="btn btn-primary btn-block px-4">Login</button>
+            </form>
 
-<div class="loginpage">
-<div class="login text-center">
-  <h1 class="text-white display-3">Login</h1>
-    <form action="/login" method="post" style="display:block">
-        <input class='login' type="text" name="username" placeholder="Username" required="required" id='username' />
-        <input class='login' type="password" name="password" placeholder="Password" required="required" id='password'/>
-        <button type="submit" class="btn btn-primary btn-block px-4">Login</button>
-    </form>
-
-        <a href="/signup">
-        <button type="submit" class="btn btn-outline-dark waves-effect btn-block btn-large register">Sign Up</button>
-        </a>
-
-
-        <a href="/google">
-            <button type="button" class="btn btn-outline-dark waves-effect">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
-                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z" />
-                </svg>&nbsp; Gmail
-            </button>
-        </a>
+            <a href="/signup">
+                <button type="submit" class="btn btn-outline-dark waves-effect btn-block btn-large register">Sign
+                    Up</button>
+            </a>
 
 
-         <a href="/facebook">
-            <button type="button" class="btn btn-outline-dark waves-effect">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
-                    <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
-                </svg> &nbsp; Facebook
-            </button>
-        </a>
+            <a href="/google">
+                <button type="button" class="btn btn-outline-dark waves-effect">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-envelope" viewBox="0 0 16 16">
+                        <path
+                            d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z" />
+                    </svg>&nbsp; Gmail
+                </button>
+            </a>
+
+
+            <a href="/facebook">
+                <button type="button" class="btn btn-outline-dark waves-effect">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-facebook" viewBox="0 0 16 16">
+                        <path
+                            d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+                    </svg> &nbsp; Facebook
+                </button>
+            </a>
+        </div>
+    </div>
+</div> --}}
+
+
+<link rel="stylesheet" href="./css/login.css">
+<div class="border">
+    <div class="loginpage">
+        <div class="login text-center">
+            <h1 class="text-black display-3" id="head">Login</h1>
+            <form action="/login" method="post" style="display:block">
+                <label for="username">Username</label>
+                <input class='login' type="text" name="username" placeholder="Type your username" required="required"
+                    id='username' />
+                <label for="password">Password</label>
+                <input class='login' type="password" name="password" placeholder="Type your password"
+                    required="required" id='password' />
+                <button type="submit" class="btn btn-secondary btn-block px-4" id="button">Login</button>
+            </form>
+
+            <p>Login using</p>
+
+            <div class="buttons">
+                <a href="/google">
+                    <button type="button" class="btn btn-outline-dark waves-effect" id="goog">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-envelope" viewBox="0 0 16 16">
+                            <path
+                                d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z" />
+                        </svg>&nbsp; Gmail
+                    </button>
+                </a>
+                <a href="/facebook">
+                    <button type="button" class="btn btn-outline-dark waves-effect" id="faceb">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-facebook" viewBox="0 0 16 16">
+                            <path
+                                d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+                        </svg> &nbsp; Facebook
+                    </button>
+                </a>
+                <p id="sign">Or Sign Up using</p>
+                <a href="/signup">
+                    <button type="submit" class="btn btn-outline-dark waves-effect btn-block btn-large register"
+                        id="signup">Sign
+                        Up</button>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
-
