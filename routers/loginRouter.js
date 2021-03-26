@@ -8,6 +8,9 @@ const knex = require("knex")(knexConfig);
 // const movieService = new MovieService(knex);
 module.exports.isLoggedIn = function (req, res, next) {
   if (req.isAuthenticated()) {
+    console.log(req.cookies);
+    console.log(req.session.passport.user, "passport USER");
+    console.log(req.user, "USER");
     return next();
   }
   res.redirect("/login");

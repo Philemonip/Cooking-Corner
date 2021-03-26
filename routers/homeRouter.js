@@ -17,8 +17,8 @@ module.exports = (express) => {
     return homeService
       .getTopRecipes()
       .then((info) => {
-        console.log("top", info);
-        console.log(info[0].title);
+        // console.log("top", info);
+        // console.log(info[0].title);
         res.render("home", {
           //   title: info.title,
           //   score: info.rating,

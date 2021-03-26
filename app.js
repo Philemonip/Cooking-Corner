@@ -36,14 +36,14 @@ const bcrypt = require("bcrypt");
 app.use(
   expressSession({
     secret: "secret",
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
   })
 );
 
 const isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
-    console.log(req.cookies);
+    console.log("COOKIES", req.cookies);
     console.log(req.session.passport.user, "passport USER");
     console.log(req.user, "USER");
     return next();
@@ -96,7 +96,7 @@ const RecipeRouter = new recipeRouter(
 app.use("/", loginRouter);
 app.use("/recipe", RecipeRouter.router());
 app.use("/profile", profileRouter);
-app.use("/home", homeRouter);
+app.use("/home", isLoggedIn, homeRouter);
 
 //Category route
 const categoryRouter = require("./routers/categoryRouter")(express);
