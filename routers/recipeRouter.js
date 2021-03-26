@@ -114,11 +114,19 @@ class recipeRouter {
     });
   }
   async postReview(req, res) {
-    await console.log(req.user);
+    //  console.log(req.user);
+    // console.log("PASSPORT", req.session.passport.user.id);
     return this.reviewService
       .add(req.params.id, req.user.id, req.body.note, req.body.rating)
-      .then(() => res.redirect("/"))
+      .then(() => {
+        console.log("OUT OF DATABASE redirect");
+        res.redirect("/");
+      })
       .catch((err) => res.status(500).json(err));
+
+    // .then(() => {
+    //   res.redirect("/");
+    // });
   }
 
   async putReview(req, res) {

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark">
+{{!-- <nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Cooking Corner</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
@@ -81,4 +81,122 @@
       {{/each}}
     </div>
   </section>
+</div> --}}
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Cooking Corner</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ml-auto ">
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Categories
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="#">Japanese</a></li>
+            <li><a class="dropdown-item" href="#">Italian</a></li>
+            <li><a class="dropdown-item" href="#">Chinese</a></li>
+            <li><a class="dropdown-item" href="#">Mediterranean</a></li>
+            <li><a class="dropdown-item" href="#">Vietnamese</a></li>
+            <li><a class="dropdown-item" href="#">Thai</a></li>
+            <li><a class="dropdown-item" href="#">Chicken</a></li>
+            <li><a class="dropdown-item" href="#">Rice</a></li>
+            <li><a class="dropdown-item" href="#">Pasta</a></li>
+            <li><a class="dropdown-item" href="#">Beef</a></li>
+            <li><a class="dropdown-item" href="#">Pork</a></li>
+            <li><a class="dropdown-item" href="#">Egg</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link text-light" href="#">Bookmarks</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="#">Login</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+<!--      ------------------------------------ Jumbotron ------------------------------------------------------ -->
+<main class="jumbotron container-fluid cover  ">
+
+  <div class="row align-items-center justify-content-center justify-content-xl-start vh-80">
+    <div class="col col-sm-7 text-center text-xl-right col-xl-4 offset-xl-2">
+      <h1 class="best mb-5">We Have the Best Receipes From All Over the World!</h1>
+      <p id="drinks" class="mb-5 subtitle-mb">For Your Endless Joy and Cooking</p>
+
+    </div>
+
+
+  </div>
+  </div>
+</main>
+
+
+<!-- -------------------------------------Search Bar -----------------------------------------------------  -->
+
+<form action="/logout" method="GET">
+  <button type="submit">Logout</button>
+</form>
+
+<div class="container-fluid search">
+  <div class="search-bar">
+    <form class="d-flex justify-content-center">
+      <input class="typeahead form-control me-2" type="search" placeholder="Search recipes" aria-label="Search">
+    </form>
+  </div>
+</div>
+
+
+
+<!-- -----------------------------------------Top Receipes --------------------------------------------------- -->
+
+<section class="text-center">
+  <h3>Top Rated Recipes</h3>
+  <p id="revline">Our users have gave these the best reviews!</p>
+  <h4 class="trendy h1 pb-2">These are our trending dishes...</h4>
+
+</section>
+
+<!-- --- ------------------------------Cuisine Cards --------------------------------------------------------- -->
+
+
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      {{#each info}}
+      <div class="col-md-6 col-lg-3">
+        <div class="card mx-30">
+          <img src="{{this.image_path}}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <a href="../recipe/{{this.api_id}}">
+              {{this.title}}
+            </a>
+
+            <h6>User Rating: {{this.rating}}</h6>
+            <div class="buttonsec">
+
+              <div class="col">
+                <button type="button" class="bookmark-btn btn btn-warning" name="add-bookmark">Bookmark</button>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+      {{/each}}
+
+    </div>
+  </div>
 </div>

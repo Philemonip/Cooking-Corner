@@ -1,7 +1,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable("recipes", (table) => {
     table.increments("id");
-    table.string("api_id").unique();
+    table.integer("api_id").unique();
     table.varchar("title");
     table.varchar("author");
     table.text("summary");

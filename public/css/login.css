@@ -83,7 +83,7 @@ input {
 #button {
   margin-top: 15px;
   border-radius: 20px;
-  width: 10vw;
+  width: 50%;
   background-color: #913b45;
   border: none;
   margin-left: 80px;
@@ -123,4 +123,16 @@ a {
 
 #sign {
   margin-top: 180px;
+}
+
+@media screen and (max-height: 966px) {
+  #sign {
+    margin-top: 100px;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  #sign {
+    margin-top: 20px;
+  }
 }

@@ -1,5 +1,6 @@
 "use strict";
 
+//Add comment
 $(function () {
   $("#post").click((e) => {
     console.log("post running");
@@ -19,18 +20,19 @@ $(function () {
     $.ajax({
       type: "POST",
       url: `/recipe/${recipeid}`,
-      dataType: "text",
+      //   dataType: "text",
       data: { note: data, rating: rating },
       // data: { note: data, title: title, rating: rating },
       success: function () {
         console.log("post success");
       },
-    })();
-    //   .done
-    //   setTimeout(() => {
-    //     window.location.reload();
-    //   }, 200)
+    }).done;
+    setTimeout(() => {
+      window.location.reload();
+    }, 200);
   });
+
+  //Edit comment
   $(".edit-btn").click((e) => {
     e.preventDefault();
     $(".edit-myreview").removeClass("hidden");
@@ -55,7 +57,7 @@ $(function () {
       type: "PUT",
       url: `/recipe/${recipeid}`,
       dataType: "text",
-      data: { note: data, rating: rating },
+      data: { edit: data, rating: rating },
       success: function () {
         console.log("put success");
       },

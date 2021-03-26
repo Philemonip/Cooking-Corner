@@ -20,7 +20,7 @@ exports.up = function (knex) {
         table.integer("user_id").unsigned();
         table.foreign("user_id").references("users.id");
         table.integer("recipe_id").unsigned();
-        table.foreign("recipe_id").references("recipes.id");
+        table.foreign("recipe_id").references("recipes.api_id");
         table.integer("rating");
         table.text("comment");
         table.timestamps(true, true);

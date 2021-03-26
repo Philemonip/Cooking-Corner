@@ -1,5 +1,5 @@
-const knexConfig = require("../knexfile")["development"];
-const knex = require("knex")(knexConfig);
+// const knexConfig = require("../knexfile")["development"];
+// const knex = require("knex")(knexConfig);
 
 class reviewService {
   constructor(knex) {
@@ -16,7 +16,7 @@ class reviewService {
         "users.username"
       )
       .from("reviews")
-      .innerJoin("recipes", "reviews.recipe_id", "recipes.id")
+      .innerJoin("recipes", "reviews.recipe_id", "recipes.api_id")
       .innerJoin("users", "reviews.user_id", "users.id")
       .where("recipes.id", recipeid)
       .andWhere("reviews.user_id", userid)
@@ -36,7 +36,7 @@ class reviewService {
         "users.username"
       )
       .from("reviews")
-      .innerJoin("recipes", "reviews.recipe_id", "recipes.id")
+      .innerJoin("recipes", "reviews.recipe_id", "recipes.api_id")
       .innerJoin("users", "reviews.user_id", "users.id")
       .where("recipes.id", recipeid)
       .whereNot("reviews.user_id", userid)
@@ -48,18 +48,54 @@ class reviewService {
   }
 
   add(recipeid, userid, comment, rating) {
-    if (userid) {
-      return this.knex("reviews").insert([
-        {
-          user_id: userid,
-          recipe_id: recipeid,
-          comment: comment,
-          rating: rating,
-        },
-      ]);
-    } else {
-      throw new Error("Cannot add note from non-existent user");
-    }
+    console.log(recipeid, userid, comment, rating);
+
+    // return this.knex("test").insert({ name: "Attempt" });
+    return this.knex
+      .insert({
+        user_id: userid,
+        recipe_id: recipeid,
+        rating: rating,
+        comment: comment,
+      })
+      .into("reviews")
+      .catch((err) => console.log(err));
+
+    // .then(() => {
+    //   console.log("inserted");
+    //   return;
+    // });
+
+    // await this.knex
+    //   .insert({
+    // user_id: 1,
+    // recipe_id: 9999,
+    // comment: "comment",
+    // rating: 3,
+    //   })
+    //   .into("reviews");
+    // console.log("YO");
+    // return;
+    // if (userid) {
+    //   console.log("Here");
+    //   console.log(this.knex);
+    //   let query = this.knex("reviews").insert({
+    // user_id: 1,
+    // recipe_id: 9999,
+    // comment: "comment",
+    // rating: 3,
+    //   });
+
+    //   query.then(() => {
+    //     console.log("finsihed");
+    //     return true;
+    //   });
+    //   console.log("FAILED out of the if?!");
+    // } else {
+    //   console.log("Here error!");
+
+    //   throw new Error("Cannot add note from non-existent user");
+    // }
   }
 
   update(recipeid, userid, comment, rating) {
