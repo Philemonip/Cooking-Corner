@@ -86,7 +86,7 @@ class recipeRouter {
       recipe_id = (await this.recipeService.getRecipeByApiId(id))[0]["id"];
     }
 
-    // user id is hardcored
+    // user id is hardcoded
     let myReview = await this.reviewService.list(recipe_id, 1);
     let recipeReview = await this.reviewService.listall(recipe_id, 1);
 

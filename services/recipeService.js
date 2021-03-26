@@ -117,6 +117,15 @@ class recipeService {
       })
   }
 
+  getRecipes(number) {
+    return this.knex("recipes")
+      .select()
+      .limit(number)
+      .then((row) => {
+        return row;
+      })
+  }
+
   getRecipeById(id) {
     return this.knex("recipes")
       .select()

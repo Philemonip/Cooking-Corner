@@ -66,24 +66,30 @@ app.use(passport.session());
 // const recipeRouter = require("./routers/recipeRouter")(express);
 // app.use("/recipe", recipeRouter);
 /////////////////////////////////////////////////
-const ingredientService = require("./services/ingredientService");
-// const ingredientRouterTmp = require("./routers/ingredientRouterTmp");
-const reviewService = require("./services/reviewService");
 const recipeService = require("./services/recipeService");
+const ingredientService = require("./services/ingredientService");
+const reviewService = require("./services/reviewService");
+const categoryService = require("./services/categoryService");
+const userService = require("./services/userService");
+
 const recipeRouter = require("./routers/recipeRouter");
-
-const IngredientService = new ingredientService(knex);
-// const IngredientRouterTmp = new ingredientRouterTmp(IngredientServiceTmp);
-
-const ReviewService = new reviewService(knex);
+const categoryRouter = require("./routers/categoryRouter");
 
 const RecipeService = new recipeService(knex);
+const IngredientService = new ingredientService(knex);
+const ReviewService = new reviewService(knex);
+const CategoryService = new categoryService(knex);
+const UserService = new userService(knex);
+
 const RecipeRouter = new recipeRouter(RecipeService, IngredientService, ReviewService);
+const CategoryRouter = new categoryRouter(RecipeService, IngredientService, ReviewService, CategoryService, UserService);
+
 app.use("/recipe", RecipeRouter.router());
+app.use("/category", CategoryRouter.router());
 
 
 //Category route
-const categoryRouter = require("./routers/categoryRouter");
+// const categoryRouter = require("./routers/categoryRouter");
 // app.use("/category", categoryRouter);
 
 // temporary, may change the actual routing
