@@ -121,6 +121,7 @@ class recipeService {
     return this.knex("recipes")
       .select()
       .limit(number)
+      .orderBy('rating', 'desc')
       .then((row) => {
         return row;
       })

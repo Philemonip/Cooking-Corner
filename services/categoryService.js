@@ -1,6 +1,3 @@
-// const knexConfig = require("../knexfile")["development"];
-// const knex = require("knex")(knexConfig);
-
 class categoryService {
     constructor(knex) {
         this.knex = knex;

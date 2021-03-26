@@ -34,9 +34,13 @@ class categoryRouter {
     let router = express.Router();
     // router.get("/api/users", this.getAllRecipe.bind(this));
     router.get("", this.getRecipes.bind(this));
-    router.get("/:cuisine", this.getCuisineRecipes.bind(this));
-    router.get("/:cuisine/bookmark", this.getBookmark.bind(this));
-    router.post("/:cuisine/bookmark/:id", this.postBookmark.bind(this));
+
+    // router.get("/:cuisine", this.getCuisineRecipes.bind(this));
+    router.get("/cuisine=:cuisine", this.getCuisineRecipes.bind(this));
+
+    router.get("/bookmarks", this.getBookmark.bind(this));
+
+    router.post("/bookmark/:id", this.postBookmark.bind(this));
 
     // router.put("/api/users/:id", this.editUser.bind(this));
     // router.delete("/api/users/:id", this.deleteUser.bind(this));
@@ -46,7 +50,7 @@ class categoryRouter {
   async getRecipes(request, response){
     console.log(request.params);
     let cuisine = request.params.cuisine;
-    console.log(`Get ${cuisine} Recipes`);
+    console.log(`Get Highest Rating Recipes`);
 
     let recipes_res = await this.recipeService.getRecipes(6);
 
@@ -66,7 +70,7 @@ class categoryRouter {
     for(let i = 0;i < Math.min(recipes_res.length, 6);i++){
       recipe_array.push(recipes_res[i])
     }
-    console.log(recipe_array);
+    // console.log(recipe_array);
 
     response.render("category", {cuisine: cuisine, recipes: recipe_array});
   }
