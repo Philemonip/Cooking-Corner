@@ -82,7 +82,7 @@ class recipeService {
     return axios
       .get(
         // `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=ba5aba2ccf0049008995c74dfc10d62a`
-        `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=6fa2e48e10f2494894de75c0a4fb39dd` //1096010
+        `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=8c216aace06a40e984fb7cb8c8f2b768` //1096010
       )
       .then((info) => {
         let apiData = info.data;
@@ -123,6 +123,16 @@ class recipeService {
       });
   }
 
+  getRecipes(number) {
+    return this.knex("recipes")
+      .select()
+      .limit(number)
+      .orderBy("rating", "desc")
+      .then((row) => {
+        return row;
+      });
+  }
+
   getRecipeById(id) {
     return this.knex("recipes")
       .select()
@@ -133,22 +143,10 @@ class recipeService {
   }
 
   getRecipeByApiId(api_id) {
-    // let query = this.knex("recipes").select("*");
-
-    // return query.then((rows) => {
-    //   console.log(rows, "?????");
-    //   console.log(typeof rows[0].api_id);
-    // });
-
-    let number = String(api_id);
-    console.log(number);
-    console.log(typeof number);
-
     return this.knex("recipes")
-      .select("*")
-      .where({ api_id: number })
+      .select()
+      .where({ api_id: api_id })
       .then((row) => {
-        console.log("from database", row);
         return row;
       });
   }

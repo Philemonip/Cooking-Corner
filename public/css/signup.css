@@ -13,12 +13,12 @@ body {
   font-family: sans-serif;
   justify-content: center;
   background-color: #ebebeb;
-  background: linear-gradient(0.25turn, #707070, #ebebeb);
+  background: linear-gradient(0.25turn, #ebebeb, #707070);
 }
 
 .border {
   border: black;
-  padding-bottom: 50vh;
+  padding-bottom: 43vh;
   margin-top: 40vh;
   border-radius: 10px;
   background-color: white;
@@ -88,21 +88,6 @@ input {
   border: none;
   margin-left: 80px;
   margin-bottom: 20px;
-}
-
-#faceb,
-#goog {
-  border-radius: 20px;
-  border: none;
-}
-
-#goog:hover {
-  background-color: #de5246;
-}
-
-#faceb:hover {
-  background-color: #4267b2;
-  color: white;
 }
 
 #signup {

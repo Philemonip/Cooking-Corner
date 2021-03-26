@@ -21,7 +21,7 @@ class HomeService {
       .orderBy("rating", "desc")
       .limit(8)
       .then((row) => {
-        console.log(row);
+        // console.log(row);
         return row;
       });
   }

@@ -7,10 +7,24 @@ class recipeRouter {
     this.reviewService = reviewService;
   }
 
+  // isLoggedIn(req, res, next) {
+  //   console.log(req.user);
+  //   if (req.isAuthenticated()) {
+  //     return next();
+  //   }
+  //   const url = req.originalUrl;
+  //   console.log("redirect-query", url);
+  //   // res.redirect(`/login?redirect=${url}`);
+  //   res.redirect(`/login`);
+  // }
+
   router() {
     let router = express.Router();
     // router.get("/api/users", this.getAllRecipe.bind(this));
     router.get("/:id", this.fetchRecipe.bind(this));
+    router.post("/:id", this.postReview.bind(this));
+    router.post("/:id", this.putReview.bind(this));
+    router.post("/:id", this.deleteReview.bind(this));
     // router.post("/insert", this.postRecipe.bind(this));
 
     // router.put("/api/users/:id", this.editUser.bind(this));
@@ -84,7 +98,6 @@ class recipeRouter {
     console.log("final", apiData);
 
     let renderInstructions = apiData.analyzedInstructions.split("@@");
-    console.log(renderInstructions);
 
     response.render("recipes", {
       title: apiData.title,
@@ -99,6 +112,37 @@ class recipeRouter {
       myReview: apiData.myReview,
       recipeReview: apiData.recipeReview,
     });
+  }
+  async postReview(req, res) {
+    //  console.log(req.user);
+    // console.log("PASSPORT", req.session.passport.user.id);
+    return this.reviewService
+      .add(req.params.id, req.user.id, req.body.note, req.body.rating)
+      .then(() => {
+        console.log("OUT OF DATABASE redirect");
+        res.redirect("/");
+      })
+      .catch((err) => res.status(500).json(err));
+
+    // .then(() => {
+    //   res.redirect("/");
+    // });
+  }
+
+  async putReview(req, res) {
+    console.log(req.body);
+    return this.reviewService
+      .update(req.params.id, req.user.id, req.body.edit, req.body.rating)
+      .then(() => res.send("put"))
+      .catch((err) => res.status(500).json(err));
+  }
+
+  async deleteReview(req, res) {
+    console.log("delete review");
+    return this.reviewService
+      .remove(req.params.id, req.user.id)
+      .then(() => res.send("delete"))
+      .catch((err) => res.status(500).json(err));
   }
 
   // async fetchRecipe(request, response) {

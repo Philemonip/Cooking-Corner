@@ -1,20 +1,24 @@
-<div class="container my-5 py-5 z-depth-1">
-    <section class="px-md-5 mx-md-5 text-center text-lg-left dark-grey-text">
-        <div class="row d-flex justify-content-center">
-            {{!-- Form --}}
-            <form class="text-center" action="/signup" method="post">
-
-                <p class="h4 mb-4">Sign up</p>
-                {{!-- Username --}}
-                <input type="text" name="username" class="form-control mb-4" placeholder="Username" required>
-
-                <!-- Password -->
-                <input type="password" name="password" class="form-control" placeholder="Password" required
-/>
-<br/>
-<button type="submit" class="btn btn-outline-dark waves-effect">Sign up
-                </button>
+<link rel="stylesheet" href="./css/signup.css">
+<div class="border">
+    <div class="loginpage">
+        <div class="login text-center">
+            <h1 class="text-black display-3" id="head">Sign Up</h1>
+            <form action="/signup" method="post" style="display:block">
+                <label for="username">Username</label>
+                <input class='login' type="text" name="username" placeholder="Create a username" required="required"
+                    id='username' />
+                <label for="password">Password</label>
+                <input class='login' type="password" name="password" placeholder="Create a password" required="required"
+                    id='password' />
+                <button type="submit" class="btn btn-secondary btn-block px-4" id="button">Sign Up</button>
             </form>
+
+            <p id="sign">Or if you already have an account</p>
+            <a href="/login">
+                <button type="submit" class="btn btn-outline-dark waves-effect btn-block btn-large register"
+                    id="signup">Login</button>
+            </a>
         </div>
-    </section>
+    </div>
+</div>
 </div>

@@ -36,19 +36,22 @@ const bcrypt = require("bcrypt");
 app.use(
   expressSession({
     secret: "secret",
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
   })
 );
 
 const isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
-    console.log(req.cookies);
+    console.log("COOKIES", req.cookies);
     console.log(req.session.passport.user, "passport USER");
     console.log(req.user, "USER");
     return next();
   }
 
+  console.log("COOKIES not authenticated", req.cookies);
+  console.log(req.session.passport.user, "passport USER");
+  console.log(req.user, "USER");
   res.redirect("/login");
 };
 
@@ -74,32 +77,43 @@ app.use(passport.session());
 // app.use("/recipe", recipeRouter);
 /////////////////////////////////////////////////
 const ingredientService = require("./services/ingredientService");
-// const ingredientRouterTmp = require("./routers/ingredientRouterTmp");
 const recipeService = require("./services/recipeService");
 const reviewService = require("./services/reviewService");
-const recipeRouter = require("./routers/recipeRouter");
-const homeRouter = require("./routers/homeRouter")(express);
-const loginRouter = require("./routers/loginRouter")(express);
-const profileRouter = require("./routers/profileRouter")(express);
+const categoryService = require("./services/categoryService");
+const userService = require("./services/userService");
 
 const IngredientService = new ingredientService(knex);
-// const IngredientRouterTmp = new ingredientRouterTmp(IngredientServiceTmp);
 const RecipeService = new recipeService(knex);
 const ReviewService = new reviewService(knex);
+const CategoryService = new categoryService(knex);
+const UserService = new userService(knex);
+
+const recipeRouter = require("./routers/recipeRouter");
+const categoryRouter = require("./routers/categoryRouter");
+const homeRouter = require("./routers/homeRouter")(express);
+const loginRouter = require("./routers/loginRouter")(express);
+
 const RecipeRouter = new recipeRouter(
   RecipeService,
   IngredientService,
   ReviewService
 );
+const CategoryRouter = new categoryRouter(
+  RecipeService,
+  IngredientService,
+  ReviewService,
+  CategoryService,
+  UserService
+);
 
 //Routers for app.use
-app.use("/", loginRouter);
 app.use("/recipe", RecipeRouter.router());
-app.use("/profile", profileRouter);
-app.use("/home", homeRouter);
+app.use("/category", CategoryRouter.router());
+app.use("/", loginRouter);
+app.use("/home", isLoggedIn, homeRouter);
 
 //Category route
-const categoryRouter = require("./routers/categoryRouter")(express);
+// const categoryRouter = require("./routers/categoryRouter")(express);
 // app.use("/category", categoryRouter);
 
 // temporary, may change the actual routing
@@ -128,6 +142,7 @@ const RecipeRouterTmp = new recipeRouterTmp(
   RecipeServiceTmp,
   IngredientServiceTmp
 );
+
 app.use("/recipes", RecipeRouterTmp.router());
 app.use("/testinginsert", (request, response) => {
   response.render("insertrecipesTmp");
