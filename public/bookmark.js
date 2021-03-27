@@ -22,18 +22,18 @@ $(function () {
     }).done(console.log("bookmark delete done"));
   });
 
-  //   $(".watchlist-add-btn").click((e) => {
-  //     e.preventDefault();
-  //     console.log("search btn", e.currentTarget);
-  //     $.ajax({
-  //       type: "POST",
-  //       data: { api_id: e.currentTarget.dataset.movieid },
-  //       url: `/watchlist/${e.currentTarget.id}`,
-  //       success: function () {
-  //         console.log("INSERT WATCHLIST DATA SUCCESS");
-  //       },
-  //     })
-  //       .done(console.log("search insert done"))
-  //       .fail(console.log("fail"));
-  //   });
+  $(".bookmark-add-btn").click((e) => {
+    e.preventDefault();
+    console.log("search btn", e.currentTarget);
+    $.ajax({
+      type: "POST",
+      data: { api_id: e.currentTarget.dataset.recipeid },
+      url: `/bookmark/${e.currentTarget.dataset.recipeid}`,
+      success: function () {
+        console.log("INSERT bookmark DATA SUCCESS");
+      },
+    })
+      .done(console.log("vook,ark insert done"))
+      .fail(console.log("fail"));
+  });
 });

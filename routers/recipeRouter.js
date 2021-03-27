@@ -110,6 +110,7 @@ class recipeRouter {
 
     response.render("recipes", {
       title: apiData.title,
+      api_id: apiData.id,
       author: apiData.sourceName,
       image: apiData.image,
       time: apiData.readyInMinutes,
