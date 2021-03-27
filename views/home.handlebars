@@ -100,23 +100,23 @@
             Categories
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="#">Japanese</a></li>
-            <li><a class="dropdown-item" href="#">Italian</a></li>
-            <li><a class="dropdown-item" href="#">Chinese</a></li>
-            <li><a class="dropdown-item" href="#">Mediterranean</a></li>
-            <li><a class="dropdown-item" href="#">Vietnamese</a></li>
-            <li><a class="dropdown-item" href="#">Thai</a></li>
-            <li><a class="dropdown-item" href="#">Chicken</a></li>
-            <li><a class="dropdown-item" href="#">Rice</a></li>
-            <li><a class="dropdown-item" href="#">Pasta</a></li>
-            <li><a class="dropdown-item" href="#">Beef</a></li>
-            <li><a class="dropdown-item" href="#">Pork</a></li>
-            <li><a class="dropdown-item" href="#">Egg</a></li>
+            <li><a class="dropdown-item" href="/category/cuisine=Japanese">Japanese</a></li>
+            <li><a class="dropdown-item" href="/category/cuisine=Italian">Italian</a></li>
+            <li><a class="dropdown-item" href="/category/cuisine=Chinese">Chinese</a></li>
+            <li><a class="dropdown-item" href="/category/cuisine=Mediterranean">Mediterranean</a></li>
+            <li><a class="dropdown-item" href="/category/cuisine=Vietnamese">Vietnamese</a></li>
+            <li><a class="dropdown-item" href="/category/cuisine=Thai">Thai</a></li>
+            <li><a class="dropdown-item" href="/category/ingredient=Chicken">Chicken</a></li>
+            <li><a class="dropdown-item" href="/category/ingredient=Rice">Rice</a></li>
+            <li><a class="dropdown-item" href="/category/ingredient=Pasta">Pasta</a></li>
+            <li><a class="dropdown-item" href="/category/ingredient=Beef">Beef</a></li>
+            <li><a class="dropdown-item" href="/category/ingredient=Pork">Pork</a></li>
+            <li><a class="dropdown-item" href="/category/ingredient=Egg">Egg</a></li>
           </ul>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link text-light" href="#">Bookmarks</a>
+          <a class="nav-link text-light" href="/category/bookmarks">Bookmarks</a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-light" href="#">Login</a>
@@ -183,10 +183,11 @@
             </a>
 
             <h6>User Rating: {{this.rating}}</h6>
+            <h6>Recipe ID: {{this.id}}</h6>
             <div class="buttonsec">
 
               <div class="col">
-                <button type="button" class="bookmark-btn btn btn-warning" name="add-bookmark">Bookmark</button>
+                <button type="submit" class="bookmark-btn btn btn-warning" name="add-bookmark" id="bookmark_button" value="buttonhere">Bookmark</button>
               </div>
             </div>
 

@@ -23,6 +23,8 @@ class categoryRouter {
     // router.get("/:cuisine", this.getCuisineRecipes.bind(this));
     router.get("/cuisine=:cuisine", this.getCuisineRecipes.bind(this));
 
+    router.get("/ingredient=:ingredient", this.getIngredientRecipes.bind(this));
+
     router.get("/bookmarks", this.getBookmark.bind(this));
 
     router.post("/bookmark/:id", this.postBookmark.bind(this));
@@ -39,7 +41,7 @@ class categoryRouter {
 
     let recipes_res = await this.recipeService.getRecipes(6);
 
-    console.log(recipes_res);
+    // console.log(recipes_res);
 
     response.render("category", { cuisine: cuisine, recipes: recipes_res });
   }
@@ -60,6 +62,15 @@ class categoryRouter {
     response.render("category", { cuisine: cuisine, recipes: recipe_array });
   }
 
+  async getIngredientRecipes(request, response) {
+    let ingredient = request.params.ingredient.toLowerCase();
+    let recipe_id_array = await this.ingredientService.getRecipeIdByIngredient(ingredient);
+    let recipe_array = await this.recipeService.getRecipeByIds(recipe_id_array);
+    console.log(`Category Ingredient ${ingredient} Pages`);
+    // console.log(recipe_array.length)
+    response.render("category", { cuisine: ingredient, recipes: recipe_array });
+  }
+
   async getBookmark(request, response) {
     console.log("bookmark_recipe_id");
     let bookmark_recipe_id = await this.userService.getFavoriteRecipe(1); //hardcode
@@ -70,7 +81,7 @@ class categoryRouter {
       );
       bookmark_recipes.push(bookmark_recipe[0]);
     }
-    console.log(bookmark_recipes);
+    // console.log(bookmark_recipes);
     // bookmark_recipes is like this:
     // [
     //   {
@@ -96,17 +107,18 @@ class categoryRouter {
   }
 
   async postBookmark(request, response) {
-    let body = request.body;
+    let id = request.body.id;
     console.log(body);
 
-    let recipe_id = 0;
-    let user_id = 1;
+    let recipe_id = response.params.recipe_id;
+    let user_id = response.params.user_id;
 
-    let addFavoriteRecipe = await this.userService.addFavoriteRecipe(
-      user_id,
-      recipe_id
-    );
+    let addFavoriteRecipe = await this.userService.addFavoriteRecipe(user_id, recipe_id);
+
+    console.log(`Successfully bookmark recipe ${user_id}, ${recipe_id}, ${id}`);
   }
+
+
 }
 
 module.exports = categoryRouter;

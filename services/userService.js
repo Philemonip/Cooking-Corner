@@ -8,11 +8,11 @@ class userService {
       .select()
       .where(user_id, user_id)
       .then((rows) => {
-        console.log(`(addFavoriteRecipe) Success ${user_id}`);
+        console.log(`(getFavoriteRecipe) Success ${user_id}`);
         return rows;
       })
       .catch((error) => {
-        console.log(`(insertRecipeCuisine) Error, ${error}`);
+        console.log(`(getFavoriteRecipe) Error, ${error}`);
       });
   }
 
@@ -23,7 +23,7 @@ class userService {
         console.log(`(addFavoriteRecipe) Success ${user_id} ${recipe_id}`);
       })
       .catch((error) => {
-        console.log(`(insertRecipeCuisine) Error, ${error}`);
+        console.log(`(addFavoriteRecipe) Error, ${error}`);
       });
   }
 }
