@@ -142,6 +142,18 @@ class recipeService {
       });
   }
 
+  getRecipeByIds(id_array, number) {
+    number = number || 6;
+    return this.knex("recipes")
+      .select()
+      .whereIn("id", id_array)
+      .orderBy("rating", "desc")
+      .limit(number)
+      .then((row) => {
+        return row;
+      });
+  }
+
   getRecipeByApiId(api_id) {
     return this.knex("recipes")
       .select()

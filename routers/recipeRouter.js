@@ -1,30 +1,39 @@
 const express = require("express");
+const { isLoggedIn } = require("./loginRouter");
+
+const knex = require("knex")({
+  client: "postgresql",
+  connection: {
+    database: process.env.DATABASE,
+    user: process.env.USERNAME,
+    password: process.env.PASSWORD,
+  },
+});
 
 class recipeRouter {
   constructor(recipeService, ingredientService, reviewService) {
     this.recipeService = recipeService;
     this.ingredientService = ingredientService;
     this.reviewService = reviewService;
+    this.isLoggedIn = function (req, res, next) {
+      console.log(req.user);
+      if (req.isAuthenticated()) {
+        return next();
+      }
+      const url = req.originalUrl;
+      console.log("redirect-query", url);
+      // res.redirect(`/login?redirect=${url}`);
+      res.redirect(`/login`);
+    };
   }
-
-  // isLoggedIn(req, res, next) {
-  //   console.log(req.user);
-  //   if (req.isAuthenticated()) {
-  //     return next();
-  //   }
-  //   const url = req.originalUrl;
-  //   console.log("redirect-query", url);
-  //   // res.redirect(`/login?redirect=${url}`);
-  //   res.redirect(`/login`);
-  // }
 
   router() {
     let router = express.Router();
     // router.get("/api/users", this.getAllRecipe.bind(this));
     router.get("/:id", this.fetchRecipe.bind(this));
     router.post("/:id", this.postReview.bind(this));
-    router.post("/:id", this.putReview.bind(this));
-    router.post("/:id", this.deleteReview.bind(this));
+    router.put("/:id", this.putReview.bind(this));
+    router.delete("/:id", this.deleteReview.bind(this));
     // router.post("/insert", this.postRecipe.bind(this));
 
     // router.put("/api/users/:id", this.editUser.bind(this));

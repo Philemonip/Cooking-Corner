@@ -6,26 +6,16 @@ const knex = require("knex")(knexConfig);
 
 // const MovieService = require ("../services/movieService");
 // const movieService = new MovieService(knex);
-module.exports.isLoggedIn = function (req, res, next) {
-  if (req.isAuthenticated()) {
-    console.log(req.cookies);
-    console.log(req.session.passport.user, "passport USER");
-    console.log(req.user, "USER");
-    return next();
-  }
-  res.redirect("/login");
-};
 
 module.exports = (express) => {
   const router = express.Router();
 
-  //Check if the user is authenticated
-  function isLoggedIn(req, res, next) {
+  module.exports.isLoggedIn = function (req, res, next) {
     if (req.isAuthenticated()) {
       return next();
     }
     res.redirect("/login");
-  }
+  };
 
   //Get user id to render on index
   // function getUserName(userid) {

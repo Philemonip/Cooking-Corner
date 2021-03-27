@@ -50,7 +50,6 @@ const isLoggedIn = (req, res, next) => {
   }
 
   console.log("COOKIES not authenticated", req.cookies);
-  console.log(req.session.passport.user, "passport USER");
   console.log(req.user, "USER");
   res.redirect("/login");
 };
@@ -92,6 +91,7 @@ const recipeRouter = require("./routers/recipeRouter");
 const categoryRouter = require("./routers/categoryRouter");
 const homeRouter = require("./routers/homeRouter")(express);
 const loginRouter = require("./routers/loginRouter")(express);
+const bookmarkRouter = require("./routers/bookmarkRouter")(express);
 
 const RecipeRouter = new recipeRouter(
   RecipeService,
@@ -111,6 +111,7 @@ app.use("/recipe", RecipeRouter.router());
 app.use("/category", CategoryRouter.router());
 app.use("/", loginRouter);
 app.use("/home", isLoggedIn, homeRouter);
+app.use("/bookmark", bookmarkRouter);
 
 //Category route
 // const categoryRouter = require("./routers/categoryRouter")(express);
