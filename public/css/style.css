@@ -53,3 +53,10 @@
 .twitter-typeahead {
   width: 40%;
 }
+
+/* landing page */
+.jumbotron {
+  background-image: url("../image/homejumbotron.jpeg");
+  background-size: cover;
+  color: rgb(233, 233, 233);
+}
