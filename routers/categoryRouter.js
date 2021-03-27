@@ -25,9 +25,9 @@ class categoryRouter {
 
     router.get("/ingredient=:ingredient", this.getIngredientRecipes.bind(this));
 
-    router.get("/bookmarks", this.getBookmark.bind(this));
+    // router.get("/bookmarks", this.getBookmark.bind(this));
 
-    router.post("/bookmark/:id", this.postBookmark.bind(this));
+    // router.post("/bookmark/:id", this.postBookmark.bind(this));
 
     // router.put("/api/users/:id", this.editUser.bind(this));
     // router.delete("/api/users/:id", this.deleteUser.bind(this));
@@ -73,55 +73,55 @@ class categoryRouter {
     response.render("category", { cuisine: ingredient, recipes: recipe_array });
   }
 
-  async getBookmark(request, response) {
-    console.log("bookmark_recipe_id");
-    let bookmark_recipe_id = await this.userService.getFavoriteRecipe(1); //hardcode
-    let bookmark_recipes = [];
-    for (let i = 0; i < bookmark_recipe_id.length; i++) {
-      let bookmark_recipe = await this.recipeService.getRecipeById(
-        bookmark_recipe_id[i]["recipe_id"]
-      );
-      bookmark_recipes.push(bookmark_recipe[0]);
-    }
-    // console.log(bookmark_recipes);
-    // bookmark_recipes is like this:
-    // [
-    //   {
-    //     id: 1905,
-    //     api_id: 637908,
-    //     title: 'Chicken and Miso Ramen Noodle Soup',
-    //     author: 'Foodista',
-    //     summary: 'xxxxxxxxxx',
-    //     instructions: 'xxxxxxxxxxx',
-    //     preparation_time: 30,
-    //     image_path: 'https://spoonacular.com/recipeImages/637908-312x231.jpg',
-    //     servings: '2',
-    //     difficulty: null,
-    //     created_at: 2021-03-19T09:20:38.817Z,
-    //     updated_at: 2021-03-19T09:20:38.817Z,
-    //     rating: null
-    //   },
-    // ]
-    response.render("category", {
-      cuisine: "bookmark",
-      recipes: bookmark_recipes,
-    });
-  }
+  // async getBookmark(request, response) {
+  //   console.log("bookmark_recipe_id");
+  //   let bookmark_recipe_id = await this.userService.getFavoriteRecipe(1); //hardcode
+  //   let bookmark_recipes = [];
+  //   for (let i = 0; i < bookmark_recipe_id.length; i++) {
+  //     let bookmark_recipe = await this.recipeService.getRecipeById(
+  //       bookmark_recipe_id[i]["recipe_id"]
+  //     );
+  //     bookmark_recipes.push(bookmark_recipe[0]);
+  //   }
+  //   // console.log(bookmark_recipes);
+  //   // bookmark_recipes is like this:
+  //   // [
+  //   //   {
+  //   //     id: 1905,
+  //   //     api_id: 637908,
+  //   //     title: 'Chicken and Miso Ramen Noodle Soup',
+  //   //     author: 'Foodista',
+  //   //     summary: 'xxxxxxxxxx',
+  //   //     instructions: 'xxxxxxxxxxx',
+  //   //     preparation_time: 30,
+  //   //     image_path: 'https://spoonacular.com/recipeImages/637908-312x231.jpg',
+  //   //     servings: '2',
+  //   //     difficulty: null,
+  //   //     created_at: 2021-03-19T09:20:38.817Z,
+  //   //     updated_at: 2021-03-19T09:20:38.817Z,
+  //   //     rating: null
+  //   //   },
+  //   // ]
+  //   response.render("category", {
+  //     cuisine: "bookmark",
+  //     recipes: bookmark_recipes,
+  //   });
+  // }
 
-  async postBookmark(request, response) {
-    let id = request.body.id;
-    console.log(body);
+  // async postBookmark(request, response) {
+  //   let id = request.body.id;
+  //   console.log(body);
 
-    let recipe_id = response.params.recipe_id;
-    let user_id = response.params.user_id;
+  //   let recipe_id = response.params.recipe_id;
+  //   let user_id = response.params.user_id;
 
-    let addFavoriteRecipe = await this.userService.addFavoriteRecipe(
-      user_id,
-      recipe_id
-    );
+  //   let addFavoriteRecipe = await this.userService.addFavoriteRecipe(
+  //     user_id,
+  //     recipe_id
+  //   );
 
-    console.log(`Successfully bookmark recipe ${user_id}, ${recipe_id}, ${id}`);
-  }
+  //   console.log(`Successfully bookmark recipe ${user_id}, ${recipe_id}, ${id}`);
+  // }
 }
 
 module.exports = categoryRouter;

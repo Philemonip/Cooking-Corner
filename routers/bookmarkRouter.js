@@ -13,7 +13,7 @@ module.exports = (express) => {
   const bookmarkService = new BookmarkService(knex);
 
   router.route("/").get(isLoggedIn, userFavouriteRecipe);
-  router.route("/recipeId").post(isLoggedIn, bookmarkFavouriteRecipe);
+  router.route("/:recipeId").post(isLoggedIn, bookmarkFavouriteRecipe);
   router.route("/:recipeId").delete(isLoggedIn, deleteFavoruiteRecipe);
 
   function userFavouriteRecipe(req, res) {
@@ -37,17 +37,12 @@ module.exports = (express) => {
   }
 
   function bookmarkFavouriteRecipe(req, res) {
+    console.log("USER", req.user);
     return bookmarkService
       .checkFavouritelist(req.user.id, req.params.recipeId)
       .then((hvData) => {
-        if (!hvData) {
-          return query
-            .then(() => "")
-            .then(null, function (err) {
-              //query fail
-              console.log(err);
-              return "";
-            });
+        if (hvData) {
+          return "";
         } else {
           return bookmarkService.addFavouriteRecipe(
             req.user.id,
