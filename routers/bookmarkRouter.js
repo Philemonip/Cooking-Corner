@@ -9,14 +9,12 @@ module.exports = (express) => {
   const knexConfig = require("../knexfile")["development"];
   const knex = require("knex")(knexConfig);
 
-  const RecipeService = require("../services/recipeService");
-  const recipeService = new RecipeService(knex);
   const BookmarkService = require("../services/bookmarkService");
   const bookmarkService = new BookmarkService(knex);
 
   router.route("/").get(isLoggedIn, userFavouriteRecipe);
-  // router.route("/:abc").post(addWatchItem); //FIXME: isLoggedIn
-  router.route("/:recipeId").delete(deleteFavoruiteRecipe);
+  router.route("/recipeId").post(isLoggedIn, bookmarkFavouriteRecipe);
+  router.route("/:recipeId").delete(isLoggedIn, deleteFavoruiteRecipe);
 
   function userFavouriteRecipe(req, res) {
     console.log(req.user);
@@ -36,6 +34,31 @@ module.exports = (express) => {
         });
       })
       .catch((err) => res.status(500).json(err));
+  }
+
+  function bookmarkFavouriteRecipe(req, res) {
+    return bookmarkService
+      .checkFavouritelist(req.user.id, req.params.recipeId)
+      .then((hvData) => {
+        if (!hvData) {
+          return query
+            .then(() => "")
+            .then(null, function (err) {
+              //query fail
+              console.log(err);
+              return "";
+            });
+        } else {
+          return bookmarkService.addFavouriteRecipe(
+            req.user.id,
+            req.params.recipeId
+          );
+        }
+      })
+      .then(() => res.send("bookmark item added"))
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function deleteFavoruiteRecipe(req, res) {
