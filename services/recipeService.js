@@ -123,6 +123,18 @@ class recipeService {
       });
   }
 
+  fetchRelatedRecipes(api_id, number){
+    number = number || 3;
+    return axios
+      .get(
+        // `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=ba5aba2ccf0049008995c74dfc10d62a`
+        `https://api.spoonacular.com/recipes/${api_id}/similar?number=${number}&apiKey=8c216aace06a40e984fb7cb8c8f2b768` //1096010
+      )
+      .then((info) => {
+        return info.data;
+      });
+  }
+
   getRecipes(number) {
     return this.knex("recipes")
       .select()

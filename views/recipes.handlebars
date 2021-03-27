@@ -123,12 +123,13 @@
 
     <h3>Related</h3>
     <section class="text-center">
+        {{#each similarRecipesArray}}
         <div class="row">
-            <div class="col"></div>
-            <div class="col"></div>
-            <div class="col"></div>
+            <a href={{this.sourceUrl}}>Title: {{this.title}}</a>
         </div>
+        {{/each}}
     </section>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"

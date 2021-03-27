@@ -96,7 +96,8 @@ const loginRouter = require("./routers/loginRouter")(express);
 const RecipeRouter = new recipeRouter(
   RecipeService,
   IngredientService,
-  ReviewService
+  ReviewService,
+  CategoryService
 );
 const CategoryRouter = new categoryRouter(
   RecipeService,
