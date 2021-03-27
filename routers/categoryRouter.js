@@ -73,7 +73,8 @@ class categoryRouter {
 
   async getBookmark(request, response) {
     console.log("bookmark_recipe_id");
-    let bookmark_recipe_id = await this.userService.getFavoriteRecipe(1); //hardcode
+    let user_id = request.user.id;
+    let bookmark_recipe_id = await this.userService.getFavoriteRecipe(user_id);
     let bookmark_recipes = [];
     for (let i = 0; i < bookmark_recipe_id.length; i++) {
       let bookmark_recipe = await this.recipeService.getRecipeById(

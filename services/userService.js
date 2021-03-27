@@ -4,7 +4,7 @@ class userService {
   }
 
   getFavoriteRecipe(user_id) {
-    return this.knex("users_favourite_recipe")
+    return this.knex("users_favourite_recipes")
       .select()
       .where(user_id, user_id)
       .then((rows) => {
@@ -17,7 +17,7 @@ class userService {
   }
 
   addFavoriteRecipe(user_id, recipe_id) {
-    return this.knex("users_favourite_recipe")
+    return this.knex("users_favourite_recipes")
       .insert({ user_id: user_id, recipe_id: recipe_id })
       .then(() => {
         console.log(`(addFavoriteRecipe) Success ${user_id} ${recipe_id}`);
