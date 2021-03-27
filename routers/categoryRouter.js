@@ -64,7 +64,9 @@ class categoryRouter {
 
   async getIngredientRecipes(request, response) {
     let ingredient = request.params.ingredient.toLowerCase();
-    let recipe_id_array = await this.ingredientService.getRecipeIdByIngredient(ingredient);
+    let recipe_id_array = await this.ingredientService.getRecipeIdByIngredient(
+      ingredient
+    );
     let recipe_array = await this.recipeService.getRecipeByIds(recipe_id_array);
     console.log(`Category Ingredient ${ingredient} Pages`);
     // console.log(recipe_array.length)
@@ -113,12 +115,13 @@ class categoryRouter {
     let recipe_id = response.params.recipe_id;
     let user_id = response.params.user_id;
 
-    let addFavoriteRecipe = await this.userService.addFavoriteRecipe(user_id, recipe_id);
+    let addFavoriteRecipe = await this.userService.addFavoriteRecipe(
+      user_id,
+      recipe_id
+    );
 
     console.log(`Successfully bookmark recipe ${user_id}, ${recipe_id}, ${id}`);
   }
-
-
 }
 
 module.exports = categoryRouter;

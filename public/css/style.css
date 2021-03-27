@@ -1,3 +1,36 @@
+.navbar {
+  background-color: #f1841d;
+}
+
+.cover {
+  background: url("img/chef.webp");
+  opacity: 0.9;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.vh-80 {
+  min-height: 84vh;
+}
+
+.mb-5 {
+  font-size: 30px;
+  text-align: center;
+  font-family: "Rouge Script", cursive;
+
+  color: white;
+  text-shadow: 2px 2px #0f0f0f;
+}
+#drinks {
+  font-size: 20px;
+  text-align: center;
+  font-family: "Rouge Script", cursive;
+
+  color: white;
+  text-shadow: 2px 2px #0f0f0f;
+}
+
 /* typeahead */
 
 .typeahead {

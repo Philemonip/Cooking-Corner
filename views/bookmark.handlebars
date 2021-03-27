@@ -1,0 +1,41 @@
+<div class="watchlist-container container-fluid search-wrapper mt-3">
+    {{#unless bookmarkRecipeArr}}
+    <h2>You don't have any bookmarked recipes</h2>
+    {{/unless}}
+
+    {{#each bookmarkRecipeArr}}
+    <div class="row watchlist_card d-flex">
+        {{!-- <a href="../movie/{{this.movie_id}}"> --}}
+            <div class="poster-container">
+                <img class="img-fluid watchlist_poster" width="180px" height="auto" src="{{this.image_path}}">
+                {{!-- <button id={{this.api_id}} class="watchlist-liked-btn" data-movieid={{this.api_id}}>
+                    <i class="fas fa-check fa-xs"></i></button>
+                <button id={{this.api_id}} class="watchlist-add-btn hidden" data-movieid={{this.api_id}}>
+                    <i class="fas fa-plus"></i></button> --}}
+                <div class="row d-flex justify-content-center">
+                    <button id={{this.api_id}} class="bookmark-del-btn" data-recipeid={{this.api_id}}>
+                        REMOVE</button>
+                </div>
+            </div>
+
+            {{!--
+        </a> --}}
+        <div class="movie-info col-9">
+            <p class="movie-link">
+
+                <a href="../recipe/{{this.api_id}}">
+                    {{math @index "+" 1}}. {{this.title}}
+                </a>
+            </p>
+            <p>
+                {{this.rating}}
+                <i class="fas fa-star"></i>
+            </p>
+            {{!-- <p><b style="font-size: 15px">Genres:</b><br><br> {{genreconverter this.genres}}</p> --}}
+            <p><b style="font-size: 15px">Overview:</b><br><br> {{{this.summary}}}</p>
+        </div>
+    </div>
+    {{/each}}
+
+
+</div>
