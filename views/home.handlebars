@@ -116,10 +116,10 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link text-light" href="/category/bookmarks">Bookmarks</a>
+          <a class="nav-link text-secondary" href="/category/bookmarks">Bookmarks</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="#">Login</a>
+          <a class="nav-link text-secondary" href="#">Login</a>
         </li>
 
       </ul>
@@ -130,7 +130,7 @@
 <main class="jumbotron container-fluid cover  ">
 
   <div class="row align-items-center justify-content-center justify-content-xl-start vh-80">
-    <div class="col col-sm-7 text-center text-xl-right col-xl-4 offset-xl-2">
+    <div class="col col-sm-7 text-center text-xl-right col-xl-4 offset-xl-1">
       <h1 class="best mb-5">We Have the Best Receipes From All Over the World!</h1>
       <p id="drinks" class="mb-5 subtitle-mb">For Your Endless Joy and Cooking</p>
 
@@ -144,9 +144,9 @@
 
 <!-- -------------------------------------Search Bar -----------------------------------------------------  -->
 
-<form action="/logout" method="GET">
+{{!-- <form action="/logout" method="GET">
   <button type="submit">Logout</button>
-</form>
+</form> --}}
 
 <div class="container-fluid search">
   <div class="search-bar">
@@ -161,7 +161,7 @@
 <!-- -----------------------------------------Top Receipes --------------------------------------------------- -->
 
 <section class="text-center">
-  <h3>Top Rated Recipes</h3>
+  <h3 class="my-3">Top Rated Recipes</h3>
   <p id="revline">Our users have gave these the best reviews!</p>
   <h4 class="trendy h1 pb-2">These are our trending dishes...</h4>
 
@@ -187,7 +187,8 @@
             <div class="buttonsec">
 
               <div class="col">
-                <button type="submit" class="bookmark-btn btn btn-warning" name="add-bookmark" id="bookmark_button" value="buttonhere">Bookmark</button>
+                <button type="submit" class="bookmark-btn btn btn-warning" name="add-bookmark" id="bookmark_button"
+                  value="buttonhere">Bookmark</button>
               </div>
             </div>
 
