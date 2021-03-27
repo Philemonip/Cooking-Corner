@@ -79,13 +79,11 @@ const ingredientService = require("./services/ingredientService");
 const recipeService = require("./services/recipeService");
 const reviewService = require("./services/reviewService");
 const categoryService = require("./services/categoryService");
-const userService = require("./services/userService");
 
 const IngredientService = new ingredientService(knex);
 const RecipeService = new recipeService(knex);
 const ReviewService = new reviewService(knex);
 const CategoryService = new categoryService(knex);
-const UserService = new userService(knex);
 
 const recipeRouter = require("./routers/recipeRouter");
 const categoryRouter = require("./routers/categoryRouter");
@@ -102,8 +100,7 @@ const CategoryRouter = new categoryRouter(
   RecipeService,
   IngredientService,
   ReviewService,
-  CategoryService,
-  UserService
+  CategoryService
 );
 
 //Routers for app.use
