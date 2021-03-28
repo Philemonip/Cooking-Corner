@@ -17,7 +17,7 @@ module.exports = (express) => {
   router.route("/:recipeId").delete(isLoggedIn, deleteFavouriteRecipe);
 
   function userFavouriteRecipe(req, res) {
-    console.log(req.user);
+    console.log(req.user, 'isthereuser?');
     return bookmarkService
       .getFavouriteRecipe(req.user.id)
       .then((data) => {

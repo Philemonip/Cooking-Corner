@@ -109,7 +109,7 @@ const CategoryRouter = new categoryRouter(
 app.use("/recipe", RecipeRouter.router());
 app.use("/category", CategoryRouter.router());
 app.use("/", loginRouter);
-app.use("/home", isLoggedIn, homeRouter);
+app.use("/home", homeRouter);
 app.use("/bookmark", bookmarkRouter);
 // app.use("/upload", uploadRouter);
 
