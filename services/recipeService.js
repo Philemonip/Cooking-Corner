@@ -82,7 +82,9 @@ class recipeService {
     return axios
       .get(
         // `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=ba5aba2ccf0049008995c74dfc10d62a`
-        `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=8c216aace06a40e984fb7cb8c8f2b768` //1096010
+        // `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=8c216aace06a40e984fb7cb8c8f2b768`
+        // `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=6fa2e48e10f2494894de75c0a4fb39dd`
+        `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=a4d183cc31764135992ccf253da20f6b`
       )
       .then((info) => {
         let apiData = info.data;
@@ -123,6 +125,18 @@ class recipeService {
       });
   }
 
+  fetchRelatedRecipes(api_id, number) {
+    number = number || 3;
+    return axios
+      .get(
+        // `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=ba5aba2ccf0049008995c74dfc10d62a`
+        `https://api.spoonacular.com/recipes/${api_id}/similar?number=${number}&apiKey=ba5aba2ccf0049008995c74dfc10d62a` //1096010
+      )
+      .then((info) => {
+        return info.data;
+      });
+  }
+
   getRecipes(number) {
     return this.knex("recipes")
       .select()
@@ -143,7 +157,7 @@ class recipeService {
   }
 
   getRecipeByIds(id_array, number) {
-    number = number || 6;
+    number = number || 10;
     return this.knex("recipes")
       .select()
       .whereIn("id", id_array)

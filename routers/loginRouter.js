@@ -48,6 +48,10 @@ module.exports = (express) => {
 
   //Login page
 
+  router.get("/upload", (req, res) => {
+    res.render("upload");
+  });
+
   router.get("/", (req, res) => {
     res.render("home");
   });

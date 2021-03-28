@@ -14,7 +14,7 @@ module.exports = (express) => {
 
   router.route("/").get(isLoggedIn, userFavouriteRecipe);
   router.route("/:recipeId").post(isLoggedIn, bookmarkFavouriteRecipe);
-  router.route("/:recipeId").delete(isLoggedIn, deleteFavoruiteRecipe);
+  router.route("/:recipeId").delete(isLoggedIn, deleteFavouriteRecipe);
 
   function userFavouriteRecipe(req, res) {
     console.log(req.user);
@@ -27,7 +27,7 @@ module.exports = (express) => {
         return bookmarkService.favouriteRecipeInfo(bookmarkArr);
       })
       .then((bookmarkRecipeArr) => {
-        console.log(bookmarkRecipeArr);
+        console.log("LIST", bookmarkRecipeArr);
         res.render("bookmark", {
           user: req.user,
           bookmarkRecipeArr: bookmarkRecipeArr,
@@ -56,13 +56,13 @@ module.exports = (express) => {
       });
   }
 
-  function deleteFavoruiteRecipe(req, res) {
+  function deleteFavouriteRecipe(req, res) {
     console.log(req.params);
     console.log("USER", req.user);
     return bookmarkService
       .removeFavouriteRecipe(req.user.id, req.params.recipeId)
       .then(() => {
-        res.send("watchlist item deleted");
+        res.send("bookmark item deleted");
       })
       .catch((err) => res.status(500).json(err));
   }
