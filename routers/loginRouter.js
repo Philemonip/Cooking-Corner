@@ -64,7 +64,7 @@ module.exports = (express) => {
   });
 
   router.get("/login", (req, res) => {
-    res.render("login", { layout: "nav" });
+    res.render("login", { layout: "signupAndLogin" });
   });
 
   router.get(
@@ -107,7 +107,7 @@ module.exports = (express) => {
 
   //Signup page
   router.get("/signup", (req, res) => {
-    res.render("signup", { layout: "nav" });
+    res.render("signup", { layout: "signupAndLogin" });
   });
 
   router.post(

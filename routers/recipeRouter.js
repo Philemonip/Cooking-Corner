@@ -49,6 +49,8 @@ class recipeRouter {
 
   async fetchRecipe(request, response) {
     let id = request.params.id;
+    let user = request.user;
+    console.log(request.user);
     console.log("fetchRecipe " + id);
 
     let apiData = await this.recipeService.fetchRecipeByAPI(id);
@@ -140,7 +142,9 @@ class recipeRouter {
 
     let renderInstructions = apiData.analyzedInstructions.split("@@");
 
+    console.log("USER", user);
     response.render("recipes", {
+      user: user,
       title: apiData.title,
       api_id: apiData.id,
       author: apiData.sourceName,
@@ -151,8 +155,8 @@ class recipeRouter {
       summary: apiData.summary,
       ingredients: apiData.extendedIngredients,
       instructions: renderInstructions,
-      myReview: apiData.myReview,
-      recipeReview: apiData.recipeReview,
+      myReview: myReview,
+      recipeReview: recipeReview,
       similarRecipesArray: similarRecipesArray,
     });
   }

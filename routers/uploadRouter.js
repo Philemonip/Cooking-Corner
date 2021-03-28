@@ -38,19 +38,21 @@ module.exports = (express) => {
       const { filename, mimetype, size } = req.file;
       const filepath = req.file.path;
 
-      return this.knex
+      console.log(req.file);
+
+      return knex
         .insert({
           image_Path: filepath,
         })
-        .into("recipes")
-        .then(() => res.json({ success: true, filename }))
-        .catch((err) =>
-          res.json({
-            success: false,
-            message: "upload failed",
-            stack: err.stack,
-          })
-        );
+        .into("recipes");
+      // .then(() => res.json({ success: true, filename }))
+      // .catch((err) =>
+      //   res.json({
+      //     success: false,
+      //     message: "upload failed",
+      //     stack: err.stack,
+      //   })
+      // );
     });
 
     if (req.fileValidationError) {
