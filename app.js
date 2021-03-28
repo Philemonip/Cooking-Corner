@@ -150,8 +150,8 @@ app.use("/testinginsert", (request, response) => {
 });
 app.use("/ingredients", IngredientRouterTmp.router());
 
-app.listen(4000, () => {
-  console.log("App running on 4000");
+app.listen(3000, () => {
+  console.log("App running on 3000");
 });
 
 //FACEBOOK LOGIN HTTPS

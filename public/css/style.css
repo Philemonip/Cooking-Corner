@@ -1,11 +1,3 @@
-.cover {
-  background: url("img/chef.webp");
-  opacity: 0.9;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-}
-
 .mb-5 {
   font-size: 30px;
   text-align: center;
