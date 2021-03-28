@@ -82,3 +82,34 @@
   color: rgb(233, 233, 233);
   height: 440px;
 }
+
+/* recipe background */
+.recipe-bg {
+  background: linear-gradient(#8adee99d, #eb3348af);
+  background-size: cover;
+  color: rgb(65, 59, 59);
+}
+
+.recipe-bg h2 {
+  font-weight: 300;
+  font-size: 3rem;
+}
+
+.recipe-bg h4 {
+  font-style: italic;
+}
+
+.recipe-bg img {
+  border-radius: 10%;
+
+  box-shadow: 0 15px 10px #777;
+}
+
+.recipe-bg .description p {
+  text-align: left;
+  line-height: 2;
+}
+
+.recipe-bg .text-center h3 {
+  text-decoration: underline;
+}
