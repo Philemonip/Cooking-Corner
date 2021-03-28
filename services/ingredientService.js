@@ -59,16 +59,20 @@ class ingredientService {
 
   // select distinct ri.recipe_id from recipes_ingredients ri inner join ingredients i on ri.ingredient_id = i.id where i.ingredient_name like '%chicken%';
   // return array of recipe_id
-  getRecipeIdByIngredient(ingredient){
-    return this.knex.select()
-                    .distinct("recipes_ingredients.recipe_id")
-                    .from("recipes_ingredients")
-                    .innerJoin("ingredients", "recipes_ingredients.ingredient_id", "ingredients.id")
-                    .where('ingredients.ingredient_name', 'like', `%${ingredient}%`)
-                    .then((rows) => {
-                      return rows.map(x => x["recipe_id"]);
-                    })
-
+  getRecipeIdByIngredient(ingredient) {
+    return this.knex
+      .select()
+      .distinct("recipes_ingredients.recipe_id")
+      .from("recipes_ingredients")
+      .innerJoin(
+        "ingredients",
+        "recipes_ingredients.ingredient_id",
+        "ingredients.id"
+      )
+      .where("ingredients.ingredient_name", "like", `%${ingredient}%`)
+      .then((rows) => {
+        return rows.map((x) => x["recipe_id"]);
+      });
   }
 }
 

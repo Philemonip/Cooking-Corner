@@ -50,7 +50,6 @@ const isLoggedIn = (req, res, next) => {
   }
 
   console.log("COOKIES not authenticated", req.cookies);
-  console.log(req.session.passport.user, "passport USER");
   console.log(req.user, "USER");
   res.redirect("/login");
 };
@@ -80,18 +79,18 @@ const ingredientService = require("./services/ingredientService");
 const recipeService = require("./services/recipeService");
 const reviewService = require("./services/reviewService");
 const categoryService = require("./services/categoryService");
-const userService = require("./services/userService");
 
 const IngredientService = new ingredientService(knex);
 const RecipeService = new recipeService(knex);
 const ReviewService = new reviewService(knex);
 const CategoryService = new categoryService(knex);
-const UserService = new userService(knex);
 
 const recipeRouter = require("./routers/recipeRouter");
 const categoryRouter = require("./routers/categoryRouter");
 const homeRouter = require("./routers/homeRouter")(express);
 const loginRouter = require("./routers/loginRouter")(express);
+const bookmarkRouter = require("./routers/bookmarkRouter")(express);
+const uploadRouter = require("./routers/uploadRouter")(express);
 
 const RecipeRouter = new recipeRouter(
   RecipeService,
@@ -103,15 +102,16 @@ const CategoryRouter = new categoryRouter(
   RecipeService,
   IngredientService,
   ReviewService,
-  CategoryService,
-  UserService
+  CategoryService
 );
 
 //Routers for app.use
 app.use("/recipe", RecipeRouter.router());
 app.use("/category", CategoryRouter.router());
 app.use("/", loginRouter);
-app.use("/home", isLoggedIn, homeRouter);
+app.use("/home", homeRouter);
+app.use("/bookmark", bookmarkRouter);
+app.use("/upload", uploadRouter);
 
 //Category route
 // const categoryRouter = require("./routers/categoryRouter")(express);
@@ -150,8 +150,8 @@ app.use("/testinginsert", (request, response) => {
 });
 app.use("/ingredients", IngredientRouterTmp.router());
 
-app.listen(4000, () => {
-  console.log("App running on 4000");
+app.listen(3000, () => {
+  console.log("App running on 3000");
 });
 
 //FACEBOOK LOGIN HTTPS

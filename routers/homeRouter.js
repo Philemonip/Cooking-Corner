@@ -3,6 +3,7 @@
 module.exports = (express) => {
   const router = express.Router();
   const axios = require("axios");
+  const { isLoggedIn } = require("./loginRouter");
 
   const knexConfig = require("../knexfile")["development"];
   const knex = require("knex")(knexConfig);
@@ -13,10 +14,13 @@ module.exports = (express) => {
   router.route("/").get(topRecipes);
   //   router.route("/:query").get(getTopTenQuery);
 
+
   function topRecipes(req, res) {
+    console.log('req', req)
     return homeService
       .getTopRecipes()
       .then((info) => {
+
         // console.log("top", info);
         // console.log(info[0].title);
         res.render("home", {
@@ -24,6 +28,7 @@ module.exports = (express) => {
           //   score: info.rating,
           //   image: info.image_path,
           info: info,
+
         });
       })
       .catch((err) => res.status(500).json(err));

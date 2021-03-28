@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 <link rel="stylesheet" href="../css/recipe.css">
+<link rel="stylesheet" href="../css/style.css">
 
 <div class="recipeTitle">
     <h2><b>{{title}}</b></h2>
@@ -20,10 +21,33 @@
             <div class="list-inline">
                 <p><b>Preparation Time:</b> {{time}} mins </p>
                 <p><b>Servings:</b> {{servings}}</p>
-                <p><b>Score:</b> {{score}}</p>
+                <p><b>Score:</b> {{score}}
+                    <i class="fab fa-pagelines"></i>
+                </p>
+
             </div>
             <br>
-            <button type="button" class="bookmark-btn btn btn-primary" name="add-bookmark">Bookmark</button>
+            <button id="post-bookmark" type="button" class="bookmark-add-btn btn btn-primary" name="add-bookmark"
+                data-recipeid={{api_id}}>Bookmark</button>
+
+            <div class="social-container">
+
+                <a class="social-icon" data-tooltip="email@gmail.com" href="mailto:email@gmail.com" target="_blank">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                </a>
+
+                <a class="social-icon" data-tooltip="Twitter" href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+                    target="_blank">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+
+                <a class="social-icon" data-tooltip="Facebook"
+                    href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
+                    target="_blank">
+                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                </a>
+
+            </div>
         </div>
     </div>
 </div>
@@ -52,101 +76,107 @@
     </div>
 </section>
 
+
+{{!-- COMMENTS / REVIEWS --}}
 <div class="container-fluid info-container flex-column d-flex justify-content-center">
     <div class="row">
-
         <div class="comment-container col-12">
             <div class="comment-title col-6 row">
                 <h2><b>Comments</b></h2>
             </div>
         </div>
 
-        <div class="comment col-12">
-            <div class="float-left">
-                <div class="review starrating risingstar d-flex justify-content-center flex-row-reverse col-12">
-                    <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 star"></label>
-                    <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 star"></label>
-                    <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 star"></label>
-                    <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 star"></label>
-                    <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"></label>
+        {{!-- {{#if user}} --}}
+        {{#if myReview}}
+        <div class="my-review">
+            <article class="card card-body own-review">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><b>Username:</b> {{myReview.[0].username}}</p>
+                        <div class="star-rating">
+                            <div class="list-inline">
+                                <p><b>Rating:</b> {{myReview.[0].rating}} <i class="fa fa-star"></i></p>
+                            </div>
+                        </div>
+                        <p class="display-area"><b>Your Comment:</b> {{myReview.[0].comment}}</p>
+                        <button class="edit-btn btn btn-outline-warning">Edit Your Review</button>
+                        <button class="del-btn btn btn-outline-danger">Delete</button>
+                    </div>
+                </div>
+            </article>
+        </div>
+        {{else}}
+        {{!-- WRITE NEW REVIEW --}}
+        <div class="row">
+            <div class="review col-12">
+                <div class="float-left">
+                    <div class="review starrating risingstar d-flex justify-content-center flex-row-reverse col-12">
+                        <input type="radio" id="star5" name="rating" value="5" /><label for="star5"
+                            title="5 star"></label>
+                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4"
+                            title="4 star"></label>
+                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3"
+                            title="3 star"></label>
+                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2"
+                            title="2 star"></label>
+                        <input type="radio" id="star1" name="rating" value="1" /><label for="star1"
+                            title="1 star"></label>
+                    </div>
                 </div>
             </div>
+            <div>
+                <div>
+
+                    <div class="review col-12"><textarea class="note-area" cols="60" rows="10" name="note"
+                            placeholder="Write your review or comment to the recipe here!"></textarea></div>
+                    <div class="review col-12">
+                    </div>
+
+                </div>
+                <div class="review col-12">
+                    <button id="post" type="button" class="btn btn-outline-warning">SUBMIT</button>
+
+                </div>
+
+            </div>
+            {{/if}}
+            {{!-- {{/if}} --}}
+            {{!-- EDIT OWN REVIEW --}}
+            <div class="review-container">
+                <div class="hidden edit-myreview ">
+                    <form ref="edit" id="edit">
+                        <textarea class="edit-rating" name="rating">{{myReview.[0].rating}}</textarea>
+                        <br>
+                        <textarea class="edit-area" cols="60" rows="10" name="edit">{{myReview.[0].comment}}</textarea>
+                        <br>
+                        <button type="button" class="save-btn btn btn-primary">SAVE CHANGES</button>
+                        <button type="button" class="cancel-btn btn btn-primary">CANCEL</button>
+                    </form>
+                </div>
+            </div>
+
+            {{!-- REVIEW FROM ALL USERS --}}
+            {{#each recipeReview}}
+            <article class="card card-body">
+                <div class="recipe_review">
+                    <p>username:{{this.username}}</p>
+                    <p>rating:{{this.rating}}</p>
+                    <p class="display-area">comment:{{this.comment}}</p>
+                </div>
+            </article>
+            {{/each}}
+
+
+            {{!-- Related Recipes --}}
+            <h3>Related Recipes</h3>
+            <section class="text-center">
+                {{#each similarRecipesArray}}
+                <div class="row">
+                    <a href="../recipe/{{this.id}}">{{this.title}}</a>
+                </div>
+                {{/each}}
+            </section>
         </div>
 
-        <div class="review col-12">
-            <form ref="note" id="note">
-
-                <div class="review col-12"><textarea class="note-area" cols="60" rows="10" name="note"
-                        placeholder="Write your review or comment to the recipe here!"></textarea></div>
-        </div>
-
-        <div class="review col-12">
-            <button id="post" type="button" class="btn btn-outline-warning">SUBMIT</button>
-            </form>
-        </div>
-
-    </div>
-
-    <div class="review-container">
-        {{#each myReview}}
-        <div class="hidden edit-myreview ">
-            <form ref="edit" id="edit">
-                <textarea class="edit-rating" name="rating">{{this.rating}}</textarea>
-                <br>
-                <textarea class="edit-area" cols="60" rows="10" name="edit">{{this.comment}}</textarea>
-                <br>
-                <button type="button" class="save-btn btn btn-primary">SAVE CHANGES</button>
-                <button type="button" class="cancel-btn btn btn-primary">CANCEL</button>
-            </form>
-        </div>
-    </div>
-    {{/each}}
-
-
-    {{#each myReview}}
-    <div class="my_review">
-        <p>username:{{this.username}}</p>
-        <p>rating:{{this.rating}}</p>
-        <p class="display-area">comment:{{this.comment}}</p>
-        <button class="edit-btn">Edit</button>
-        <button class="del-btn">Delete</button>
-    </div>
-    {{/each}}
-
-    {{#each recipeReview}}
-    <div class="recipe_review">
-        <p>username:{{this.username}}</p>
-        <p>rating:{{this.rating}}</p>
-        <p class="display-area">comment:{{this.comment}}</p>
-    </div>
-    {{/each}}
-
-    <h3>Related</h3>
-    <section class="text-center">
-        {{#each similarRecipesArray}}
-        <div class="row">
-            <a href={{this.sourceUrl}}>Title: {{this.title}}</a>
-        </div>
-        {{/each}}
-    </section>
-
-</div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-
-{{!--
-<script type="text/javascript">
-
-
-    let info = document.getElementById('hiddendata').innerHTML
-    console.log(typeof info)
-
-    let wrapper = document.createElement('p')
-    wrapper.innerHTML = info
-    console.log(wrapper)
-
-    document.getElementById('summary').appendChild(wrapper)
-        //document.getElementById('summary').textContent = info
-
-</script> --}}
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>

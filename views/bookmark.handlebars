@@ -1,0 +1,35 @@
+<div class="bookmark-container container-fluid search-wrapper mt-3">
+    {{#unless bookmarkRecipeArr}}
+    <h2>You don't have any bookmarked recipes</h2>
+    {{/unless}}
+
+    {{#each bookmarkRecipeArr}}
+    <div class="row bookmark_card d-flex">
+        <div class="image-container">
+            <img class="img-fluid bookmark_image" width="180px" height="auto" src="{{this.image_path}}">
+            <div class="row d-flex justify-content-center">
+                <button id={{this.api_id}} class="bookmark-del-btn" data-recipeid={{this.api_id}}>
+                    REMOVE</button>
+            </div>
+        </div>
+
+        {{!--
+        </a> --}}
+        <div class="recipe-info col-9">
+            <p class="recipe-link">
+
+                <a href="../recipe/{{this.api_id}}">
+                    {{math @index "+" 1}}. {{this.title}}
+                </a>
+            </p>
+            <p>
+                {{this.rating}}
+                <i class="fab fa-pagelines"></i>
+            </p>
+            {{!-- <p><b style="font-size: 15px">Description:</b><br><br> {{{this.summary}}}</p> --}}
+        </div>
+    </div>
+    {{/each}}
+
+
+</div>

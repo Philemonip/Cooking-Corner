@@ -1,3 +1,19 @@
+.mb-5 {
+  font-size: 30px;
+  text-align: center;
+  font-weight: 300;
+  color: white;
+  text-shadow: 1px 2px #0f0f0f;
+}
+#drinks {
+  font-size: 20px;
+  text-align: center;
+  font-family: "Rouge Script", cursive;
+
+  color: white;
+  text-shadow: 1px 2px #0f0f0f;
+}
+
 /* typeahead */
 
 .typeahead {
@@ -35,6 +51,11 @@
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
+.tt-menu img {
+  border-radius: 20px;
+  min-height: 100%;
+}
+
 .tt-suggestion {
   padding: 3px 20px;
   line-height: 24px;
@@ -52,4 +73,12 @@
 
 .twitter-typeahead {
   width: 40%;
+}
+
+/* landing page */
+.jumbotron {
+  background-image: url("../image/homejumbotron.jpeg");
+  background-size: cover;
+  color: rgb(233, 233, 233);
+  height: 440px;
 }

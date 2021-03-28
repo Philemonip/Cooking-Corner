@@ -1,9 +1,9 @@
 {{#if user}}
 
 
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Cooking Corner</a>
+        <a class="navbar-brand" href="/home">Cooking Corner</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -12,32 +12,31 @@
             <ul class="navbar-nav ml-auto ">
 
                 <li class="nav-item dropdown">
-
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                         Categories
-                    </a>
+                    </button>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Japanese</a></li>
-                        <li><a class="dropdown-item" href="#">Italian</a></li>
-                        <li><a class="dropdown-item" href="#">Chinese</a></li>
-                        <li><a class="dropdown-item" href="#">Mediterranean</a></li>
-                        <li><a class="dropdown-item" href="#">Vietnamese</a></li>
-                        <li><a class="dropdown-item" href="#">Thai</a></li>
-                        <li><a class="dropdown-item" href="#">Chicken</a></li>
-                        <li><a class="dropdown-item" href="#">Rice</a></li>
-                        <li><a class="dropdown-item" href="#">Pasta</a></li>
-                        <li><a class="dropdown-item" href="#">Beef</a></li>
-                        <li><a class="dropdown-item" href="#">Pork</a></li>
-                        <li><a class="dropdown-item" href="#">Egg</a></li>
+                        <li><a class="dropdown-item" href="/category/cuisine=Japanese">Japanese</a></li>
+                        <li><a class="dropdown-item" href="/category/cuisine=Italian">Italian</a></li>
+                        <li><a class="dropdown-item" href="/category/cuisine=Chinese">Chinese</a></li>
+                        <li><a class="dropdown-item" href="/category/cuisine=Mediterranean">Mediterranean</a></li>
+                        <li><a class="dropdown-item" href="/category/cuisine=Vietnamese">Vietnamese</a></li>
+                        <li><a class="dropdown-item" href="/category/cuisine=Thai">Thai</a></li>
+                        <li><a class="dropdown-item" href="/category/ingredient=Chicken">Chicken</a></li>
+                        <li><a class="dropdown-item" href="/category/ingredient=Rice">Rice</a></li>
+                        <li><a class="dropdown-item" href="/category/ingredient=Pasta">Pasta</a></li>
+                        <li><a class="dropdown-item" href="/category/ingredient=Beef">Beef</a></li>
+                        <li><a class="dropdown-item" href="/category/ingredient=Pork">Pork</a></li>
+                        <li><a class="dropdown-item" href="/category/ingredient=Egg">Egg</a></li>
                     </ul>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="#">Bookmarks</a>
+                    <a class="nav-link text-light" href="/bookmark">Bookmarks</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="#">Hello {{user}}</a>
+                    <a class="nav-link text-light" href="/login">Hello {{user}}</a>
                 </li>
 
             </ul>
@@ -47,9 +46,9 @@
 
 {{else}}
 
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Cooking Corner</a>
+        <a class="navbar-brand" href="/home">Cooking Corner</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -58,29 +57,27 @@
             <ul class="navbar-nav ml-auto ">
 
                 <li class="nav-item dropdown">
-
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                         Categories
-                    </a>
+                    </button>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Japanese</a></li>
-                        <li><a class="dropdown-item" href="#">Italian</a></li>
-                        <li><a class="dropdown-item" href="#">Chinese</a></li>
-                        <li><a class="dropdown-item" href="#">Mediterranean</a></li>
-                        <li><a class="dropdown-item" href="#">Vietnamese</a></li>
-                        <li><a class="dropdown-item" href="#">Thai</a></li>
-                        <li><a class="dropdown-item" href="#">Chicken</a></li>
-                        <li><a class="dropdown-item" href="#">Rice</a></li>
-                        <li><a class="dropdown-item" href="#">Pasta</a></li>
-                        <li><a class="dropdown-item" href="#">Beef</a></li>
-                        <li><a class="dropdown-item" href="#">Pork</a></li>
-                        <li><a class="dropdown-item" href="#">Egg</a></li>
+                        <li><a class="dropdown-item" href="/category/cuisine=Japanese">Japanese</a></li>
+                        <li><a class="dropdown-item" href="/category/cuisine=Italian">Italian</a></li>
+                        <li><a class="dropdown-item" href="/category/cuisine=Chinese">Chinese</a></li>
+                        <li><a class="dropdown-item" href="/category/cuisine=Mediterranean">Mediterranean</a></li>
+                        <li><a class="dropdown-item" href="/category/cuisine=Vietnamese">Vietnamese</a></li>
+                        <li><a class="dropdown-item" href="/category/cuisine=Thai">Thai</a></li>
+                        <li><a class="dropdown-item" href="/category/ingredient=Chicken">Chicken</a></li>
+                        <li><a class="dropdown-item" href="/category/ingredient=Rice">Rice</a></li>
+                        <li><a class="dropdown-item" href="/category/ingredient=Pasta">Pasta</a></li>
+                        <li><a class="dropdown-item" href="/category/ingredient=Beef">Beef</a></li>
+                        <li><a class="dropdown-item" href="/category/ingredient=Pork">Pork</a></li>
+                        <li><a class="dropdown-item" href="/category/ingredient=Egg">Egg</a></li>
                     </ul>
                 </li>
-
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="/login">Bookmarks</a>
+                    <a class="nav-link text-light" href="/bookmark">Bookmarks</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light" href="/login">Login</a>

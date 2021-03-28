@@ -1,31 +1,45 @@
 const express = require("express");
+const { isLoggedIn } = require("./loginRouter");
+
+const knex = require("knex")({
+  client: "postgresql",
+  connection: {
+    database: process.env.DATABASE,
+    user: process.env.USERNAME,
+    password: process.env.PASSWORD,
+  },
+});
 
 class recipeRouter {
-  constructor(recipeService, ingredientService, reviewService, categoryService) {
+  constructor(
+    recipeService,
+    ingredientService,
+    reviewService,
+    categoryService
+  ) {
     this.recipeService = recipeService;
     this.ingredientService = ingredientService;
     this.reviewService = reviewService;
     this.categoryService = categoryService;
+    this.isLoggedIn = function (req, res, next) {
+      console.log(req.user);
+      if (req.isAuthenticated()) {
+        return next();
+      }
+      const url = req.originalUrl;
+      console.log("redirect-query", url);
+      // res.redirect(`/login?redirect=${url}`);
+      res.redirect(`/login`);
+    };
   }
-
-  // isLoggedIn(req, res, next) {
-  //   console.log(req.user);
-  //   if (req.isAuthenticated()) {
-  //     return next();
-  //   }
-  //   const url = req.originalUrl;
-  //   console.log("redirect-query", url);
-  //   // res.redirect(`/login?redirect=${url}`);
-  //   res.redirect(`/login`);
-  // }
 
   router() {
     let router = express.Router();
     // router.get("/api/users", this.getAllRecipe.bind(this));
     router.get("/:id", this.fetchRecipe.bind(this));
     router.post("/:id", this.postReview.bind(this));
-    router.post("/:id", this.putReview.bind(this));
-    router.post("/:id", this.deleteReview.bind(this));
+    router.put("/:id", this.putReview.bind(this));
+    router.delete("/:id", this.deleteReview.bind(this));
     // router.post("/insert", this.postRecipe.bind(this));
 
     // router.put("/api/users/:id", this.editUser.bind(this));
@@ -35,13 +49,14 @@ class recipeRouter {
 
   async fetchRecipe(request, response) {
     let id = request.params.id;
-    let user_id = request.user.id;
+    let user = request.user;
+    console.log(user);
     console.log("fetchRecipe " + id);
 
     let apiData = await this.recipeService.fetchRecipeByAPI(id);
-
+    
     let recipeFromDB = await this.recipeService.getRecipeByApiId(id);
-
+    
     let recipe_id = undefined;
 
     if (recipeFromDB.length === 0) {
@@ -86,29 +101,41 @@ class recipeRouter {
       }
 
       let cuisine_array = apiData.cuisines;
-      if(cuisine_array !== undefined){
-        if(cuisine_array.length > 0){
-          for(let j = 0; j < cuisine_array.length; j++){
-            let insertCuisine = await this.categoryService.insertRecipeCuisine(recipe_id, cuisine_array[j]);
+      if (cuisine_array !== undefined) {
+        if (cuisine_array.length > 0) {
+          for (let j = 0; j < cuisine_array.length; j++) {
+            let insertCuisine = await this.categoryService.insertRecipeCuisine(
+              recipe_id,
+              cuisine_array[j]
+            );
           }
         }
       }
-      
     } else {
       // if recipe exist in DB, get recipe_id
       recipe_id = (await this.recipeService.getRecipeByApiId(id))[0]["id"];
       console.log(recipe_id);
     }
 
-    let myReview = await this.reviewService.list(recipe_id, user_id);
-    let recipeReview = await this.reviewService.listall(recipe_id, user_id);
+    var myReview = [];
+    var recipeReview = [];
+    if (request.isAuthenticated()) {
+      myReview = await this.reviewService.list(recipe_id, user.id);
+      recipeReview = await this.reviewService.listall(recipe_id, user.id);
+    }
+    else{
+      recipeReview = await this.reviewService.listByRecipeID(recipe_id);
+    }
 
     apiData["myReview"] = myReview;
     apiData["recipeReview"] = recipeReview;
-
+    
     // related recipes
     let numberOfSimilar = 3;
-    let similarRecipesArray = await this.recipeService.fetchRelatedRecipes(id, numberOfSimilar);
+    let similarRecipesArray = await this.recipeService.fetchRelatedRecipes(
+      id,
+      numberOfSimilar
+    );
     console.log(`similarRecipesArray ${similarRecipesArray}`);
     console.log(similarRecipesArray);
     // if(similarRecipesArray.length > 0){
@@ -121,8 +148,11 @@ class recipeRouter {
 
     let renderInstructions = apiData.analyzedInstructions.split("@@");
 
+    console.log("USER", user);
     response.render("recipes", {
+      user: user,
       title: apiData.title,
+      api_id: apiData.id,
       author: apiData.sourceName,
       image: apiData.image,
       time: apiData.readyInMinutes,
@@ -131,32 +161,32 @@ class recipeRouter {
       summary: apiData.summary,
       ingredients: apiData.extendedIngredients,
       instructions: renderInstructions,
-      myReview: apiData.myReview,
-      recipeReview: apiData.recipeReview,
-      similarRecipesArray: similarRecipesArray
+      myReview: myReview,
+      recipeReview: recipeReview,
+      similarRecipesArray: similarRecipesArray,
     });
   }
 
   async postReview(req, res) {
+    if (req.isAuthenticated()) {
+      //  console.log(req.user);
+      // console.log("PASSPORT", req.session.passport.user.id);
+      return this.reviewService
+        .add(req.params.id, req.user.id, req.body.note, req.body.rating)
+        .then(() => {
+          console.log("OUT OF DATABASE redirect");
+          res.redirect("/");
+        })
+        .catch((err) => res.status(500).json(err));
 
-    if (request.isAuthenticated()){
-    //  console.log(req.user);
-    // console.log("PASSPORT", req.session.passport.user.id);
-    return this.reviewService
-      .add(req.params.id, req.user.id, req.body.note, req.body.rating)
-      .then(() => {
-        console.log("OUT OF DATABASE redirect");
-        res.redirect("/");
-      })
-      .catch((err) => res.status(500).json(err));
-
-    // .then(() => {
-    //   res.redirect("/");
-    // });
+      // .then(() => {
+      //   res.redirect("/");
+      // });
+    }
   }
 
   async putReview(req, res) {
-    console.log(req.body);
+    console.log("UPDATE REVIEW", req.user);
     return this.reviewService
       .update(req.params.id, req.user.id, req.body.edit, req.body.rating)
       .then(() => res.send("put"))

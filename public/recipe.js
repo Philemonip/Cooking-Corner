@@ -48,7 +48,7 @@ $(function () {
 
   $(".save-btn").click((e) => {
     e.preventDefault();
-    console.log(rating);
+    // console.log(rating);
     let rating = $(".edit-rating").val();
     let data = $(".edit-area").val();
     let recipeid = window.location.pathname.slice(8);

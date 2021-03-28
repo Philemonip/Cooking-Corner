@@ -1,6 +1,3 @@
-// const knexConfig = require("../knexfile")["development"];
-// const knex = require("knex")(knexConfig);
-
 class reviewService {
   constructor(knex) {
     this.knex = knex;
@@ -17,6 +14,7 @@ class reviewService {
       )
       .from("reviews")
       .innerJoin("recipes", "reviews.recipe_id", "recipes.api_id")
+      // .innerJoin("recipes", "reviews.recipe_id", "recipes.id")
       .innerJoin("users", "reviews.user_id", "users.id")
       .where("recipes.id", recipeid)
       .andWhere("reviews.user_id", userid)
@@ -27,7 +25,7 @@ class reviewService {
   }
 
   listall(recipeid, userid) {
-    return this.knex
+    let query = this.knex
       .select(
         "reviews.user_id",
         "reviews.recipe_id",
@@ -37,65 +35,64 @@ class reviewService {
       )
       .from("reviews")
       .innerJoin("recipes", "reviews.recipe_id", "recipes.api_id")
+      // .innerJoin("recipes", "reviews.recipe_id", "recipes.id")
       .innerJoin("users", "reviews.user_id", "users.id")
       .where("recipes.id", recipeid)
       .whereNot("reviews.user_id", userid)
-      .orderBy("reviews.created_at")
+      .orderBy("reviews.created_at");
+
+    if (userid) {
+      query.whereNot("reviews.user_id", userid);
+    }
+    return query
       .then((data) => {
-        // console.log(data);
         return data;
+      })
+      .then(null, function (err) {
+        //query fail
+        console.log(err);
+      });
+  }
+
+  listByRecipeID(recipeid) {
+    let query = this.knex
+      .select(
+        "reviews.user_id",
+        "reviews.recipe_id",
+        "reviews.rating",
+        "reviews.comment"
+      )
+      .from("reviews")
+      .innerJoin("recipes", "reviews.recipe_id", "recipes.api_id")
+      // .innerJoin("recipes", "reviews.recipe_id", "recipes.id")
+      .where("recipes.id", recipeid)
+      .orderBy("reviews.created_at");
+    return query
+      .then((data) => {
+        return data;
+      })
+      .then(null, function (err) {
+        //query fail
+        console.log(err);
       });
   }
 
   add(recipeid, userid, comment, rating) {
-    console.log(recipeid, userid, comment, rating);
+    if (userid) {
+      console.log(recipeid, userid, comment, rating);
 
-    // return this.knex("test").insert({ name: "Attempt" });
-    return this.knex
-      .insert({
-        user_id: userid,
-        recipe_id: recipeid,
-        rating: rating,
-        comment: comment,
-      })
-      .into("reviews")
-      .catch((err) => console.log(err));
-
-    // .then(() => {
-    //   console.log("inserted");
-    //   return;
-    // });
-
-    // await this.knex
-    //   .insert({
-    // user_id: 1,
-    // recipe_id: 9999,
-    // comment: "comment",
-    // rating: 3,
-    //   })
-    //   .into("reviews");
-    // console.log("YO");
-    // return;
-    // if (userid) {
-    //   console.log("Here");
-    //   console.log(this.knex);
-    //   let query = this.knex("reviews").insert({
-    // user_id: 1,
-    // recipe_id: 9999,
-    // comment: "comment",
-    // rating: 3,
-    //   });
-
-    //   query.then(() => {
-    //     console.log("finsihed");
-    //     return true;
-    //   });
-    //   console.log("FAILED out of the if?!");
-    // } else {
-    //   console.log("Here error!");
-
-    //   throw new Error("Cannot add note from non-existent user");
-    // }
+      // return this.knex("test").insert({ name: "Attempt" });
+      return this.knex
+        .insert({
+          user_id: userid,
+          recipe_id: recipeid,
+          rating: rating,
+          comment: comment,
+        })
+        .into("reviews");
+    } else {
+      throw new Error("You must be logged in to post a comment");
+    }
   }
 
   update(recipeid, userid, comment, rating) {
