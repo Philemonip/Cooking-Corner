@@ -34,117 +34,112 @@ class recipeRouter {
   }
 
   async fetchRecipe(request, response) {
-    if (request.isAuthenticated()){
-      let id = request.params.id;
-      let user_id = request.user.id;
-      console.log("fetchRecipe " + id);
+    let id = request.params.id;
+    let user_id = request.user.id;
+    console.log("fetchRecipe " + id);
 
-      let apiData = await this.recipeService.fetchRecipeByAPI(id);
+    let apiData = await this.recipeService.fetchRecipeByAPI(id);
 
-      let recipeFromDB = await this.recipeService.getRecipeByApiId(id);
+    let recipeFromDB = await this.recipeService.getRecipeByApiId(id);
 
-      let recipe_id = undefined;
+    let recipe_id = undefined;
 
-      if (recipeFromDB.length === 0) {
-        // if recipe not exist in DB, insert it and get recipe_id
-        let recipe = {};
-        recipe["api_id"] = id;
-        recipe["title"] = apiData["title"];
-        recipe["author"] = apiData["sourceName"];
-        recipe["summary"] = apiData["summary"];
-        recipe["instructions"] = apiData["analyzedInstructions"];
-        recipe["preparation_time"] = apiData["readyInMinutes"];
-        recipe["image_path"] = apiData["image"];
-        recipe["servings"] = apiData["servings"];
-        recipe["rating"] = apiData["spoonacularScore"];
-        recipe["difficulty"] = 5; //hardcoded
+    if (recipeFromDB.length === 0) {
+      // if recipe not exist in DB, insert it and get recipe_id
+      let recipe = {};
+      recipe["api_id"] = id;
+      recipe["title"] = apiData["title"];
+      recipe["author"] = apiData["sourceName"];
+      recipe["summary"] = apiData["summary"];
+      recipe["instructions"] = apiData["analyzedInstructions"];
+      recipe["preparation_time"] = apiData["readyInMinutes"];
+      recipe["image_path"] = apiData["image"];
+      recipe["servings"] = apiData["servings"];
+      recipe["rating"] = apiData["spoonacularScore"];
+      recipe["difficulty"] = 5; //hardcoded
 
-        console.log(recipe);
-        // get recipe_id after inserting recipe
-        recipe_id = await this.recipeService.addRecipe(recipe).then((value) => {
-          return value;
+      console.log(recipe);
+      // get recipe_id after inserting recipe
+      recipe_id = await this.recipeService.addRecipe(recipe).then((value) => {
+        return value;
+      });
+
+      let ingredients_array = apiData.extendedIngredients;
+
+      for (let j = 0; j < ingredients_array.length; j++) {
+        let check = await this.ingredientService.addIngredientIfNotExist({
+          id: ingredients_array[j]["id"],
+          ingredient_name: ingredients_array[j]["nameClean"],
         });
-
-        let ingredients_array = apiData.extendedIngredients;
-
-        for (let j = 0; j < ingredients_array.length; j++) {
-          let check = await this.ingredientService.addIngredientIfNotExist({
-            id: ingredients_array[j]["id"],
-            ingredient_name: ingredients_array[j]["nameClean"],
-          });
-        }
-
-        for (let j = 0; j < ingredients_array.length; j++) {
-          let ingredient = {};
-          ingredient["recipe_id"] = recipe_id;
-          ingredient["ingredient_id"] = ingredients_array[j]["id"];
-          ingredient["quantity"] = ingredients_array[j]["amount"];
-          ingredient["unit"] = ingredients_array[j]["unit"];
-
-          let addIngredient = await this.ingredientService.addIngredient(
-            ingredient
-          );
-        }
-
-        let cuisine_array = apiData.cuisines;
-        if(cuisine_array !== undefined){
-          if(cuisine_array.length > 0){
-            for(let j = 0; j < cuisine_array.length; j++){
-              let insertCuisine = await this.categoryService.insertRecipeCuisine(recipe_id, cuisine_array[j]);
-            }
-          }
-        }
-        
-      } else {
-        // if recipe exist in DB, get recipe_id
-        recipe_id = (await this.recipeService.getRecipeByApiId(id))[0]["id"];
-        console.log(recipe_id);
       }
 
-      let myReview = await this.reviewService.list(recipe_id, user_id);
-      let recipeReview = await this.reviewService.listall(recipe_id, user_id);
+      for (let j = 0; j < ingredients_array.length; j++) {
+        let ingredient = {};
+        ingredient["recipe_id"] = recipe_id;
+        ingredient["ingredient_id"] = ingredients_array[j]["id"];
+        ingredient["quantity"] = ingredients_array[j]["amount"];
+        ingredient["unit"] = ingredients_array[j]["unit"];
 
-      apiData["myReview"] = myReview;
-      apiData["recipeReview"] = recipeReview;
+        let addIngredient = await this.ingredientService.addIngredient(
+          ingredient
+        );
+      }
 
-      // related recipes
-      let numberOfSimilar = 3;
-      let similarRecipesArray = await this.recipeService.fetchRelatedRecipes(id, numberOfSimilar);
-      console.log(`similarRecipesArray ${similarRecipesArray}`);
-      console.log(similarRecipesArray);
-      // if(similarRecipesArray.length > 0){
-      //   for(let j = 0; j < Math.min(similarRecipesArray.length, numberOfSimilar); j++){
-      //     let similarRecipe = await this.recipeService.fetchRecipeByAPI(id);
-      //   }
-      // }
-
-      console.log("final", apiData);
-
-      let renderInstructions = apiData.analyzedInstructions.split("@@");
-
-      response.render("recipes", {
-        title: apiData.title,
-        author: apiData.sourceName,
-        image: apiData.image,
-        time: apiData.readyInMinutes,
-        servings: apiData.servings,
-        score: apiData.spoonacularScore,
-        summary: apiData.summary,
-        ingredients: apiData.extendedIngredients,
-        instructions: renderInstructions,
-        myReview: apiData.myReview,
-        recipeReview: apiData.recipeReview,
-        similarRecipesArray: similarRecipesArray
-      });
+      let cuisine_array = apiData.cuisines;
+      if(cuisine_array !== undefined){
+        if(cuisine_array.length > 0){
+          for(let j = 0; j < cuisine_array.length; j++){
+            let insertCuisine = await this.categoryService.insertRecipeCuisine(recipe_id, cuisine_array[j]);
+          }
+        }
+      }
+      
+    } else {
+      // if recipe exist in DB, get recipe_id
+      recipe_id = (await this.recipeService.getRecipeByApiId(id))[0]["id"];
+      console.log(recipe_id);
     }
-    else{
-      console.log("Not authorized");
-      response.send("403 page");
-      // response.status(403);
-    }
+
+    let myReview = await this.reviewService.list(recipe_id, user_id);
+    let recipeReview = await this.reviewService.listall(recipe_id, user_id);
+
+    apiData["myReview"] = myReview;
+    apiData["recipeReview"] = recipeReview;
+
+    // related recipes
+    let numberOfSimilar = 3;
+    let similarRecipesArray = await this.recipeService.fetchRelatedRecipes(id, numberOfSimilar);
+    console.log(`similarRecipesArray ${similarRecipesArray}`);
+    console.log(similarRecipesArray);
+    // if(similarRecipesArray.length > 0){
+    //   for(let j = 0; j < Math.min(similarRecipesArray.length, numberOfSimilar); j++){
+    //     let similarRecipe = await this.recipeService.fetchRecipeByAPI(id);
+    //   }
+    // }
+
+    console.log("final", apiData);
+
+    let renderInstructions = apiData.analyzedInstructions.split("@@");
+
+    response.render("recipes", {
+      title: apiData.title,
+      author: apiData.sourceName,
+      image: apiData.image,
+      time: apiData.readyInMinutes,
+      servings: apiData.servings,
+      score: apiData.spoonacularScore,
+      summary: apiData.summary,
+      ingredients: apiData.extendedIngredients,
+      instructions: renderInstructions,
+      myReview: apiData.myReview,
+      recipeReview: apiData.recipeReview,
+      similarRecipesArray: similarRecipesArray
+    });
   }
 
   async postReview(req, res) {
+
+    if (request.isAuthenticated()){
     //  console.log(req.user);
     // console.log("PASSPORT", req.session.passport.user.id);
     return this.reviewService
