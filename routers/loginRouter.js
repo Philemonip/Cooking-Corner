@@ -15,8 +15,15 @@ module.exports = (express) => {
       return next();
     }
     res.redirect("/login");
+    //res.render() {other layouts}
   };
 
+  module.exports.isNotLoggedIn = function (req, res, next) {
+    if (req.isAuthenticated()) {
+      res.redirect("/login");
+    }
+    return next();
+  };
   //Get user id to render on index
   // function getUserName(userid) {
   //   return knex("usertable")

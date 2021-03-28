@@ -90,7 +90,7 @@ const categoryRouter = require("./routers/categoryRouter");
 const homeRouter = require("./routers/homeRouter")(express);
 const loginRouter = require("./routers/loginRouter")(express);
 const bookmarkRouter = require("./routers/bookmarkRouter")(express);
-// const uploadRouter = require("./routers/uploadRouter")(express);
+const uploadRouter = require("./routers/uploadRouter")(express);
 
 const RecipeRouter = new recipeRouter(
   RecipeService,
@@ -111,7 +111,7 @@ app.use("/category", CategoryRouter.router());
 app.use("/", loginRouter);
 app.use("/home", isLoggedIn, homeRouter);
 app.use("/bookmark", bookmarkRouter);
-// app.use("/upload", uploadRouter);
+app.use("/upload", uploadRouter);
 
 //Category route
 // const categoryRouter = require("./routers/categoryRouter")(express);

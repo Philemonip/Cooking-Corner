@@ -24,7 +24,6 @@ module.exports = class UploadService {
           "summary",
           "instructions",
           "rating",
-          "image_path",
           "servings",
           "difficulty"
         )

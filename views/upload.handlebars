@@ -34,9 +34,10 @@
     {{/each}}
 
     <div class="container">
-        <form action="#" enctype="multipart/form-data" method="POST">
-            <input type="file" id="fileid" name="recipeimageupload" accept="IMAGE/JPG" , "IMAGE/PNG" , "IMAGE/JPEG">
-            <input class="recipe-upload-btn" type="submit" value="Upload" / hidden>
+
+        <form action="/upload/upload-recipe" enctype="multipart/form-data" method="POST">
+            <input type="file" id="fileid" name="recipeimageupload" accept="image/*">
+            {{!-- <input class="recipe-upload-btn" type="submit" value="Upload"> --}}
             <br />
 
             <br />
@@ -77,8 +78,9 @@
             </div>
             <div class="row">
                 <div class="col d-flex justify-content-end">
-                    <button type="button" class="reicpe-save-btn btn btn-primary btn btn-outline-warning"
-                        data-userid="{{userid}}">Save Changes</button>
+                    <input class="recipe-upload-btn" type="submit" value="Upload">
+                    {{!-- <button type="button" class="reicpe-save-btn btn btn-primary btn btn-outline-warning"
+                        data-userid="{{userid}}">Save Changes</button> --}}
                 </div>
             </div>
         </form>
