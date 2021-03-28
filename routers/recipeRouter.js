@@ -123,9 +123,9 @@ class recipeRouter {
       myReview = await this.reviewService.list(recipe_id, user.id);
       recipeReview = await this.reviewService.listall(recipe_id, user.id);
     }
-    else{
-      recipeReview = await this.reviewService.listByRecipeID(recipe_id);
-    }
+    // else{
+    //   recipeReview = await this.reviewService.listByRecipeID(recipe_id);
+    // }
 
     apiData["myReview"] = myReview;
     apiData["recipeReview"] = recipeReview;
