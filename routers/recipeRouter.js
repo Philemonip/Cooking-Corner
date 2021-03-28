@@ -11,10 +11,16 @@ const knex = require("knex")({
 });
 
 class recipeRouter {
-  constructor(recipeService, ingredientService, reviewService) {
+  constructor(
+    recipeService,
+    ingredientService,
+    reviewService,
+    categoryService
+  ) {
     this.recipeService = recipeService;
     this.ingredientService = ingredientService;
     this.reviewService = reviewService;
+    this.categoryService = categoryService;
     this.isLoggedIn = function (req, res, next) {
       console.log(req.user);
       if (req.isAuthenticated()) {
@@ -91,6 +97,18 @@ class recipeRouter {
           ingredient
         );
       }
+
+      let cuisine_array = apiData.cuisines;
+      if (cuisine_array !== undefined) {
+        if (cuisine_array.length > 0) {
+          for (let j = 0; j < cuisine_array.length; j++) {
+            let insertCuisine = await this.categoryService.insertRecipeCuisine(
+              recipe_id,
+              cuisine_array[j]
+            );
+          }
+        }
+      }
     } else {
       // if recipe exist in DB, get recipe_id
       recipe_id = (await this.recipeService.getRecipeByApiId(id))[0]["id"];
@@ -103,6 +121,20 @@ class recipeRouter {
 
     apiData["myReview"] = myReview;
     apiData["recipeReview"] = recipeReview;
+
+    // related recipes
+    let numberOfSimilar = 3;
+    let similarRecipesArray = await this.recipeService.fetchRelatedRecipes(
+      id,
+      numberOfSimilar
+    );
+    console.log(`similarRecipesArray ${similarRecipesArray}`);
+    console.log(similarRecipesArray);
+    // if(similarRecipesArray.length > 0){
+    //   for(let j = 0; j < Math.min(similarRecipesArray.length, numberOfSimilar); j++){
+    //     let similarRecipe = await this.recipeService.fetchRecipeByAPI(id);
+    //   }
+    // }
 
     console.log("final", apiData);
 
@@ -121,26 +153,29 @@ class recipeRouter {
       instructions: renderInstructions,
       myReview: apiData.myReview,
       recipeReview: apiData.recipeReview,
+      similarRecipesArray: similarRecipesArray,
     });
   }
   async postReview(req, res) {
-    //  console.log(req.user);
-    // console.log("PASSPORT", req.session.passport.user.id);
-    return this.reviewService
-      .add(req.params.id, req.user.id, req.body.note, req.body.rating)
-      .then(() => {
-        console.log("OUT OF DATABASE redirect");
-        res.redirect("/");
-      })
-      .catch((err) => res.status(500).json(err));
+    if (req.isAuthenticated()) {
+      //  console.log(req.user);
+      // console.log("PASSPORT", req.session.passport.user.id);
+      return this.reviewService
+        .add(req.params.id, req.user.id, req.body.note, req.body.rating)
+        .then(() => {
+          console.log("OUT OF DATABASE redirect");
+          res.redirect("/");
+        })
+        .catch((err) => res.status(500).json(err));
 
-    // .then(() => {
-    //   res.redirect("/");
-    // });
+      // .then(() => {
+      //   res.redirect("/");
+      // });
+    }
   }
 
   async putReview(req, res) {
-    console.log(req.body);
+    console.log("UPDATE REVIEW", req.user);
     return this.reviewService
       .update(req.params.id, req.user.id, req.body.edit, req.body.rating)
       .then(() => res.send("put"))

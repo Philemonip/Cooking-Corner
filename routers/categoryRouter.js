@@ -5,14 +5,12 @@ class categoryRouter {
     recipeService,
     ingredientService,
     reviewService,
-    categoryService,
-    userService
+    categoryService
   ) {
     this.recipeService = recipeService;
     this.ingredientService = ingredientService;
     this.reviewService = reviewService;
     this.categoryService = categoryService;
-    this.userService = userService;
   }
 
   router() {
@@ -54,7 +52,7 @@ class categoryRouter {
     let recipes_res = await this.categoryService.getRecipeByCuisine(cuisine);
 
     let recipe_array = [];
-    for (let i = 0; i < Math.min(recipes_res.length, 6); i++) {
+    for (let i = 0; i < Math.min(recipes_res.length, 10); i++) {
       recipe_array.push(recipes_res[i]);
     }
     // console.log(recipe_array);

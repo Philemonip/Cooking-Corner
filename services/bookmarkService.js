@@ -6,9 +6,11 @@ module.exports = class BookmarkService {
   //Get favourite recipes
   getFavouriteRecipe(userid) {
     return this.knex("users_favourite_recipes")
-      .select("recipe_id")
+      .select("recipe_id", "id")
+      .orderBy("id", "asc")
       .where("user_id", userid)
       .then((data) => {
+        console.log("GET bookmark recipe", data);
         return data;
       })
       .catch((err) => res.status(500).json(err));
@@ -30,7 +32,13 @@ module.exports = class BookmarkService {
           "difficulty"
         )
         // .select("*")
+        .innerJoin(
+          "users_favourite_recipes",
+          "recipes.api_id",
+          "users_favourite_recipes.recipe_id"
+        )
         .whereIn("api_id", bookmarkArr)
+        .orderBy("users_favourite_recipes.id", "asc")
         .then((data) => data)
     );
   }
@@ -63,15 +71,5 @@ module.exports = class BookmarkService {
       .where("recipe_id", recipeid)
       .andWhere("user_id", userid)
       .del();
-  }
-
-  getUploadedRecipe(userid) {
-    return this.knex("users_uploaded_recipes")
-      .where("user_id", userid)
-      .select("recipe_id")
-      .then((data) => {
-        return data;
-      })
-      .catch((err) => res.status(500).json(err));
   }
 };
