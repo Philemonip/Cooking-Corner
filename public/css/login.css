@@ -16,6 +16,11 @@ body {
   background: linear-gradient(0.25turn, #707070, #ebebeb);
 }
 
+.logo {
+  position: absolute;
+  height: 900px;
+}
+
 .border {
   border: black;
   padding-bottom: 50vh;
@@ -130,8 +135,42 @@ a {
   }
 }
 
-@media screen and (max-height: 800px) {
+@media screen and (max-height: 849px) {
   #sign {
     margin-top: 20px;
+  }
+  .logo {
+    position: absolute;
+    height: 750px;
+  }
+  .border {
+    padding-bottom: 40vh;
+  }
+}
+
+@media screen and (max-height: 770px) {
+  .border {
+    padding-bottom: 40vh;
+    margin-top: 20vh;
+  }
+}
+
+@media screen and (max-height: 721px) {
+  .border {
+    padding-bottom: 45vh;
+    margin-top: 20vh;
+  }
+}
+
+@media screen and (max-height: 653px) {
+  .border {
+    padding-bottom: 50vh;
+    margin-top: 20vh;
+  }
+  .logo {
+    height: 700px;
+  }
+  .cc {
+    width: 150px;
   }
 }

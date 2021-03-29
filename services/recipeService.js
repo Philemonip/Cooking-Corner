@@ -84,10 +84,11 @@ class recipeService {
         // `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=ba5aba2ccf0049008995c74dfc10d62a`
 
         // `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=4f16ead4d40f4c0a8e11bb0cf90baf12`
-        `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=6fa2e48e10f2494894de75c0a4fb39dd`
+        // `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=6fa2e48e10f2494894de75c0a4fb39dd`
         // `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=a4d183cc31764135992ccf253da20f6b`
 
         // `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=3263717946814c3c96b2318c7e6cbe5a`
+        `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=f41cce227afd42d8a2ee7c01b7572a27`
       )
       .then((info) => {
         let apiData = info.data;
@@ -132,11 +133,11 @@ class recipeService {
     number = number || 3;
     return axios
       .get(
-
-        `https://api.spoonacular.com/recipes/${api_id}/similar?number=${number}&apiKey=6fa2e48e10f2494894de75c0a4fb39dd`
+        // `https://api.spoonacular.com/recipes/${api_id}/similar?number=${number}&apiKey=6fa2e48e10f2494894de75c0a4fb39dd`
         // `https://api.spoonacular.com/recipes/${api_id}/similar?number=${number}&apiKey=ba5aba2ccf0049008995c74dfc10d62a` //1096010
 
         // `https://api.spoonacular.com/recipes/${api_id}/similar?number=${number}&apiKey=3263717946814c3c96b2318c7e6cbe5a`
+        `https://api.spoonacular.com/recipes/${api_id}/similar?number=${number}&apiKey=f41cce227afd42d8a2ee7c01b7572a27`
       )
       .then((info) => {
         return info.data;

@@ -56,7 +56,8 @@ module.exports = (express) => {
   router.get(
     "/facebook",
     passport.authenticate("facebook", {
-      scope: ["profile", "email"],
+      // scope: ["profile", "email"],
+      scope: ["email"],
     })
   );
 
