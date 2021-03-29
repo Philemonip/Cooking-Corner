@@ -17,14 +17,16 @@ module.exports = (express) => {
   router.route("/:recipeId").delete(isLoggedIn, deleteFavouriteRecipe);
 
   function userFavouriteRecipe(req, res) {
-    console.log(req.user, 'isthereuser?');
+    let user = req.user.id;
+    console.log("USER", user);
+    console.log(req.user, "isthereuser?");
     return bookmarkService
       .getFavouriteRecipe(req.user.id)
       .then((data) => {
         console.log(data);
         let bookmarkArr = data.map((x) => (x = x.recipe_id));
         console.log(bookmarkArr);
-        return bookmarkService.favouriteRecipeInfo(bookmarkArr);
+        return bookmarkService.favouriteRecipeInfo(bookmarkArr, user);
       })
       .then((bookmarkRecipeArr) => {
         console.log("LIST", bookmarkRecipeArr);
@@ -41,6 +43,7 @@ module.exports = (express) => {
     return bookmarkService
       .checkFavouritelist(req.user.id, req.params.recipeId)
       .then((hvData) => {
+        console.log("CHECKBOOKMARK", hvData);
         if (hvData) {
           return "";
         } else {
