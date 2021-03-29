@@ -49,9 +49,9 @@ class recipeRouter {
 
   async fetchRecipe(request, response) {
     let id = request.params.id;
+
     let user = request.user;
     console.log(user);
-    console.log("REQUEST USER", request.user);
     console.log("fetchRecipe " + id);
 
     let apiData = await this.recipeService.fetchRecipeByAPI(id);
@@ -118,22 +118,23 @@ class recipeRouter {
       console.log(recipe_id);
     }
 
+    //List review for logged-in user and list all user reviews
     var myReview = [];
     var recipeReview = [];
+
     if (request.isAuthenticated()) {
       // let user = request.user;
       // console.log("REVIEW BRACKET", user);
       myReview = await this.reviewService.list(recipe_id, user.id);
       recipeReview = await this.reviewService.listall(recipe_id, user.id);
+    } else {
+      recipeReview = await this.reviewService.listall(recipe_id);
     }
-    // else{
-    //   recipeReview = await this.reviewService.listByRecipeID(recipe_id);
-    // }
 
     apiData["myReview"] = myReview;
     apiData["recipeReview"] = recipeReview;
 
-    // related recipes
+    // Related recipes
     let numberOfSimilar = 3;
     let similarRecipesArray = await this.recipeService.fetchRelatedRecipes(
       id,
@@ -149,10 +150,21 @@ class recipeRouter {
 
     console.log("final", apiData);
 
+    //Number of Review
+    let recipeReviewCount;
+    if (request.isAuthenticated()) {
+      recipeReviewCount = apiData.myReview.length + apiData.recipeReview.length;
+    } else {
+      recipeReviewCount = apiData.recipeReview.length;
+    }
+    // console.log(recipeReviewCount);
+
+    //Instructions data maniupulation
     let renderInstructions = apiData.analyzedInstructions.split("@@");
 
+    //Render
     response.render("recipes", {
-      // user: user,
+      user: user,
       title: apiData.title,
       api_id: apiData.id,
       author: apiData.sourceName,
@@ -166,6 +178,7 @@ class recipeRouter {
       myReview: myReview,
       recipeReview: recipeReview,
       similarRecipesArray: similarRecipesArray,
+      recipeReviewCount: recipeReviewCount,
     });
   }
 

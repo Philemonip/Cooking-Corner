@@ -1,7 +1,7 @@
 "use strict";
 
-//Add comment
 $(function () {
+  //Add comment
   $("#post").click((e) => {
     console.log("post running");
     e.preventDefault();
@@ -84,5 +84,11 @@ $(function () {
         window.location.reload();
       }, 200)
     );
+  });
+
+  //Print function
+  $("#print").click((e) => {
+    e.preventDefault();
+    window.print();
   });
 });
