@@ -10,7 +10,12 @@ module.exports = class UploadService {
       .where("user_id", userid)
       .then((data) => {
         return data.map((x) => x["recipe_id"]);
-      })
+      });
+  }
+
+  addUploadedRecipe(userid, recipe_id) {
+    return this.knex("users_uploaded_recipes")
+      .insert({user_id: userid, recipe_id: recipe_id});
   }
 
   uploadedRecipeInfo(uploadArr) {

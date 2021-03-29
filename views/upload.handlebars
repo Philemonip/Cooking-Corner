@@ -20,7 +20,7 @@
         <div class="recipe-info col-9">
             <p class="recipe-link">
 
-                <a href="/{{this.id}}">
+                <a href="../recipe/{{this.api_id}}">
                     {{math @index "+" 1}}. {{this.title}}
                 </a>
             </p>
@@ -36,6 +36,7 @@
     <div class="container">
 
         <form action="/upload/upload-recipe" enctype="multipart/form-data" method="POST">
+        
             <input type="file" id="fileid" name="recipeimageupload" accept="image/*">
             {{!-- <input class="recipe-upload-btn" type="submit" value="Upload"> --}}
             <br />
@@ -43,37 +44,37 @@
             <br />
             <div class="row">
                 <label>Title</label>
-                <textarea class="recipe-title-edit" placeholder=""></textarea>
+                <textarea class="recipe-title-edit" name="title" placeholder=""></textarea>
             </div>
             <br />
             <div class="row">
                 <label>Summary</label>
-                <textarea class="recipe-summary-edit" rows="10" cols="50" placeholder=""></textarea>
+                <textarea class="recipe-summary-edit" name="summary" rows="10" cols="50" placeholder=""></textarea>
             </div>
             <br />
             <div class="row">
                 <label>Instructions</label>
-                <textarea class="recipe-instructions-edit" rows="10" cols="50" placeholder=""></textarea>
+                <textarea class="recipe-instructions-edit" name="instructions" rows="10" cols="50" placeholder=""></textarea>
             </div>
             <br />
             <div class="row">
                 <label>Preparation time</label>
-                <input type="number" class="preptime" name="quantity" min="1" max="120">
+                <input type="number" class="preptime" name="preparation_time" min="1" max="120">
                 <p>minutes</p><br><br>
             </div>
             <br />
             <div class="row">
                 <label>Servings</label>
-                <input type="number" class="serving-quantity" name="quantity" min="1" max="10">
+                <input type="number" class="serving-quantity" name="servings" min="1" max="10">
                 <p>people</p><br><br>
             </div>
             <br />
             <div class="row">
                 <label>Difficulty</label>
-                <select class="recipe-difficulty-edit js-states form-control" style="width: 20%" id="id_label_single">
-                    <option>Easy</option>
-                    <option>Medium</option>
-                    <option>Hard</option>
+                <select class="recipe-difficulty-edit js-states form-control" name="difficulty" style="width: 20%" id="id_label_single">
+                    <option value="1">Easy</option>
+                    <option value="2">Medium</option>
+                    <option value="3">Hard</option>
                 </select>
             </div>
             <div class="row">
