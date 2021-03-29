@@ -64,7 +64,7 @@ module.exports = (express) => {
             }
           })
           console.log(newdata);
-          res.render("upload", { username: user.username, uploadedRecipeArr: newdata });
+          res.render("upload", { user: req.user, username: user.username, uploadedRecipeArr: newdata });
         });
     }
     else {
@@ -142,7 +142,7 @@ module.exports = (express) => {
 
         getUploadRecipe(req.user.id)
           .then((data) => {
-            res.render("upload", { username: req.user.username, uploadedRecipeArr: data });
+            res.render("upload", { user: req.user, username: req.user.username, uploadedRecipeArr: data });
           });
       }
     });

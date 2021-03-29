@@ -20,7 +20,8 @@
         <div class="recipe-info col-9">
             <p class="recipe-link">
 
-                <a href="../recipe/{{this.api_id}}">
+                {{!-- <a href="../recipe/recipe_id={{this.id}}&api_id={{this.api_id}}"> --}}
+                <a href="../recipe/recipe_id={{this.id}}/api_id={{this.api_id}}">
                     {{math @index "+" 1}}. {{this.title}}
                 </a>
             </p>

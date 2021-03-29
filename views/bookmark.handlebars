@@ -1,35 +1,41 @@
+<link rel="stylesheet" href="../css/style.css">
+
 <div class="bookmark-container container-fluid search-wrapper mt-3">
     {{#unless bookmarkRecipeArr}}
     <h2>You don't have any bookmarked recipes</h2>
     {{/unless}}
 
-    {{#each bookmarkRecipeArr}}
-    <div class="row bookmark_card d-flex">
-        <div class="image-container">
-            <img class="img-fluid bookmark_image" width="180px" height="auto" src="{{this.image_path}}">
-            <div class="row d-flex justify-content-center">
-                <button id={{this.api_id}} class="bookmark-del-btn" data-recipeid={{this.api_id}}>
-                    REMOVE</button>
+    <div class="row">
+
+        {{#each bookmarkRecipeArr}}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="row bookmark_card d-flex justify-content-center px-4 py-3">
+                <div class="image-container">
+                    <img class="img-fluid bookmark_image" src="{{this.image_path}}">
+
+                </div>
+
+                <div class="recipe-info text-center">
+                    <p class="recipe-link">
+
+                        <a href="../recipe/{{this.api_id}}">
+                            {{math @index "+" 1}}. {{this.title}}
+                        </a>
+                    </p>
+                    <p>
+                        {{this.rating}}
+                        <i class="fab fa-pagelines"></i>
+                    </p>
+                    <div class="row d-flex justify-content-center">
+                        <button id={{this.api_id}} class="btn btn-info bookmark-del-btn" data-recipeid={{this.api_id}}>
+                            REMOVE</button>
+                    </div>
+                    {{!-- <p><b style="font-size: 15px">Description:</b><br><br> {{{this.summary}}}</p> --}}
+                </div>
             </div>
         </div>
+        {{/each}}
 
-        {{!--
-        </a> --}}
-        <div class="recipe-info col-9">
-            <p class="recipe-link">
-
-                <a href="../recipe/{{this.api_id}}">
-                    {{math @index "+" 1}}. {{this.title}}
-                </a>
-            </p>
-            <p>
-                {{this.rating}}
-                <i class="fab fa-pagelines"></i>
-            </p>
-            {{!-- <p><b style="font-size: 15px">Description:</b><br><br> {{{this.summary}}}</p> --}}
-        </div>
     </div>
-    {{/each}}
-
 
 </div>

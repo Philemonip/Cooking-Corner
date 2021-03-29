@@ -100,8 +100,8 @@ app.use("/", homeRouter);
 app.use("/bookmark", bookmarkRouter);
 app.use("/upload", uploadRouter);
 
-app.listen(3000, () => {
-  console.log("App running on 3000");
+app.listen(4000, () => {
+  console.log("App running on 4000");
 });
 
 //FACEBOOK LOGIN HTTPS

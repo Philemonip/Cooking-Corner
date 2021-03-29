@@ -4,24 +4,26 @@ class reviewService {
   }
 
   list(recipeid, userid) {
-    return this.knex
-      .select(
-        "reviews.user_id",
-        "reviews.recipe_id",
-        "reviews.rating",
-        "reviews.comment",
-        "users.username"
-      )
-      .from("reviews")
-      .innerJoin("recipes", "reviews.recipe_id", "recipes.api_id")
-      // .innerJoin("recipes", "reviews.recipe_id", "recipes.id")
-      .innerJoin("users", "reviews.user_id", "users.id")
-      .where("recipes.id", recipeid)
-      .andWhere("reviews.user_id", userid)
-      .then((data) => {
-        // console.log(data);
-        return data;
-      });
+    return (
+      this.knex
+        .select(
+          "reviews.user_id",
+          "reviews.recipe_id",
+          "reviews.rating",
+          "reviews.comment",
+          "users.username"
+        )
+        .from("reviews")
+        .innerJoin("recipes", "reviews.recipe_id", "recipes.api_id")
+        // .innerJoin("recipes", "reviews.recipe_id", "recipes.id")
+        .innerJoin("users", "reviews.user_id", "users.id")
+        .where("recipes.id", recipeid)
+        .andWhere("reviews.user_id", userid)
+        .then((data) => {
+          // console.log(data);
+          return data;
+        })
+    );
   }
 
   listall(recipeid, userid) {
@@ -38,7 +40,6 @@ class reviewService {
       // .innerJoin("recipes", "reviews.recipe_id", "recipes.id")
       .innerJoin("users", "reviews.user_id", "users.id")
       .where("recipes.id", recipeid)
-      .whereNot("reviews.user_id", userid)
       .orderBy("reviews.created_at");
 
     if (userid) {

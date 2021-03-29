@@ -15,6 +15,15 @@ class ingredientService {
       });
   }
 
+  getIngredientName(ingredient_id){
+    return this.knex("ingredients")
+      .select("ingredient_name")
+      .where({ id: ingredient_id })
+      .then((row) => {
+        return row[0]["ingredient_name"];
+      })
+  }
+
   addIngredient(ingredients) {
     return this.knex("recipes_ingredients")
       .insert(ingredients)
