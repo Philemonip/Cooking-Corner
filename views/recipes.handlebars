@@ -101,7 +101,7 @@
                 <h2><b>Reviews({{recipeReviewCount}})</b></h2>
             </div>
 
-            <div class="col-6 comment-box">
+            <div class="col-lg-6 col-md-12 comment-box">
                 {{#if user}}
                 {{#if myReview}}
                 <div class="my-review">
@@ -165,12 +165,25 @@
                 <div class="review-container">
                     <div class="hidden edit-myreview ">
                         <form ref="edit" id="edit">
-                            <textarea class="edit-rating" name="rating">{{myReview.[0].rating}}</textarea>
-                            <br>
+
                             <textarea class="edit-area" cols="60" rows="10"
                                 name="edit">{{myReview.[0].comment}}</textarea>
                             <br>
-                            <button type="button" class="save-btn btn btn-secondary">SAVE CHANGES</button>
+                            <div
+                                class="edit-rating review starrating risingstar d-flex flex-row-reverse justify-content-center col-12">
+                                <input type="radio" id="star5" name="rating" value="5" /><label for="star5"
+                                    title="5 star"></label>
+                                <input type="radio" id="star4" name="rating" value="4" /><label for="star4"
+                                    title="4 star"></label>
+                                <input type="radio" id="star3" name="rating" value="3" /><label for="star3"
+                                    title="3 star"></label>
+                                <input type="radio" id="star2" name="rating" value="2" /><label for="star2"
+                                    title="2 star"></label>
+                                <input type="radio" id="star1" name="rating" value="1" /><label for="star1"
+                                    title="1 star"></label>
+                            </div>
+                            <br>
+                            <button type="button" class="save-btn btn btn-success">SAVE CHANGES</button>
                             <button type="button" class="cancel-btn btn btn-primary">CANCEL</button>
                         </form>
                     </div>
@@ -193,7 +206,7 @@
 
             {{!-- Related Recipes --}}
 
-            <div class="col-6">
+            <div class="col-lg-6 col-md-12">
                 <h3>Related Recipes</h3>
                 <section class="text-center related-recipes">
                     {{#each similarRecipesArray}}
