@@ -1,15 +1,18 @@
 <link rel="stylesheet" href="./css/login.css">
+<div class="logo">
+    <img src="./image/logo.png" width="200px" alt="" class="cc">
+</div>
 <div class="border">
     <div class="loginpage">
         <div class="login text-center">
             <h1 class="text-black display-3" id="head">Login</h1>
             <form action="/login" method="post" style="display:block">
                 <label for="username">Username</label>
-                <input class='login' type="text" name="username" placeholder="Type your username" required="required"
+                <input class='login' type="text" name="username" placeholder="Insert username" required="required"
                     id='username' />
                 <label for="password">Password</label>
-                <input class='login' type="password" name="password" placeholder="Type your password"
-                    required="required" id='password' />
+                <input class='login' type="password" name="password" placeholder="Insert password" required="required"
+                    id='password' />
                 <button type="submit" class="btn btn-secondary btn-block px-4" id="button">Login</button>
             </form>
 
@@ -34,11 +37,11 @@
                         </svg> &nbsp; Facebook
                     </button>
                 </a>
-                <p id="sign">Or Sign Up using</p>
+                <p id="sign">Or if you don't have an account</p>
                 <a href="/signup">
                     <button type="submit" class="btn btn-outline-dark waves-effect btn-block btn-large register"
-                        id="signup">Sign
-                        Up</button>
+                        id="signup">Sign up
+                    </button>
                 </a>
             </div>
         </div>
