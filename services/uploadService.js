@@ -10,7 +10,7 @@ module.exports = class UploadService {
       .where("user_id", userid)
       .then((data) => {
         return data.map((x) => x["recipe_id"]);
-      })
+      });
   }
 
   uploadedRecipeInfo(uploadArr) {

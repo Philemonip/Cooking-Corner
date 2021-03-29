@@ -33,7 +33,9 @@ module.exports = (express) => {
     let uploadedRecipeIDArray = await uploadService.getUploadedRecipe(user_id);
     let uploadedRecipeArr = [];
     for (let i = 0; i < uploadedRecipeIDArray.length; i++) {
-      let uploadedRecipe = await recipeService.getRecipeById(uploadedRecipeIDArray[i]);
+      let uploadedRecipe = await recipeService.getRecipeById(
+        uploadedRecipeIDArray[i]
+      );
       uploadedRecipeArr.push(uploadedRecipe[0]);
     }
     return uploadedRecipeArr;
@@ -42,15 +44,16 @@ module.exports = (express) => {
   router.route("/upload-recipe").get((req, res) => {
     if (req.isAuthenticated()) {
       let user = req.user;
-      getUploadRecipe(user.id)
-        .then((data) => {
-          res.render("upload", { username: user.username, uploadedRecipeArr: data });
+      getUploadRecipe(user.id).then((data) => {
+        res.render("upload", {
+          username: user.username,
+          uploadedRecipeArr: data,
         });
-    }
-    else {
+      });
+    } else {
       console.log("Login required");
     }
-  })
+  });
 
   // router.route("upload-recipe-remove").delete((res, req) => {
   //   console.log(res);
@@ -73,13 +76,10 @@ module.exports = (express) => {
       const filepath = req.file.path;
 
       console.log(req.file);
-      console.log(req);
-      console.log(req.body);
-      console.log(req.body.title);
 
       return knex
         .insert({
-          image_Path: filepath,
+          image_path: filepath,
         })
         .into("recipes");
       // .then(() => res.json({ success: true, filename }))
@@ -90,24 +90,6 @@ module.exports = (express) => {
       //     stack: err.stack,
       //   })
       // );
-
-      // let recipe = {};
-      // recipe["api_id"] = 0;
-      // recipe["title"] = apiData["title"];
-      // recipe["author"] = apiData["sourceName"];
-      // recipe["summary"] = apiData["summary"];
-      // recipe["instructions"] = apiData["analyzedInstructions"];
-      // recipe["preparation_time"] = apiData["readyInMinutes"];
-      // recipe["image_path"] = filepath;
-      // recipe["servings"] = apiData["servings"];
-      // recipe["rating"] = apiData["spoonacularScore"];
-      // recipe["difficulty"] = 5; //hardcoded
-
-      // console.log(recipe);
-      // // get recipe_id after inserting recipe
-      // recipe_id = await recipeService.addRecipe(recipe).then((value) => {
-      //   return value;
-      // });
     });
 
     if (req.fileValidationError) {

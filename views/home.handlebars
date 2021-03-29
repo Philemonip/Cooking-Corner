@@ -29,9 +29,9 @@
     <div class="row">
 
       {{#each info}}
-      <div class="card col-lg-3 col-md-6 col-sm-12">
+      <div class="card col-lg-3 col-md-6 col-sm-12 mb-4">
         <a href="../recipe/{{this.api_id}}">
-          <img class="img-fluid" src="{{this.image_path}}">
+          <img class="img-fluid my-3" src="{{this.image_path}}">
         </a>
         <div class="container">
           <div class="row">
@@ -45,7 +45,7 @@
               </div>
             </div>
             <div class="col">
-              <button id="post-bookmark" type="button" class="bookmark-add-btn btn btn-primary" name="add-bookmark"
+              <button id="post-bookmark" type="button" class="bookmark-add-btn btn btn-danger" name="add-bookmark"
                 data-recipeid={{this.api_id}}>Bookmark</button>
             </div>
           </div>

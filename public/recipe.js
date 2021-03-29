@@ -1,7 +1,7 @@
 "use strict";
 
-//Add comment
 $(function () {
+  //Add comment
   $("#post").click((e) => {
     console.log("post running");
     e.preventDefault();
@@ -49,8 +49,15 @@ $(function () {
   $(".save-btn").click((e) => {
     e.preventDefault();
     // console.log(rating);
-    let rating = $(".edit-rating").val();
+    let rating;
+    let starValue = $("input[type = 'radio']");
+    for (let i = 0; i < starValue.length; i++) {
+      if (starValue[i].checked) {
+        rating = starValue[i].value;
+      }
+    }
     let data = $(".edit-area").val();
+    // let rating = $(".edit-rating").val();
     let recipeid = window.location.pathname.slice(8);
 
     $.ajax({
@@ -84,5 +91,11 @@ $(function () {
         window.location.reload();
       }, 200)
     );
+  });
+
+  //Print function
+  $("#print").click((e) => {
+    e.preventDefault();
+    window.print();
   });
 });
