@@ -140,21 +140,23 @@
                     </div>
 
                 </div>
-                {{/if}}
-                {{!-- {{/if}} --}}
-                {{!-- EDIT OWN REVIEW --}}
-                <div class="review-container">
-                    <div class="hidden edit-myreview ">
-                        <form ref="edit" id="edit">
-                            <textarea class="edit-rating" name="rating">{{myReview.[0].rating}}</textarea>
-                            <br>
-                            <textarea class="edit-area" cols="60" rows="10"
-                                name="edit">{{myReview.[0].comment}}</textarea>
-                            <br>
-                            <button type="button" class="save-btn btn btn-primary">SAVE CHANGES</button>
-                            <button type="button" class="cancel-btn btn btn-primary">CANCEL</button>
-                        </form>
-                    </div>
+
+
+            </div>
+            {{/if}}
+            {{!-- {{/if}} --}}
+            {{!-- EDIT OWN REVIEW --}}
+            <div class="review-container">
+                <div class="hidden edit-myreview ">
+                    <form ref="edit" id="edit">
+                        <textarea class="edit-rating" name="rating">{{myReview.[0].rating}}</textarea>
+                        <br>
+                        <textarea class="edit-area" cols="60" rows="10" name="edit">{{myReview.[0].comment}}</textarea>
+                        <br>
+                        <button type="button" class="save-btn btn btn-secondary">SAVE CHANGES</button>
+                        <button type="button" class="cancel-btn btn btn-primary">CANCEL</button>
+                    </form>
+
                 </div>
 
                 {{!-- REVIEW FROM ALL USERS --}}
