@@ -14,21 +14,20 @@ module.exports = (express) => {
   router.route("/").get(topRecipes);
   //   router.route("/:query").get(getTopTenQuery);
 
-
   function topRecipes(req, res) {
-    console.log('req', req)
+    let user = req.user;
+    // console.log("req", req.user);
     return homeService
       .getTopRecipes()
       .then((info) => {
-
         // console.log("top", info);
         // console.log(info[0].title);
         res.render("home", {
           //   title: info.title,
           //   score: info.rating,
           //   image: info.image_path,
+          user: user,
           info: info,
-
         });
       })
       .catch((err) => res.status(500).json(err));

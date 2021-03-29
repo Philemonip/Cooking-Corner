@@ -6,8 +6,7 @@ $(function () {
     datumTokenizer: (datum) => Bloodhound.tokenizers.whitespace(datum.value),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {
-      url:
-        "https://api.spoonacular.com/recipes/complexSearch?query=%QUERY&apiKey=ba0539d66f294cfe98a6984e24c8f8d6",
+      url: `https://api.spoonacular.com/recipes/complexSearch?query=%QUERY&apiKey=ba0539d66f294cfe98a6984e24c8f8d6`,
       // apiKey=ba5aba2ccf0049008995c74dfc10d62a
 
       wildcard: "%QUERY",

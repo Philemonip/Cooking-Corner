@@ -24,48 +24,19 @@ module.exports = (express) => {
     }
     return next();
   };
-  //Get user id to render on index
-  // function getUserName(userid) {
-  //   return knex("usertable")
-  //     .select("id", "username")
-  //     .where("id", userid)
-  //     .orderBy("id")
-  //     .then((data) => {
-  //       userName = data[0].username;
-  //       return data[0].username;
-  //     })
-  //     .catch((err) => console.error(err));
-  // }
-
-  // Serve Main page
-  // router.get("/", function (req, res) {
-  //   // router.get("/", isLoggedIn, function (req, res) {
-  //   console.log("GET MAIN");
-  //   // getUserName(req.session.passport.user)
-  //   //   .then(() => noteService.list(req.session.passport.user))
-  //   // .then((noteArr) => {
-  //   res.render("index");
-  //   // {
-  //   //     currentuser: "Julie",
-  //   //     array: noteArr,
-  //   //   });
-  //   // })
-  //   // .catch((err) => res.status(500).json(err));
-  // });
 
   //Login page
-
-  router.get("/upload", (req, res) => {
-    res.render("upload");
-  });
-
-  router.get("/", (req, res) => {
-    res.render("home");
-  });
-
   router.get("/login", (req, res) => {
     res.render("login", { layout: "signupAndLogin" });
   });
+
+  router.post(
+    "/login",
+    passport.authenticate("local-login", {
+      successRedirect: "/",
+      failureRedirect: "/error",
+    })
+  );
 
   router.get(
     "/google",
@@ -77,7 +48,7 @@ module.exports = (express) => {
   router.get(
     "/google/callback",
     passport.authenticate("google", {
-      successRedirect: "/home",
+      successRedirect: "/",
       // failureRedirect: "/error",
     })
   );
@@ -92,16 +63,8 @@ module.exports = (express) => {
   router.get(
     "/facebook/callback",
     passport.authenticate("facebook", {
-      successRedirect: "/home",
+      successRedirect: "/",
       // failureRedirect: "/error",
-    })
-  );
-
-  router.post(
-    "/login",
-    passport.authenticate("local-login", {
-      successRedirect: "/home",
-      failureRedirect: "/error",
     })
   );
 
@@ -120,9 +83,14 @@ module.exports = (express) => {
 
   //Logout redirect
   router.get("/logout", (req, res) => {
-    req.session = null;
+    // req.session = null;
     req.logout();
-    res.redirect("/login");
+    res.redirect("/");
+  });
+
+  //test
+  router.get("/upload", (req, res) => {
+    res.render("upload");
   });
 
   router.get("/error", (req, res) => {
