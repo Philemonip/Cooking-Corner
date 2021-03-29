@@ -104,29 +104,26 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       console.log("profile", profile);
+
+      //       use the profile info (profile id) to check if the user is registered in your db
+      let userResult = await knex(TABLE_NAME).where("facebook_id", profile.id);
+      if (userResult == 0) {
+        const user = {
+          facebook_id: profile.id,
+          username: profile.displayName,
+        };
+        let userId = await knex(TABLE_NAME).insert(user).returning("id");
+        console.log("new user logged in through facebook");
+        console.log(userId);
+        user.id = userId[0];
+        console.log("New facebook user: ", user);
+        return done(null, user);
+      } else {
+        done(null, userResult[0]);
+      }
     }
   )
 );
-//       use the profile info (profile id) to check if the user is registered in your db
-//       let userResult = await knex(TABLE_NAME).where("google_id", profile.id);
-//       if (userResult == 0) {
-//         const user = {
-//           google_id: profile.id,
-//           username: profile.emails[0].value,
-//           profile_pic: profile.photos[0].value,
-//         };
-//         let userId = await knex(TABLE_NAME).insert(user).returning("id");
-//         console.log("new user logged in through google");
-//         console.log(userId);
-//         user.id = userId[0];
-//         console.log("New google user: ", user);
-//         return done(null, user);
-//       } else {
-//         done(null, userResult[0]);
-//       }
-//     }
-//   )
-// );
 
 // Google Strategy
 //   Strategies in passport require a `verify` function, which accept

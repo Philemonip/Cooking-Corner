@@ -16,6 +16,11 @@ body {
   background: linear-gradient(0.25turn, #ebebeb, #707070);
 }
 
+.logo {
+  position: absolute;
+  height: 400px;
+}
+
 .border {
   border: black;
   padding-bottom: 43vh;
@@ -118,5 +123,22 @@ a {
 @media screen and (max-height: 800px) {
   #sign {
     margin-top: 20px;
+  }
+  .border {
+    padding-bottom: 30vh;
+  }
+  .logo {
+    height: 350px;
+  }
+}
+@media screen and (max-height: 670px) {
+  .border {
+    padding-bottom: 35vh;
+  }
+  .cc {
+    width: 150px;
+  }
+  .logo {
+    height: 320px;
   }
 }

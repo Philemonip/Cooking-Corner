@@ -133,7 +133,6 @@ class recipeService {
     number = number || 3;
     return axios
       .get(
-
         // `https://api.spoonacular.com/recipes/${api_id}/similar?number=${number}&apiKey=6fa2e48e10f2494894de75c0a4fb39dd`
         // `https://api.spoonacular.com/recipes/${api_id}/similar?number=${number}&apiKey=ba5aba2ccf0049008995c74dfc10d62a` //1096010
 

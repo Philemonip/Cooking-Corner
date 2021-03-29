@@ -100,16 +100,16 @@ app.use("/", homeRouter);
 app.use("/bookmark", bookmarkRouter);
 app.use("/upload", uploadRouter);
 
-app.listen(4000, () => {
-  console.log("App running on 4000");
-});
+// app.listen(4000, () => {
+//   console.log("App running on 4000");
+// });
 
 //FACEBOOK LOGIN HTTPS
-// const options = {
-//   cert: fs.readFileSync("./localhost.crt"),
-//   key: fs.readFileSync("./localhost.key"),
-// };
+const options = {
+  cert: fs.readFileSync("./localhost.crt"),
+  key: fs.readFileSync("./localhost.key"),
+};
 
-// https.createServer(options, app).listen(4000);
+https.createServer(options, app).listen(4000);
 
 module.exports.app = app;
