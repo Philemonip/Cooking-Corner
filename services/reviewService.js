@@ -14,6 +14,7 @@ class reviewService {
       )
       .from("reviews")
       .innerJoin("recipes", "reviews.recipe_id", "recipes.api_id")
+      // .innerJoin("recipes", "reviews.recipe_id", "recipes.id")
       .innerJoin("users", "reviews.user_id", "users.id")
       .where("recipes.id", recipeid)
       .andWhere("reviews.user_id", userid)
@@ -34,6 +35,7 @@ class reviewService {
       )
       .from("reviews")
       .innerJoin("recipes", "reviews.recipe_id", "recipes.api_id")
+      // .innerJoin("recipes", "reviews.recipe_id", "recipes.id")
       .innerJoin("users", "reviews.user_id", "users.id")
       .where("recipes.id", recipeid)
       .whereNot("reviews.user_id", userid)
@@ -42,6 +44,29 @@ class reviewService {
     if (userid) {
       query.whereNot("reviews.user_id", userid);
     }
+    return query
+      .then((data) => {
+        return data;
+      })
+      .then(null, function (err) {
+        //query fail
+        console.log(err);
+      });
+  }
+
+  listByRecipeID(recipeid) {
+    let query = this.knex
+      .select(
+        "reviews.user_id",
+        "reviews.recipe_id",
+        "reviews.rating",
+        "reviews.comment"
+      )
+      .from("reviews")
+      .innerJoin("recipes", "reviews.recipe_id", "recipes.api_id")
+      // .innerJoin("recipes", "reviews.recipe_id", "recipes.id")
+      .where("recipes.id", recipeid)
+      .orderBy("reviews.created_at");
     return query
       .then((data) => {
         return data;
