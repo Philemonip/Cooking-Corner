@@ -1,37 +1,29 @@
-<div class="grid-wrapper first" style="position: absolute;; top: 640px; height: auto; width: 100%;">
-    <h1 class="recipe-container-title primary-dark h4-text font-bold">Top Rated Recipes</h1>
-</div>
+<link rel="stylesheet" href="../css/style.css">
+
+
 
 
 
 <!-----------------------------------JumboTron---------------------------------------------------------->
-<div class="cover container-fluid text-black">
-    <div class="cover-content d-flex flex-column justify-content-center align-items-center">
-        {{!-- <img id="one" src="{{ recipes[0].image_path }}" alt="" class="rounded-circle" /> --}}
-        <img id="one" src="https://spoonacular.com/recipeImages/637908-312x231.jpg" alt="" class="rounded-circle" />
-
-        <h1 id="firsth" class="display-5 text-capitalize pt-4 pt-md-0">
-            {{!-- {{ Ethnicity of cuisine }} --}}
-            {{!-- {{ recipes[0].cuisine_name }} --}}
-            <p>I don't know what it is</p>
-        </h1>
-        <h6 id="buddy" class="pt-3 h4">Best {{ cuisine }} Recipes </h6>
+<div class="cover text-black category-jumbotron">
+    <div class="cover-content d-flex flex-column justify-content-center align-items-center upper">
+        <img id="one" src="../image/grassBG.png" alt="" class="img-fluid banner-pic" />
     </div>
 </div>
-</header>
 
 
 
 <!----------------------------------Examples of Category of Cuisine --------------------------------------------------------------->
 
+<div>
+    <h2 id="buddy" class="pt-3 px-4">Best {{ cuisine }} Recipes </h2>
+</div>
+
+
 {{!-- {{#each example.cuisine }} --}}
 {{#each recipes }}
-<div class="container">
-
+<div class="container my-4 recipe">
     <div class="row">
-
-
-
         <div class="col-md-7">
             <a href="../recipe/{{this.api_id}}">
                 <img class="img-fluid rounded mb-3 mb-md-0" src="{{ image_path}} " alt="Photo unavailable">
@@ -45,16 +37,18 @@
             <p>
                 {{this.rating}}
                 <i class="fab fa-pagelines"></i>
+                <button id="post-bookmark" type="button" class="mx-3 bookmark-add-btn btn btn-danger"
+                    name="add-bookmark" data-recipeid={{this.api_id}}>Bookmark</button>
             </p>
-            <div class="col">
-                <button id="post-bookmark" type="button" class="bookmark-add-btn btn btn-primary" name="add-bookmark"
-                    data-recipeid={{this.api_id}}>Bookmark</button>
-            </div>
-            <p>{{{summary}}}</p>
 
+            <button id="readmore-{{this.api_id}}" data-recipeid={{this.api_id}} class="btn btn-info read-more">Read
+                More</button>
+
+            <p class="summary" id="summary-{{this.api_id}}" data-recipeid={{this.api_id}} style="display:none">
+                {{{summary}}}</p>
         </div>
     </div>
-    <!-- /.row -->
+
 
 </div>
 {{/each}}
