@@ -49,13 +49,15 @@ class recipeRouter {
 
   async fetchRecipe(request, response) {
     let id = request.params.id;
-    console.log("REQUEST USER", request.user);
+
+    let user = request.user;
+    console.log(user);
     console.log("fetchRecipe " + id);
 
     let apiData = await this.recipeService.fetchRecipeByAPI(id);
-
+    
     let recipeFromDB = await this.recipeService.getRecipeByApiId(id);
-
+    
     let recipe_id = undefined;
 
     if (recipeFromDB.length === 0) {
@@ -116,13 +118,19 @@ class recipeRouter {
       console.log(recipe_id);
     }
 
-    // user id is hardcored
-    let myReview = await this.reviewService.list(recipe_id, 1);
-    let recipeReview = await this.reviewService.listall(recipe_id, 1);
+    var myReview = [];
+    var recipeReview = [];
+    if (request.isAuthenticated()) {
+      myReview = await this.reviewService.list(recipe_id, user.id);
+      recipeReview = await this.reviewService.listall(recipe_id, user.id);
+    }
+    // else{
+    //   recipeReview = await this.reviewService.listByRecipeID(recipe_id);
+    // }
 
     apiData["myReview"] = myReview;
     apiData["recipeReview"] = recipeReview;
-
+    
     // related recipes
     let numberOfSimilar = 3;
     let similarRecipesArray = await this.recipeService.fetchRelatedRecipes(
@@ -158,6 +166,7 @@ class recipeRouter {
       similarRecipesArray: similarRecipesArray,
     });
   }
+
   async postReview(req, res) {
     if (req.isAuthenticated()) {
       //  console.log(req.user);
