@@ -150,7 +150,7 @@ class recipeRouter {
     let renderInstructions = apiData.analyzedInstructions.split("@@");
 
     response.render("recipes", {
-      // user: user,
+      user: user,
       title: apiData.title,
       api_id: apiData.id,
       author: apiData.sourceName,

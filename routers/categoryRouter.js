@@ -35,18 +35,20 @@ class categoryRouter {
   async getRecipes(request, response) {
     console.log(request.params);
     let cuisine = request.params.cuisine;
+    let user = request.user;
     console.log(`Get Highest Rating Recipes`);
 
     let recipes_res = await this.recipeService.getRecipes(6);
 
     // console.log(recipes_res);
 
-    response.render("category", { cuisine: cuisine, recipes: recipes_res });
+    response.render("category", { cuisine: cuisine, recipes: recipes_res, user: user });
   }
 
   async getCuisineRecipes(request, response) {
     console.log(request.params);
     let cuisine = request.params.cuisine;
+    let user = request.user;
     console.log(`Get ${cuisine} Recipes`);
 
     let recipes_res = await this.categoryService.getRecipeByCuisine(cuisine);
@@ -57,18 +59,19 @@ class categoryRouter {
     }
     // console.log(recipe_array);
 
-    response.render("category", { cuisine: cuisine, recipes: recipe_array });
+    response.render("category", { cuisine: cuisine, recipes: recipe_array, user: user });
   }
 
   async getIngredientRecipes(request, response) {
     let ingredient = request.params.ingredient.toLowerCase();
+    let user = request.user;
     let recipe_id_array = await this.ingredientService.getRecipeIdByIngredient(
       ingredient
     );
     let recipe_array = await this.recipeService.getRecipeByIds(recipe_id_array);
     console.log(`Category Ingredient ${ingredient} Pages`);
     // console.log(recipe_array.length)
-    response.render("category", { cuisine: ingredient, recipes: recipe_array });
+    response.render("category", { cuisine: ingredient, recipes: recipe_array, user: user });
   }
 
   // async getBookmark(request, response) {
