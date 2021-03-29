@@ -73,6 +73,9 @@ module.exports = (express) => {
       const filepath = req.file.path;
 
       console.log(req.file);
+      console.log(req);
+      console.log(req.body);
+      console.log(req.body.title);
 
       return knex
         .insert({
@@ -87,6 +90,24 @@ module.exports = (express) => {
       //     stack: err.stack,
       //   })
       // );
+
+      // let recipe = {};
+      // recipe["api_id"] = 0;
+      // recipe["title"] = apiData["title"];
+      // recipe["author"] = apiData["sourceName"];
+      // recipe["summary"] = apiData["summary"];
+      // recipe["instructions"] = apiData["analyzedInstructions"];
+      // recipe["preparation_time"] = apiData["readyInMinutes"];
+      // recipe["image_path"] = filepath;
+      // recipe["servings"] = apiData["servings"];
+      // recipe["rating"] = apiData["spoonacularScore"];
+      // recipe["difficulty"] = 5; //hardcoded
+
+      // console.log(recipe);
+      // // get recipe_id after inserting recipe
+      // recipe_id = await recipeService.addRecipe(recipe).then((value) => {
+      //   return value;
+      // });
     });
 
     if (req.fileValidationError) {
