@@ -63,7 +63,7 @@
             <h3>Ingredients</h3>
             {{#each ingredients}}
             <div>
-                <p>{{this.amount}} {{this.unit}} {{this.nameClean}}</p>
+                <p>- {{this.amount}} {{this.unit}} {{this.nameClean}}</p>
             </div>
             {{/each}}
         </div>
@@ -71,7 +71,7 @@
             <h3>Instructions</h3>
             {{#each instructions}}
             <div>
-                <p>{{math @index "+" 1}} {{this}}</p>
+                <p>{{math @index "+" 1}}. {{this}}</p>
             </div>
             {{/each}}
         </div>
@@ -128,14 +128,14 @@
                 <div>
                     <div>
 
-                        <div class="review col-12"><textarea class="note-area" cols="60" rows="10" name="note"
+                        <div class="review col-12"><textarea class="note-area ml-3" cols="60" rows="6" name="note"
                                 placeholder="Write your review or comment to the recipe here!"></textarea></div>
                         <div class="review col-12">
                         </div>
 
                     </div>
-                    <div class="review col-12">
-                        <button id="post" type="button" class="btn btn-outline-warning">SUBMIT</button>
+                    <div class="review col-12 ml-3">
+                        <button id="post" type="button" class="btn btn-success">SUBMIT</button>
 
                     </div>
 
@@ -170,15 +170,17 @@
 
 
                 {{!-- Related Recipes --}}
-                <h3>Related Recipes</h3>
-                <section class="text-center">
-                    {{#each similarRecipesArray}}
-                    <div class="row">
-                        <a href="../recipe/{{this.id}}">{{this.title}}</a>
-                    </div>
-                    {{/each}}
-                </section>
-            </div>
+                <div>
+                    <h3>Related Recipes</h3>
+                    <section class="text-center related-recipes">
+                        {{#each similarRecipesArray}}
+                        <div class="row">
+                            <a class="mx-3" href="../recipe/{{this.id}}">{{this.title}}</a>
+                        </div>
+                        {{/each}}
+                </div>
+</section>
+</div>
 
 </section>
 

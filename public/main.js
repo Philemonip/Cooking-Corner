@@ -51,3 +51,17 @@ $(function () {
     window.location.href = "/recipe/" + suggestion.id;
   });
 });
+
+let count = 0
+
+
+$(".read-more").click((e) => {
+  let reciepeid = e.target.dataset.recipeid
+  count++;
+  if (count % 2) {
+    $(`#summary-${reciepeid}`)[0].style.display = "block"
+  } else {
+    $(`#summary-${reciepeid}`)[0].style.display = "none"
+  }
+
+})
