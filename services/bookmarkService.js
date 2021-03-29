@@ -17,27 +17,29 @@ module.exports = class BookmarkService {
   }
 
   //Get recipe table for favourite recipe
-  favouriteRecipeInfo(bookmarkArr) {
+  favouriteRecipeInfo(bookmarkArr, user) {
     return (
-      this.knex("recipes")
-        .select(
-          "api_id",
-          "title",
-          "author",
-          "summary",
-          "instructions",
-          "rating",
-          "image_path",
-          "servings",
-          "difficulty"
-        )
+      this.knex("users_favourite_recipes")
+        .select([
+          "recipes.api_id",
+          "recipes.title",
+          "recipes.author",
+          "recipes.summary",
+          "recipes.instructions",
+          "recipes.rating",
+          "recipes.image_path",
+          "recipes.servings",
+          "recipes.difficulty",
+        ])
         // .select("*")
         .innerJoin(
-          "users_favourite_recipes",
+          "recipes",
           "recipes.api_id",
           "users_favourite_recipes.recipe_id"
         )
+        .innerJoin("users", "users.id", "users_favourite_recipes.user_id")
         .whereIn("api_id", bookmarkArr)
+        .andWhere("users_favourite_recipes.user_id", user)
         .orderBy("users_favourite_recipes.id", "asc")
         .then((data) => data)
     );

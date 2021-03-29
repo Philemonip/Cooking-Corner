@@ -3,15 +3,14 @@ module.exports = class UploadService {
     this.knex = knex;
   }
 
-  //Get favourite recipes
+  //Get favourite recipes ID and return an array
   getUploadedRecipe(userid) {
     return this.knex("users_uploaded_recipes")
       .select("recipe_id")
       .where("user_id", userid)
       .then((data) => {
-        return data;
-      })
-      .catch((err) => res.status(500).json(err));
+        return data.map((x) => x["recipe_id"]);
+      });
   }
 
   uploadedRecipeInfo(uploadArr) {
@@ -29,7 +28,9 @@ module.exports = class UploadService {
         )
         // .select("*")
         .whereIn("id", uploadArr)
-        .then((data) => data)
+        .then((data) => {
+          return data;
+        })
     );
   }
 
