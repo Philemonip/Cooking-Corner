@@ -6,7 +6,6 @@
 }
 
 body {
-  height: 50vh;
   display: flex;
   align-items: center;
   text-align: center;
@@ -24,7 +23,7 @@ body {
 .border {
   border: black;
   padding-bottom: 50vh;
-  margin-top: 40vh;
+  margin-top: 20vh;
   border-radius: 10px;
   background-color: white;
   box-shadow: 1px 3px 3px;
@@ -135,7 +134,7 @@ a {
   }
 }
 
-@media screen and (max-height: 849px) {
+@media screen and (max-height: 896px) {
   #sign {
     margin-top: 20px;
   }
@@ -148,10 +147,16 @@ a {
   }
 }
 
-@media screen and (max-height: 770px) {
+@media screen and (max-height: 790px) {
   .border {
     padding-bottom: 40vh;
     margin-top: 20vh;
+  }
+  .cc {
+    width: 150px;
+  }
+  .logo {
+    height: 700px;
   }
 }
 
@@ -159,6 +164,18 @@ a {
   .border {
     padding-bottom: 45vh;
     margin-top: 20vh;
+  }
+}
+
+@media screen and (max-height: 714px) {
+  .cc {
+    width: 100px;
+  }
+  .logo {
+    height: 750px;
+  }
+  .border {
+    padding-bottom: 60vh;
   }
 }
 
