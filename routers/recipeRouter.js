@@ -37,9 +37,11 @@ class recipeRouter {
     let router = express.Router();
     // router.get("/api/users", this.getAllRecipe.bind(this));
     router.get("/:id", this.fetchRecipe.bind(this));
+    router.get("/recipe_id=:id/api_id=:api_id", this.getRecipe.bind(this));
     router.post("/:id", this.postReview.bind(this));
     router.put("/:id", this.putReview.bind(this));
     router.delete("/:id", this.deleteReview.bind(this));
+
     // router.post("/insert", this.postRecipe.bind(this));
 
     // router.put("/api/users/:id", this.editUser.bind(this));
@@ -180,6 +182,135 @@ class recipeRouter {
       similarRecipesArray: similarRecipesArray,
       recipeReviewCount: recipeReviewCount,
     });
+  }
+
+  //Uploaded recipes
+  async getRecipe(request, response) {
+    let recipe_id = request.params.id;
+    let api_id = request.params.api_id;
+    let user = request.user;
+    console.log(`In Recipe ${recipe_id}, ${api_id}`);
+
+    if (api_id <= 0) {
+      // user uploaded recipe
+      //get recipe info
+      let recipe = (await this.recipeService.getRecipeById(recipe_id))[0];
+
+      var myReview = [];
+      var recipeReview = [];
+      // get review
+      if (request.isAuthenticated()) {
+        // let user = request.user;
+        // console.log("REVIEW BRACKET", user);
+        myReview = await this.reviewService.list(recipe_id, user.id);
+        recipeReview = await this.reviewService.listall(recipe_id, user.id);
+      } else {
+        recipeReview = await this.reviewService.listall(recipe_id);
+      }
+
+      // Related recipes
+      let numberOfSimilar = 3;
+      let similarRecipesArray = [];
+      // await this.recipeService.fetchRelatedRecipes(api_id, numberOfSimilar);
+
+      //Number of Review
+      let recipeReviewCount = 0;
+      if (request.isAuthenticated()) {
+        recipeReviewCount = myReview.length + recipeReview.length;
+      } else {
+        recipeReviewCount = recipeReview.length;
+      }
+      console.log("render", recipe);
+
+      let instructions = recipe.instructions;
+
+      //Render
+      response.render("uploadedRecipes", {
+        user: user,
+        title: recipe.title,
+        api_id: recipe.api_id,
+        author: recipe.author,
+        image: "../" + recipe.image_path,
+        time: recipe.preparation_time,
+        servings: recipe.servings,
+        score: recipe.rating,
+        summary: recipe.summary,
+        ingredients: [],
+        instructions: recipe.instructions.split("@@"),
+        myReview: myReview,
+        recipeReview: recipeReview,
+        similarRecipesArray: similarRecipesArray,
+        recipeReviewCount: recipeReviewCount,
+      });
+    } else {
+      let recipe = (await this.recipeService.getRecipeById(recipe_id))[0];
+
+      var myReview = [];
+      var recipeReview = [];
+      // get review
+      if (request.isAuthenticated()) {
+        // let user = request.user;
+        // console.log("REVIEW BRACKET", user);
+        myReview = await this.reviewService.list(recipe_id, user.id);
+        recipeReview = await this.reviewService.listall(recipe_id, user.id);
+      } else {
+        recipeReview = await this.reviewService.listall(recipe_id);
+      }
+
+      // Related recipes
+      let numberOfSimilar = 3;
+      let similarRecipesArray = await this.recipeService.fetchRelatedRecipes(
+        api_id,
+        numberOfSimilar
+      );
+
+      // Number of Review
+      let recipeReviewCount = 0;
+      if (request.isAuthenticated()) {
+        recipeReviewCount = myReview.length + recipeReview.length;
+      } else {
+        recipeReviewCount = recipeReview.length;
+      }
+
+      // Ingredients
+      let ingredient_array = await this.ingredientService.getIngredientByRecipeId(
+        recipe_id
+      );
+      let ingredients = [];
+      console.log(ingredient_array);
+      for (let z = 0; z < ingredient_array.length; z++) {
+        let tmp_obj = {};
+        tmp_obj["nameClean"] = await this.ingredientService.getIngredientName(
+          ingredient_array[z]["ingredient_id"]
+        );
+        tmp_obj["amount"] = ingredient_array[z]["quantity"];
+        tmp_obj["unit"] = ingredient_array[z]["unit"];
+        ingredients.push(tmp_obj);
+      }
+
+      console.log("render");
+
+      console.log(recipe);
+
+      //Render
+      response.render("uploadedRecipes", {
+        user: user,
+        title: recipe.title,
+        api_id: recipe.api_id,
+        author: recipe.author,
+        image: recipe.image_path,
+        time: recipe.preparation_time,
+        servings: recipe.servings,
+        score: recipe.rating,
+        summary: recipe.summary,
+        ingredients: ingredients,
+        instructions: recipe.instructions.split("@@"),
+        myReview: myReview,
+        recipeReview: recipeReview,
+        similarRecipesArray: similarRecipesArray,
+        recipeReviewCount: recipeReviewCount,
+      });
+    }
   }
 
   async postReview(req, res) {

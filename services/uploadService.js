@@ -13,6 +13,11 @@ module.exports = class UploadService {
       });
   }
 
+  addUploadedRecipe(userid, recipe_id) {
+    return this.knex("users_uploaded_recipes")
+      .insert({user_id: userid, recipe_id: recipe_id});
+  }
+
   uploadedRecipeInfo(uploadArr) {
     return (
       this.knex("recipes")
