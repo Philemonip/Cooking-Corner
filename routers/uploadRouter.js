@@ -82,6 +82,7 @@ module.exports = (express) => {
 
   // router.route("/upload-recipe").post((req, res) => {
   router.post("/upload-recipe", async (req, res) => {
+    
     let filename = "";
     let fileformat = "";
     let storage = multer.diskStorage({
@@ -111,7 +112,8 @@ module.exports = (express) => {
       const { filename, mimetype, size } = req.file;
 
       let recipe = {};
-      recipe["api_id"] = 0;
+      let a = await knex('recipes').min('api_id').then((row) => {return row[0]["min"];});
+      recipe["api_id"] = a - 1;
       recipe["title"] = req.body.title;
       recipe["author"] = req.user.username;
       recipe["summary"] = req.body.summary;
