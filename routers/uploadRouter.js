@@ -1,5 +1,7 @@
 "use strict";
 
+const e = require("express");
+
 module.exports = (express) => {
   const router = express.Router();
   const path = require("path");
@@ -19,41 +21,56 @@ module.exports = (express) => {
 
   // router.route("/uplpoad").post(isLoggedIn, upload)
 
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, "uploads");
-    },
+  // const storage = multer.diskStorage({
+  //   destination: function (req, file, cb) {
+  //     cb(null, "uploads");
+  //   },
 
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + path.extname(file.originalname));
-    },
-  });
+  //   filename: function (req, file, cb) {
+  //     cb(null, file.fieldname + path.extname(file.originalname));
+  //   },
+  // });
 
   async function getUploadRecipe(user_id) {
     let uploadedRecipeIDArray = await uploadService.getUploadedRecipe(user_id);
     let uploadedRecipeArr = [];
     for (let i = 0; i < uploadedRecipeIDArray.length; i++) {
-      let uploadedRecipe = await recipeService.getRecipeById(
-        uploadedRecipeIDArray[i]
-      );
+      let uploadedRecipe = await recipeService.getRecipeById(uploadedRecipeIDArray[i]);
       uploadedRecipeArr.push(uploadedRecipe[0]);
     }
     return uploadedRecipeArr;
   }
 
+  async function addRecipe(recipe) {
+    let recipe_id = await recipeService.addRecipe(recipe);
+  }
+
+  async function addUploadRecipe(user_id, recipe_id) {
+    let a = await uploadService.addUploadedRecipe(user_id, recipe_id);
+  }
+
   router.route("/upload-recipe").get((req, res) => {
     if (req.isAuthenticated()) {
       let user = req.user;
-      getUploadRecipe(user.id).then((data) => {
-        res.render("upload", {
-          username: user.username,
-          uploadedRecipeArr: data,
+      getUploadRecipe(user.id)
+        .then((data) => {
+          let newdata = data.map((x) => {
+            console.log(x);
+            if (x.image_path.substring(0, 7) === "uploads") {
+              x.image_path = path.join("../" + x.image_path);
+              return x;
+            }else{
+              return x;
+            }
+          })
+          console.log(newdata);
+          res.render("upload", { user: req.user, username: user.username, uploadedRecipeArr: newdata });
         });
-      });
-    } else {
+    }
+    else {
       console.log("Login required");
     }
-  });
+  })
 
   // router.route("upload-recipe-remove").delete((res, req) => {
   //   console.log(res);
@@ -63,48 +80,72 @@ module.exports = (express) => {
   //   // return uploadService.removeUploadedRecipe
   // })
 
-  router.route("/upload-recipe").post((req, res) => {
-    console.log("hi");
+  // router.route("/upload-recipe").post((req, res) => {
+  router.post("/upload-recipe", async (req, res) => {
+    let filename = "";
+    let fileformat = "";
+    let storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, "uploads");
+      },
+
+      filename: function (req, file, cb) {
+        // cb(null, `${req.user.id}_${req.user.username}_${req.body.title}` + path.extname(file.originalname));
+        filename = file.fieldname;
+        fileformat = path.extname(file.originalname);
+        cb(null, file.fieldname + path.extname(file.originalname));
+      },
+    });
+
+    // console.log("POST of upload-recipe");
+    // console.log(`req.body: `);
+    // console.log(req.body);
+
     let upload = multer({
       storage: storage,
     }).single("recipeimageupload");
 
-    upload(req, res, function (err) {
+    upload(req, res, async function (err) {
       // req.file contains information of uploaded file
       // req.body contains information of text fields, if there were any
       const { filename, mimetype, size } = req.file;
-      const filepath = req.file.path;
 
-      console.log(req.file);
+      let recipe = {};
+      recipe["api_id"] = 0;
+      recipe["title"] = req.body.title;
+      recipe["author"] = req.user.username;
+      recipe["summary"] = req.body.summary;
+      recipe["instructions"] = req.body.instructions;
+      recipe["preparation_time"] = req.body.preparation_time;
+      recipe["image_path"] = `../${req.user.id}_${req.user.username}_${req.body.title}${fileformat}`;
+      recipe["servings"] = req.body.servings;
+      recipe["difficulty"] = req.body.difficulty;
 
-      return knex
-        .insert({
-          image_path: filepath,
-        })
-        .into("recipes");
-      // .then(() => res.json({ success: true, filename }))
-      // .catch((err) =>
-      //   res.json({
-      //     success: false,
-      //     message: "upload failed",
-      //     stack: err.stack,
-      //   })
-      // );
+      if (!req.file) {
+        return res.send("Please select an image to upload");
+      } else if (err instanceof multer.MulterError) {
+        return res.send(err);
+      } else if (err) {
+        return res.send(err);
+      } else {
+        // let recipe_id = await addRecipe(recipe);
+        let recipe_id = await recipeService.addRecipe(recipe);
+        console.log(recipe_id);
+        console.log(req.user.id);
+        // let b = await addUploadRecipe(req.user.id, recipe_id);
+        let b = await uploadService.addUploadedRecipe(req.user.id, recipe_id);
+
+        fs.rename(path.join(__dirname, `../uploads/${filename}`),
+          path.join(__dirname, `../uploads/${req.user.id}_${req.user.username}_${req.body.title}${fileformat}`), function (err) {
+            if (err) console.log('ERROR: ' + err);
+          });
+
+        getUploadRecipe(req.user.id)
+          .then((data) => {
+            res.render("upload", { user: req.user, username: req.user.username, uploadedRecipeArr: data });
+          });
+      }
     });
-
-    if (req.fileValidationError) {
-      return res.send(req.fileValidationError);
-    } else if (!req.file) {
-      return res.send("Please select an image to upload");
-    } else if (err instanceof multer.MulterError) {
-      return res.send(err);
-    } else if (err) {
-      return res.send(err);
-    }
-
-    // Display uploaded image for user validation
-
-    console.log(req.file.path);
   });
   return router;
 };

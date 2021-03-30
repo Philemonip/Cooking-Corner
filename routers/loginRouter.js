@@ -1,4 +1,4 @@
-const passport = require("passport");
+const passport = require('passport');
 
 // Knex Setup
 const knexConfig = require("../knexfile").development;
@@ -94,8 +94,9 @@ module.exports = (express) => {
     res.render("upload");
   });
 
-  router.get("/error", (req, res) => {
-    res.send("You have failed to login!");
+  router.get('/error', (req, res) => {
+    // res.render("You have failed to login!");
+    res.render('error')
   });
 
   return router;
