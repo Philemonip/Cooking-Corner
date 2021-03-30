@@ -1,3 +1,28 @@
+body {
+  background-color: #fff;
+  background-image: url();
+  background-position: top center;
+  background-repeat: no-repeat;
+  color: #787a7d !important;
+  font-family: "Roboto", "Open Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+}
+
+a {
+  color: #000000;
+  text-decoration: rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+  font-weight: 100;
+}
+
+a:hover {
+  color: #dc3545;
+  text-decoration: none;
+  background-color: transparent;
+}
+
 .mb-5 {
   font-size: 30px;
   text-align: center;
@@ -85,7 +110,19 @@
 
 navbar-dark .navbar-brand:focus,
 .navbar-dark .navbar-brand:hover {
-  color: #a7a4a4;
+  color: #dc3545;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #dc3545 !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: black !important;
+}
+
+.bg-dark {
+  background-color: white !important;
 }
 
 /* category page */
@@ -130,4 +167,53 @@ navbar-dark .navbar-brand:focus,
 .bookmark-del-btn:hover {
   background-color: #5c5959;
   border: none;
+}
+
+/* .recipe {
+  padding-bottom: 10px;
+  padding-top: 10px;
+} */
+
+.col {
+  padding: 10px;
+  color: #b6300f;
+}
+
+.card {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 0px;
+  /* border-radius: 0.25rem; */
+  padding: 10px;
+}
+
+.search {
+  width: 100%;
+  padding-right: 150px;
+  padding-left: 150px;
+}
+
+.uploading {
+  padding-left: 150px;
+  padding-right: 150px;
+  /* background-color: url("/image/background.jpeg"); */
+  background-image: url(/image/background.jpeg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+
+textarea {
+  overflow: auto;
+  resize: vertical;
+  height: 100px;
+  width: 500px;
 }

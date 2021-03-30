@@ -17,7 +17,7 @@
 
 
 
-<div class="container-fluid search">
+<div class="search">
   <div class="search-bar">
     <form class="d-flex justify-content-center">
       <input class="typeahead form-control me-2" type="search" placeholder="Search recipes" aria-label="Search">
@@ -36,6 +36,11 @@
         <div class="container">
           <div class="row">
             <div class="col">
+              <div class='recipe'>
+                <button id="post-bookmark" type="button" class="bookmark-add-btn btn btn-danger" name="add-bookmark"
+                  data-recipeid={{this.api_id}}>Bookmark</button>
+              </div>
+              <hr>
               <a href="../recipe/{{this.api_id}}">
                 {{this.title}}
               </a>
@@ -44,10 +49,11 @@
                 <i class="fab fa-pagelines"></i>
               </div>
             </div>
-            <div class="col">
+
+            {{!-- <div class="col">
               <button id="post-bookmark" type="button" class="bookmark-add-btn btn btn-danger" name="add-bookmark"
                 data-recipeid={{this.api_id}}>Bookmark</button>
-            </div>
+            </div> --}}
           </div>
         </div>
       </div>
