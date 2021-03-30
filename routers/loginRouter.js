@@ -37,6 +37,13 @@ module.exports = (express) => {
       failureRedirect: "/error",
     })
   );
+  router.get("/bookmark", (req, res) => {
+    res.render("bookmark");
+  });
+
+  router.get("/myrecipes", (req, res) => {
+    res.render("myrecipes");
+  });
 
   router.get(
     "/google",
