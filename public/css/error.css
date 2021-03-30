@@ -21,3 +21,21 @@
 .three {
   font-size: 30px;
 }
+
+@media screen and (max-height: 834px) {
+  .one {
+    font-size: 40px;
+  }
+  .two, .three {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-height: 610px) {
+  .one {
+    font-size: 30px;
+  }
+  .two, .three {
+    font-size: 15px;
+  }
+}

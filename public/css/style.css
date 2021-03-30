@@ -131,3 +131,14 @@ navbar-dark .navbar-brand:focus,
   background-color: #5c5959;
   border: none;
 }
+
+.upload-del-btn {
+  background-color: #b6300f;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.upload-del-btn:hover {
+  background-color: #5c5959;
+  border: none;
+}

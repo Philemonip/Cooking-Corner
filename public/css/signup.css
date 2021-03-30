@@ -24,7 +24,7 @@ body {
 .border {
   border: black;
   padding-bottom: 43vh;
-  margin-top: 40vh;
+  margin-top: 60vh;
   border-radius: 10px;
   background-color: white;
   box-shadow: 1px 3px 3px;
@@ -113,7 +113,6 @@ a {
 #sign {
   margin-top: 180px;
 }
-
 @media screen and (max-height: 966px) {
   #sign {
     margin-top: 100px;
@@ -140,5 +139,17 @@ a {
   }
   .logo {
     height: 320px;
+  }
+}
+
+@media screen and (max-height: 630px) {
+  .border {
+    padding-bottom: 35vh;
+  }
+  .cc {
+    width: 100px;
+  }
+  .logo {
+    height: 270px;
   }
 }
