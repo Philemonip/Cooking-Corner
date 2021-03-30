@@ -189,7 +189,7 @@ class recipeRouter {
     let user = request.user;
     console.log(`In Recipe ${recipe_id}, ${api_id}`);
 
-    if (api_id == 0) { // user uploaded recipe
+    if (api_id <= 0) { // user uploaded recipe
       //get recipe info
       let recipe = (await this.recipeService.getRecipeById(recipe_id))[0];
 
