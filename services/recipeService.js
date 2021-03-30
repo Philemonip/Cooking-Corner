@@ -88,6 +88,9 @@ class recipeService {
         // `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=a4d183cc31764135992ccf253da20f6b`
 
         // `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=3263717946814c3c96b2318c7e6cbe5a`
+
+        // https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=f41cce227afd42d8a2ee7c01b7572a27
+
         `https://api.spoonacular.com/recipes/${recipeId}/information?&apiKey=f41cce227afd42d8a2ee7c01b7572a27`
       )
       .then((info) => {
