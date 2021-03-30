@@ -127,7 +127,7 @@ a {
     padding-bottom: 30vh;
   }
   .logo {
-    height: 350px;
+    height: 250px;
   }
 }
 @media screen and (max-height: 670px) {
@@ -138,7 +138,7 @@ a {
     width: 150px;
   }
   .logo {
-    height: 320px;
+    height: 220px;
   }
 }
 
@@ -146,9 +146,7 @@ a {
   .border {
     padding-bottom: 35vh;
   }
-  .cc {
-    width: 100px;
-  }
+
   .logo {
     height: 270px;
   }

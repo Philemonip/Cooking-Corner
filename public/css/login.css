@@ -146,13 +146,10 @@ a {
   }
 }
 
-@media screen and (max-height: 790px) {
+@media screen and (max-height: 829px) {
   .border {
     padding-bottom: 40vh;
     margin-top: 20vh;
-  }
-  .cc {
-    width: 150px;
   }
   .logo {
     height: 700px;
@@ -167,9 +164,6 @@ a {
 }
 
 @media screen and (max-height: 714px) {
-  .cc {
-    width: 100px;
-  }
   .logo {
     height: 750px;
   }
@@ -180,11 +174,11 @@ a {
 
 @media screen and (max-height: 653px) {
   .border {
-    padding-bottom: 50vh;
+    padding-bottom: 55vh;
     margin-top: 20vh;
   }
   .logo {
-    height: 700px;
+    height: 550px;
   }
   .cc {
     width: 150px;
