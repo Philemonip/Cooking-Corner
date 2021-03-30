@@ -14,7 +14,7 @@ module.exports = (express) => {
     if (req.isAuthenticated()) {
       return next();
     }
-    res.redirect("/login");
+    res.redirect("/error");
     //res.render() {other layouts}
   };
 
@@ -95,7 +95,7 @@ module.exports = (express) => {
   });
 
   router.get("/error", (req, res) => {
-    res.send("You have failed to login!");
+    res.render("error");
   });
 
   return router;

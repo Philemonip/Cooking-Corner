@@ -1,4 +1,6 @@
-<div class="container-fluid ">
+<link rel="stylesheet" href="../css/style.css">
+
+<div class="bookmark-container container-fluid search-wrapper mt-3">
     <h2><b>{{username}}'s Recipes</b></h2>
 
     {{#unless uploadedRecipeArr}}
@@ -6,84 +8,93 @@
     {{/unless}}
 
     {{#each uploadedRecipeArr}}
-    <div class="row uploaded_card d-flex">
-        <div class="image-container">
-            <img class="img-fluid uploaded_image" width="180px" height="auto" src="{{this.image_path}}">
-            <div class="row d-flex justify-content-center">
-                <button id={{this.id}} class="bookmark-del-btn" data-recipeid={{this.id}}>
-                    REMOVE</button>
+
+    <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="row bookmark_card d-flex justify-content-center px-4 py-3">
+            <div class="image-container">
+                <img class="img-fluid bookmark_image" src="{{this.image_path}}">
+
             </div>
-        </div>
 
-        {{!--
-        </a> --}}
-        <div class="recipe-info col-9">
-            <p class="recipe-link">
+            <div class="recipe-info text-center">
+                <p class="recipe-link">
 
-                {{!-- <a href="../recipe/recipe_id={{this.id}}&api_id={{this.api_id}}"> --}}
-                <a href="../recipe/recipe_id={{this.id}}/api_id={{this.api_id}}">
-                    {{math @index "+" 1}}. {{this.title}}
-                </a>
-            </p>
-            <p>
-                {{this.rating}}
-                <i class="fas fa-star"></i>
-            </p>
-            {{!-- <p><b style="font-size: 15px">Description:</b><br><br> {{{this.summary}}}</p> --}}
+                    <a href="../recipe/recipe_id={{this.id}}/api_id={{this.api_id}}">
+                        {{math @index "+" 1}}. {{this.title}}
+                    </a>
+                </p>
+              
+                <div class="row d-flex justify-content-center">
+                    <button id={{this.api_id}} class="btn btn-info upload-del-btn" data-recipeid={{this.api_id}}>
+                        REMOVE</button>
+                </div>
+                {{!-- <p><b style="font-size: 15px">Description:</b><br><br> {{{this.summary}}}</p> --}}
+            </div>
+
         </div>
     </div>
     {{/each}}
 
-    <div class="container">
+</div>
 
-        <form action="/upload/upload-recipe" enctype="multipart/form-data" method="POST">
-        
-            <input type="file" id="fileid" name="recipeimageupload" accept="image/*">
-            {{!-- <input class="recipe-upload-btn" type="submit" value="Upload"> --}}
-            <br />
+</div>
 
-            <br />
-            <div class="row">
-                <label>Title</label>
-                <textarea class="recipe-title-edit" name="title" placeholder=""></textarea>
+
+
+
+
+<div class="container">
+
+    <form action="/upload/upload-recipe" enctype="multipart/form-data" method="POST">
+
+        <input type="file" id="fileid" name="recipeimageupload" accept="image/*">
+        {{!-- <input class="recipe-upload-btn" type="submit" value="Upload"> --}}
+        <br />
+
+        <br />
+        <div class="row">
+            <label>Title</label>
+            <textarea class="recipe-title-edit" name="title" placeholder=""></textarea>
+        </div>
+        <br />
+        <div class="row">
+            <label>Summary</label>
+            <textarea class="recipe-summary-edit" name="summary" rows="10" cols="50" placeholder=""></textarea>
+        </div>
+        <br />
+        <div class="row">
+            <label>Instructions</label>
+            <textarea class="recipe-instructions-edit" name="instructions" rows="10" cols="50"
+                placeholder=""></textarea>
+        </div>
+        <br />
+        <div class="row">
+            <label>Preparation time</label>
+            <input type="number" class="preptime" name="preparation_time" min="1" max="120">
+            <p>minutes</p><br><br>
+        </div>
+        <br />
+        <div class="row">
+            <label>Servings</label>
+            <input type="number" class="serving-quantity" name="servings" min="1" max="10">
+            <p>people</p><br><br>
+        </div>
+        <br />
+        <div class="row">
+            <label>Difficulty</label>
+            <select class="recipe-difficulty-edit js-states form-control" name="difficulty" style="width: 20%"
+                id="id_label_single">
+                <option value="1">Easy</option>
+                <option value="2">Medium</option>
+                <option value="3">Hard</option>
+            </select>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-end">
+                <input class="recipe-upload-btn" type="submit" value="Upload">
+                {{!-- <button type="button" class="reicpe-save-btn btn btn-primary btn btn-outline-warning"
+                    data-userid="{{userid}}">Save Changes</button> --}}
             </div>
-            <br />
-            <div class="row">
-                <label>Summary</label>
-                <textarea class="recipe-summary-edit" name="summary" rows="10" cols="50" placeholder=""></textarea>
-            </div>
-            <br />
-            <div class="row">
-                <label>Instructions</label>
-                <textarea class="recipe-instructions-edit" name="instructions" rows="10" cols="50" placeholder=""></textarea>
-            </div>
-            <br />
-            <div class="row">
-                <label>Preparation time</label>
-                <input type="number" class="preptime" name="preparation_time" min="1" max="120">
-                <p>minutes</p><br><br>
-            </div>
-            <br />
-            <div class="row">
-                <label>Servings</label>
-                <input type="number" class="serving-quantity" name="servings" min="1" max="10">
-                <p>people</p><br><br>
-            </div>
-            <br />
-            <div class="row">
-                <label>Difficulty</label>
-                <select class="recipe-difficulty-edit js-states form-control" name="difficulty" style="width: 20%" id="id_label_single">
-                    <option value="1">Easy</option>
-                    <option value="2">Medium</option>
-                    <option value="3">Hard</option>
-                </select>
-            </div>
-            <div class="row">
-                <div class="col d-flex justify-content-end">
-                    <input class="recipe-upload-btn" type="submit" value="Upload">
-                    {{!-- <button type="button" class="reicpe-save-btn btn btn-primary btn btn-outline-warning"
-                        data-userid="{{userid}}">Save Changes</button> --}}
-                </div>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>

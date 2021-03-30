@@ -41,6 +41,7 @@ class recipeRouter {
     router.post("/:id", this.postReview.bind(this));
     router.put("/:id", this.putReview.bind(this));
     router.delete("/:id", this.deleteReview.bind(this));
+
     // router.post("/insert", this.postRecipe.bind(this));
 
     // router.put("/api/users/:id", this.editUser.bind(this));
@@ -183,13 +184,15 @@ class recipeRouter {
     });
   }
 
+  //Uploaded recipes
   async getRecipe(request, response) {
     let recipe_id = request.params.id;
     let api_id = request.params.api_id;
     let user = request.user;
     console.log(`In Recipe ${recipe_id}, ${api_id}`);
 
-    if (api_id <= 0) { // user uploaded recipe
+    if (api_id <= 0) {
+      // user uploaded recipe
       //get recipe info
       let recipe = (await this.recipeService.getRecipeById(recipe_id))[0];
 
@@ -207,7 +210,8 @@ class recipeRouter {
 
       // Related recipes
       let numberOfSimilar = 3;
-      let similarRecipesArray = await this.recipeService.fetchRelatedRecipes(api_id, numberOfSimilar);
+      let similarRecipesArray = [];
+      // await this.recipeService.fetchRelatedRecipes(api_id, numberOfSimilar);
 
       //Number of Review
       let recipeReviewCount = 0;
@@ -216,14 +220,12 @@ class recipeRouter {
       } else {
         recipeReviewCount = recipeReview.length;
       }
-      console.log("render");
+      console.log("render", recipe);
 
-      console.log(recipe);
       let instructions = recipe.instructions;
 
-
       //Render
-      response.render("recipes", {
+      response.render("uploadedRecipes", {
         user: user,
         title: recipe.title,
         api_id: recipe.api_id,
@@ -240,8 +242,7 @@ class recipeRouter {
         similarRecipesArray: similarRecipesArray,
         recipeReviewCount: recipeReviewCount,
       });
-    }
-    else{
+    } else {
       let recipe = (await this.recipeService.getRecipeById(recipe_id))[0];
 
       var myReview = [];
@@ -258,7 +259,10 @@ class recipeRouter {
 
       // Related recipes
       let numberOfSimilar = 3;
-      let similarRecipesArray = await this.recipeService.fetchRelatedRecipes(api_id, numberOfSimilar);
+      let similarRecipesArray = await this.recipeService.fetchRelatedRecipes(
+        api_id,
+        numberOfSimilar
+      );
 
       // Number of Review
       let recipeReviewCount = 0;
@@ -269,12 +273,16 @@ class recipeRouter {
       }
 
       // Ingredients
-      let ingredient_array = await this.ingredientService.getIngredientByRecipeId(recipe_id);
+      let ingredient_array = await this.ingredientService.getIngredientByRecipeId(
+        recipe_id
+      );
       let ingredients = [];
       console.log(ingredient_array);
-      for(let z = 0; z < ingredient_array.length; z++){
+      for (let z = 0; z < ingredient_array.length; z++) {
         let tmp_obj = {};
-        tmp_obj["nameClean"] = await this.ingredientService.getIngredientName(ingredient_array[z]["ingredient_id"]);
+        tmp_obj["nameClean"] = await this.ingredientService.getIngredientName(
+          ingredient_array[z]["ingredient_id"]
+        );
         tmp_obj["amount"] = ingredient_array[z]["quantity"];
         tmp_obj["unit"] = ingredient_array[z]["unit"];
         ingredients.push(tmp_obj);
@@ -285,7 +293,7 @@ class recipeRouter {
       console.log(recipe);
 
       //Render
-      response.render("recipes", {
+      response.render("uploadedRecipes", {
         user: user,
         title: recipe.title,
         api_id: recipe.api_id,

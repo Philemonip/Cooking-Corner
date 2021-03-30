@@ -35,7 +35,9 @@ module.exports = (express) => {
     let uploadedRecipeIDArray = await uploadService.getUploadedRecipe(user_id);
     let uploadedRecipeArr = [];
     for (let i = 0; i < uploadedRecipeIDArray.length; i++) {
-      let uploadedRecipe = await recipeService.getRecipeById(uploadedRecipeIDArray[i]);
+      let uploadedRecipe = await recipeService.getRecipeById(
+        uploadedRecipeIDArray[i]
+      );
       uploadedRecipeArr.push(uploadedRecipe[0]);
     }
     return uploadedRecipeArr;
@@ -52,37 +54,38 @@ module.exports = (express) => {
   router.route("/upload-recipe").get((req, res) => {
     if (req.isAuthenticated()) {
       let user = req.user;
-      getUploadRecipe(user.id)
-        .then((data) => {
-          let newdata = data.map((x) => {
-            console.log(x);
-            if (x.image_path.substring(0, 7) === "uploads") {
-              x.image_path = path.join("../" + x.image_path);
-              return x;
-            }else{
-              return x;
-            }
-          })
-          console.log(newdata);
-          res.render("upload", { user: req.user, username: user.username, uploadedRecipeArr: newdata });
+      getUploadRecipe(user.id).then((data) => {
+        let newdata = data.map((x) => {
+          // console.log(x);
+          if (x.image_path.substring(0, 7) === "uploads") {
+            x.image_path = path.join("../" + x.image_path);
+            return x;
+          } else {
+            return x;
+          }
         });
+        // console.log(newdata);
+        res.render("upload", {
+          user: req.user,
+          username: user.username,
+          uploadedRecipeArr: newdata,
+        });
+      });
+    } else {
+      res.send("Login required");
     }
-    else {
-      console.log("Login required");
-    }
-  })
+  });
 
-  // router.route("upload-recipe-remove").delete((res, req) => {
-  //   console.log(res);
-  //   console.log("res.param inside remove button: " + res.param);
-  //   // let user = req.user;
-  //   // let recipe_id = req.
-  //   // return uploadService.removeUploadedRecipe
-  // })
+  router.route("/upload-recipe-remove/:id").delete(async (req, res) => {
+    console.log("Delete upload recipe");
+    let deleteUploadRecipe = await uploadService.removeUploadedRecipe(
+      req.user.id,
+      req.params.id
+    );
+  });
 
   // router.route("/upload-recipe").post((req, res) => {
   router.post("/upload-recipe", async (req, res) => {
-    
     let filename = "";
     let fileformat = "";
     let storage = multer.diskStorage({
@@ -112,14 +115,20 @@ module.exports = (express) => {
       const { filename, mimetype, size } = req.file;
 
       let recipe = {};
-      let a = await knex('recipes').min('api_id').then((row) => {return row[0]["min"];});
-      recipe["api_id"] = a - 1;
+      let a = await knex("recipes")
+        .min("api_id")
+        .then((row) => {
+          return row[0]["min"];
+        });
+      recipe["api_id"] = Math.min(a - 1, 0);
       recipe["title"] = req.body.title;
       recipe["author"] = req.user.username;
       recipe["summary"] = req.body.summary;
       recipe["instructions"] = req.body.instructions;
       recipe["preparation_time"] = req.body.preparation_time;
-      recipe["image_path"] = `../${req.user.id}_${req.user.username}_${req.body.title}${fileformat}`;
+      recipe[
+        "image_path"
+      ] = `../${req.user.id}_${req.user.username}_${req.body.title}${fileformat}`;
       recipe["servings"] = req.body.servings;
       recipe["difficulty"] = req.body.difficulty;
 
@@ -137,15 +146,24 @@ module.exports = (express) => {
         // let b = await addUploadRecipe(req.user.id, recipe_id);
         let b = await uploadService.addUploadedRecipe(req.user.id, recipe_id);
 
-        fs.rename(path.join(__dirname, `../uploads/${filename}`),
-          path.join(__dirname, `../uploads/${req.user.id}_${req.user.username}_${req.body.title}${fileformat}`), function (err) {
-            if (err) console.log('ERROR: ' + err);
-          });
+        fs.rename(
+          path.join(__dirname, `../uploads/${filename}`),
+          path.join(
+            __dirname,
+            `../uploads/${req.user.id}_${req.user.username}_${req.body.title}${fileformat}`
+          ),
+          function (err) {
+            if (err) console.log("ERROR: " + err);
+          }
+        );
 
-        getUploadRecipe(req.user.id)
-          .then((data) => {
-            res.render("upload", { user: req.user, username: req.user.username, uploadedRecipeArr: data });
+        getUploadRecipe(req.user.id).then((data) => {
+          res.render("upload", {
+            user: req.user,
+            username: req.user.username,
+            uploadedRecipeArr: data,
           });
+        });
       }
     });
   });
