@@ -7,7 +7,7 @@ It uses the spoonacular API (https://spoonacular.com/food-api) and allows users 
 
 How to use this Application:
 
-Clone the github repository to your local machine
+Clone the github repository to your local machine.
 Run the command, "npm install" inside the cloned directory
 Run the command "nodemon app.js" inside the cloned directory to start the application
 Go to "https://localhost:4000/" to see the rendered pages
