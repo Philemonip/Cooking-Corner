@@ -20,7 +20,7 @@ const categoryRouter = require("./routers/categoryRouter");
 const loginRouter = require("./routers/loginRouter")(express);
 const homeRouter = require("./routers/homeRouter")(express);
 const bookmarkRouter = require("./routers/bookmarkRouter")(express);
-const uploadRouter = require("./routers/uploadRouter")(express);
+// const uploadRouter = require("./routers/uploadRouter")(express);
 
 //handlebars
 app.engine(
@@ -98,7 +98,7 @@ app.use("/recipe", RecipeRouter.router());
 app.use("/category", CategoryRouter.router());
 app.use("/", homeRouter);
 app.use("/bookmark", bookmarkRouter);
-app.use("/upload", uploadRouter);
+// app.use("/upload", uploadRouter);
 
 // app.listen(4000, () => {
 //   console.log("App running on 4000");
