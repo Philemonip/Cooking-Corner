@@ -12,8 +12,6 @@ It uses the spoonacular API (https://spoonacular.com/food-api) and allows users 
 - Run the command "nodemon app.js" inside the cloned directory to start the application
 - Go to "https://localhost:4000/" to see the rendered pages
 
-**Test Login**: username: trae password: trae
-
 **Technologies used to build this application:**
 
 - Passport.js - Login authentication middleware for Node.js
